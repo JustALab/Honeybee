@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/Honeybee.iml" filepath="$PROJECT_DIR$/Honeybee.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/justalab.honeycakes.iml" filepath="$PROJECT_DIR$/justalab.honeycakes.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../node_modules/react-native-sqlite-storage/src/android/react-native-sqlite-storage.iml" filepath="$PROJECT_DIR$/../node_modules/react-native-sqlite-storage/src/android/react-native-sqlite-storage.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../node_modules/react-native-vector-icons/android/react-native-vector-icons.iml" filepath="$PROJECT_DIR$/../node_modules/react-native-vector-icons/android/react-native-vector-icons.iml" />
+    </modules>
+  </component>
+</project>
