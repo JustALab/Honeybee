@@ -11,5 +11,6 @@ export const STRINGS = {
     ios: 'ios',
     android: 'android',
     privacyPolicy: 'Privacy Policy', 
-    termsConditions: 'Terms & Conditions'
+    termsConditions: 'Terms & Conditions',
+    register: 'Register'
 };

@@ -1,9 +1,9 @@
 import React from 'react';
-import { StyleSheet, View, Image, TouchableHighlight } from 'react-native';
-import { Container, Content, Form, Input, Item, Text, Button } from 'native-base';
+import { StyleSheet, View, Image } from 'react-native';
+import { Container, Content, Form, Input, Item, Text, Button, Footer } from 'native-base';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { ICONS } from '../Config/Icons';
-import { primary, secondary, onPrimary } from '../Config/Colors';
+import { primary, secondary, onPrimary, onSecondary, secondaryDark, iosBlue } from '../Config/Colors';
 
 export class LoginView extends React.Component {
     render() {
@@ -16,32 +16,25 @@ export class LoginView extends React.Component {
                         </View>
                         <View>
                             <Form>
-                                <Item >
-                                    <Input placeholder='Email' />
+                                <Item style={[styles.widthStyle, styles.inputMargin]} >
+                                    <Input placeholder='Email' keyboardType='email-address' />
                                     <Icon size={iconsSize} name={ICONS.mail} />
                                 </Item>
-                                <Item >
+                                <Item style={[styles.inputMargin, styles.widthStyle]}>
                                     <Input placeholder='Password' secureTextEntry={true} />
                                     <Icon size={iconsSize} name={ICONS.key} />
                                 </Item>
                             </Form>
                         </View>
-                        <View style={styles.btnView}>
-                            <Button style={styles.signInBtn}>
-                                <Text style={styles.btnText}>Sign In</Text>
-                            </Button>
-                        </View>
                         <View style={styles.linksView}>
-                            <Text style={styles.text} >Sign Up</Text>
+                            <Text style={{ color: secondaryDark }} onPress={() => this.props.navigation.navigate('register')} >Register</Text>
                             <Text style={styles.text} > | </Text>
                             <Text style={styles.text} >Forgot Password</Text>
                         </View>
-                        <View style={[styles.linksView, {paddingTop: 20}]}>
-                            <Text onPress={() => this.props.navigation.navigate('about')} style={styles.text} >About</Text>
-                            <Text style={styles.text} > | </Text>
-                            <Text onPress={() => this.props.navigation.navigate('privacy')} style={styles.text} >Privacy Policy</Text>
-                            <Text style={styles.text} > | </Text>
-                            <Text onPress={() => this.props.navigation.navigate('terms')} style={styles.text} >Terms & Conditions</Text>
+                        <View style={styles.btnView}>
+                            <Button style={[styles.signInBtn, styles.widthStyle]} full>
+                                <Text style={styles.btnText}>SIGN IN</Text>
+                            </Button>
                         </View>
                     </View>
                 </Content>
@@ -75,7 +68,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        paddingTop: 20
+        paddingTop: 30
     },
     mainView: {
         flex: 1,
@@ -86,9 +79,18 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        paddingTop: 50
+        paddingTop: 10
     },
     text: {
         color: onPrimary
+    },
+    registerBtnText: {
+        color: secondaryDark
+    },
+    widthStyle: {
+        width: '100%'
+    },
+    inputMargin: {
+        marginLeft: 0
     }
 });

@@ -1,7 +1,7 @@
 import React from 'react';
 import { createStackNavigator } from 'react-navigation';
 import { LoginView } from './LoginView';
-import { AboutView } from './AboutView';
+import { RegisterView } from './RegisterView';
 import { PrivacyPolicyView } from './PrivacyPolicyView';
 import { TermsConditions } from './TermsConditions';
 import { STRINGS } from '../Config/Strings';
@@ -27,10 +27,10 @@ const LoginNavigator = createStackNavigator({
             header: null
         }
     },
-    about: {
-        screen: AboutView,
+    register: {
+        screen: RegisterView,
         navigationOptions: {
-            title: STRINGS.about
+            title: STRINGS.register
         }
     },
     privacy: {
