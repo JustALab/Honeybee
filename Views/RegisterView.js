@@ -56,7 +56,7 @@ export class RegisterView extends React.Component {
                             </Form>
                         </View>
                         <View style={{ paddingTop: 20 }}>
-                            <Text style={styles.textSize}>By clicking "REGISTER", I confirm that i have read and agreed to the <Text style={[styles.linkText, styles.textSize]} onPress={() => this.props.navigation.navigate('terms')}>Terms & Conditions</Text> and <Text style={[styles.linkText, styles.textSize]} onPress={() => this.props.navigation.navigate('privacy')} >Privacy Policy</Text></Text>
+                            <Text style={styles.textSize}>By clicking "REGISTER", I confirm that I have read and agreed to the <Text style={[styles.linkText, styles.textSize]} onPress={() => this.props.navigation.navigate('terms')}>Terms & Conditions</Text> and <Text style={[styles.linkText, styles.textSize]} onPress={() => this.props.navigation.navigate('privacy')} >Privacy Policy</Text></Text>
                         </View>
                         <View style={styles.btnView}>
                             <Button  style={[styles.registerBtn, styles.widthStyle]} full>
