@@ -1,11 +1,38 @@
 import React from 'react';
-import { StyleSheet, View, Image } from 'react-native';
+import { StyleSheet, View, Image, NetInfo } from 'react-native';
 import { Container, Content, Form, Input, Item, Text, Button, Footer } from 'native-base';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { ICONS } from '../Config/Icons';
 import { primary, secondary, onPrimary, onSecondary, secondaryDark, iosBlue } from '../Config/Colors';
+import {STRINGS} from '../Config/Strings';
 
 export class LoginView extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            email: '',
+            password: ''
+        };
+    }
+
+    componentDidMount() {
+        let isConnected = this.checkConnectivity();
+        if(!isConnected){
+            alert('Please connect to the internet!');
+        }
+    }
+
+    checkConnectivity() {
+        NetInfo.isConnected.fetch().then(isConnected => {
+            callback(isConnected);
+        });
+    }
+
+    handleLogin() {
+        
+    }
+
     render() {
         return (
             <Container >
@@ -17,11 +44,11 @@ export class LoginView extends React.Component {
                         <View>
                             <Form>
                                 <Item style={[styles.widthStyle, styles.inputMargin]} >
-                                    <Input placeholder='Email' keyboardType='email-address' />
+                                    <Input placeholder='Email' keyboardType='email-address' onChange={(val) => this.setState({email: val})} />
                                     <Icon size={iconsSize} name={ICONS.mail} />
                                 </Item>
                                 <Item style={[styles.inputMargin, styles.widthStyle]}>
-                                    <Input placeholder='Password' secureTextEntry={true} />
+                                    <Input placeholder='Password' secureTextEntry={true} onChange={(val) => this.setState({password: val})} />
                                     <Icon size={iconsSize} name={ICONS.key} />
                                 </Item>
                             </Form>
@@ -32,7 +59,7 @@ export class LoginView extends React.Component {
                             <Text style={styles.text} >Forgot Password</Text>
                         </View>
                         <View style={styles.btnView}>
-                            <Button style={[styles.signInBtn, styles.widthStyle]} full>
+                            <Button style={[styles.signInBtn, styles.widthStyle]} onPress={this.handleLogin} full>
                                 <Text style={styles.btnText}>SIGN IN</Text>
                             </Button>
                         </View>

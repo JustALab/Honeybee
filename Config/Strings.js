@@ -12,5 +12,7 @@ export const STRINGS = {
     android: 'android',
     privacyPolicy: 'Privacy Policy', 
     termsConditions: 'Terms & Conditions',
-    register: 'Register'
+    register: 'Register', 
+    msgOnline: 'You are online.',
+    msgOffline: 'You are offline.'
 };
