@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Image, NetInfo } from 'react-native';
+import { StyleSheet, View, Image, NetInfo, Alert } from 'react-native';
 import { Container, Content, Form, Input, Item, Text, Button, Footer } from 'native-base';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { ICONS } from '../Config/Icons';
@@ -17,15 +17,10 @@ export class LoginView extends React.Component {
     }
 
     componentDidMount() {
-        let isConnected = this.checkConnectivity();
-        if(!isConnected){
-            alert('Please connect to the internet!');
-        }
-    }
-
-    checkConnectivity() {
         NetInfo.isConnected.fetch().then(isConnected => {
-            callback(isConnected);
+            if(!isConnected) {
+                Alert.alert('No Connectivity', 'Please connect to the internet.');
+            }
         });
     }
 
