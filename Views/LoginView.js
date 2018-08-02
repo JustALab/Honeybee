@@ -1,21 +1,22 @@
 import React from 'react';
-import { StyleSheet, View, Image, NetInfo, Alert } from 'react-native';
-import { Container, Content, Form, Input, Item, Text, Button } from 'native-base';
+import { StyleSheet, View, Image, NetInfo, Alert, ActivityIndicator } from 'react-native';
+import { Container, Content, Form, Input, Item, Text, Button, Spinner } from 'native-base';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { ICONS } from '../Config/Icons';
-import { primary, secondary, onPrimary, onSecondary, secondaryDark, iosBlue } from '../Config/Colors';
+import { primary, secondary, onPrimary, onSecondary, secondaryDark, iosBlue, primaryDark } from '../Config/Colors';
 import { STRINGS } from '../Config/Strings';
-import axios from 'axios';
-import {host, authUrl} from '../Config/Server';
+import Api from '../Services/Api';
+import { DBService } from '../Services/DBService';
 
 export class LoginView extends React.Component {
-
 
     constructor(props) {
         super(props);
         this.state = {
             email: '',
-            password: ''
+            password: '',
+            loginButtonDisable: false,
+            isLoading: false
         };
         this.handleLogin = this.handleLogin.bind(this);
     }
@@ -29,6 +30,8 @@ export class LoginView extends React.Component {
     }
 
     handleLogin = () => {
+        //diable login button
+        this.setState({loginButtonDisable: true, isLoading: true});
         let loginPayload = {
             username: this.state.email,
             password: this.state.password 
@@ -37,11 +40,16 @@ export class LoginView extends React.Component {
         console.log(loginPayload.password);
         NetInfo.isConnected.fetch().then(isConnected => {
             if(isConnected) {
-                console.log(host + authUrl);
-                axios.post(host + authUrl, loginPayload).then(res => {
-                    console.log('**** token: ' + res.data.token);
-                }).catch(err => {
-                    console.log(err)
+                Api.login(loginPayload, (token) => {
+                    if(token !== null) {
+                        console.log('Login success! Token: ' + token);
+                        DBService.insertIntoUserData(this.state.email, token);
+                        this.props.navigation.navigate('mainView');
+                    } else {
+                        this.setState({loginButtonDisable: false, isLoading: false});
+                        console.log('Login failure.');
+                        Alert.alert(STRINGS.msgIncorrectCredentialsTitle, STRINGS.msgIncorrectCredentialsContent);
+                    }
                 });
             } else {
                 Alert.alert(STRINGS.msgNoConnectivityTitle, STRINGS.msgNoConnectivityContent);
@@ -75,18 +83,24 @@ export class LoginView extends React.Component {
                             <Text style={styles.text} >Forgot Password</Text>
                         </View>
                         <View style={styles.btnView}>
-                            <Button style={[styles.signInBtn, styles.widthStyle]} onPress={this.handleLogin} full>
+                            <Button style={[styles.signInBtn, styles.widthStyle]} onPress={this.handleLogin} full disabled={this.state.loginButtonDisable} >
                                 <Text style={styles.btnText}>SIGN IN</Text>
                             </Button>
                         </View>
                     </View>
+                {
+                    this.state.isLoading &&
+                    <View style={styles.spinner}>
+                        <ActivityIndicator size='large' color={secondaryDark} />
+                    </View>
+                }
                 </Content>
             </Container>
         );
     }
 }
 
-const iconsSize = 20;
+const iconsSize = 25;
 const styles = StyleSheet.create({
     content: {
         flex: 1,
@@ -135,5 +149,14 @@ const styles = StyleSheet.create({
     },
     inputMargin: {
         marginLeft: 0
+    },
+    spinner: {
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        top: 0,
+        bottom: 0,
+        alignItems: 'center',
+        justifyContent: 'center'
     }
 });

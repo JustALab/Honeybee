@@ -10,9 +10,9 @@ export const ICONS = {
     profile: 'person',
     location: 'location-on',
     time: 'access-time',
-    mail: 'ios-at-outline',
+    mail: 'ios-mail',
     lock: 'lock-open',
     signup: 'user-follow',
     forgotPassword: 'question',
-    key: 'ios-key-outline'
+    key: 'ios-key'
 };

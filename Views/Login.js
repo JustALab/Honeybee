@@ -6,6 +6,7 @@ import { PrivacyPolicyView } from './PrivacyPolicyView';
 import { TermsConditions } from './TermsConditions';
 import { STRINGS } from '../Config/Strings';
 import { onPrimary, secondary, secondaryDark } from '../Config/Colors';
+import { MainView } from '../Views/MainView';
 
 export class Login extends React.Component {
 
@@ -43,6 +44,12 @@ const LoginNavigator = createStackNavigator({
         screen: TermsConditions,
         navigationOptions: {
             title: STRINGS.termsConditions
+        }
+    },
+    mainView: {
+        screen: MainView,
+        navigationOptions: {
+            header: null
         }
     }
 },

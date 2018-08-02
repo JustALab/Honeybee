@@ -16,5 +16,7 @@ export const STRINGS = {
     msgOnline: 'You are online.',
     msgOffline: 'You are offline.',
     msgNoConnectivityTitle: 'No Connectivity',
-    msgNoConnectivityContent: 'Please connect to the internet.'
+    msgNoConnectivityContent: 'Please connect to the internet.',
+    msgIncorrectCredentialsTitle: 'Error',
+    msgIncorrectCredentialsContent: 'Incorrect credentials. Please try again!',
 };
