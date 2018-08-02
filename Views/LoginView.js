@@ -1,12 +1,15 @@
 import React from 'react';
 import { StyleSheet, View, Image, NetInfo, Alert } from 'react-native';
-import { Container, Content, Form, Input, Item, Text, Button, Footer } from 'native-base';
+import { Container, Content, Form, Input, Item, Text, Button } from 'native-base';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { ICONS } from '../Config/Icons';
 import { primary, secondary, onPrimary, onSecondary, secondaryDark, iosBlue } from '../Config/Colors';
-import {STRINGS} from '../Config/Strings';
+import { STRINGS } from '../Config/Strings';
+import axios from 'axios';
+import {host, authUrl} from '../Config/Server';
 
 export class LoginView extends React.Component {
+
 
     constructor(props) {
         super(props);
@@ -14,18 +17,36 @@ export class LoginView extends React.Component {
             email: '',
             password: ''
         };
+        this.handleLogin = this.handleLogin.bind(this);
     }
 
-    componentDidMount() {
+    componentDidMount = () => {
         NetInfo.isConnected.fetch().then(isConnected => {
             if(!isConnected) {
-                Alert.alert('No Connectivity', 'Please connect to the internet.');
+                Alert.alert(STRINGS.msgNoConnectivityTitle, STRINGS.msgNoConnectivityContent);
             }
         });
     }
 
-    handleLogin() {
-        
+    handleLogin = () => {
+        let loginPayload = {
+            username: this.state.email,
+            password: this.state.password 
+        };
+        console.log(loginPayload.username);
+        console.log(loginPayload.password);
+        NetInfo.isConnected.fetch().then(isConnected => {
+            if(isConnected) {
+                console.log(host + authUrl);
+                axios.post(host + authUrl, loginPayload).then(res => {
+                    console.log('**** token: ' + res.data.token);
+                }).catch(err => {
+                    console.log(err)
+                });
+            } else {
+                Alert.alert(STRINGS.msgNoConnectivityTitle, STRINGS.msgNoConnectivityContent);
+            }
+        });
     }
 
     render() {
@@ -39,11 +60,11 @@ export class LoginView extends React.Component {
                         <View>
                             <Form>
                                 <Item style={[styles.widthStyle, styles.inputMargin]} >
-                                    <Input placeholder='Email' keyboardType='email-address' onChange={(val) => this.setState({email: val})} />
+                                    <Input placeholder='Email' keyboardType='email-address' onChangeText={(email) => this.setState({email})} autoCapitalize='none' />
                                     <Icon size={iconsSize} name={ICONS.mail} />
                                 </Item>
                                 <Item style={[styles.inputMargin, styles.widthStyle]}>
-                                    <Input placeholder='Password' secureTextEntry={true} onChange={(val) => this.setState({password: val})} />
+                                    <Input placeholder='Password' secureTextEntry={true} onChangeText={(password) => this.setState({password})} />
                                     <Icon size={iconsSize} name={ICONS.key} />
                                 </Item>
                             </Form>

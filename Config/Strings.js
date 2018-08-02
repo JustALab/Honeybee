@@ -14,5 +14,7 @@ export const STRINGS = {
     termsConditions: 'Terms & Conditions',
     register: 'Register', 
     msgOnline: 'You are online.',
-    msgOffline: 'You are offline.'
+    msgOffline: 'You are offline.',
+    msgNoConnectivityTitle: 'No Connectivity',
+    msgNoConnectivityContent: 'Please connect to the internet.'
 };
