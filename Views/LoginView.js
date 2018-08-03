@@ -128,7 +128,7 @@ export class LoginView extends React.Component {
                   <Input
                     placeholder="Email"
                     keyboardType="email-address"
-                    onChangeText={email => this.setState({ email })}
+                    onChangeText={value => this.setState({ email: value.trim() })}
                     autoCapitalize="none"
                   />
                   <Icon size={iconsSize} name={ICONS.mail} />
@@ -137,7 +137,7 @@ export class LoginView extends React.Component {
                   <Input
                     placeholder="Password"
                     secureTextEntry={true}
-                    onChangeText={password => this.setState({ password })}
+                    onChangeText={value => this.setState({ password: value.trim() })}
                   />
                   <Icon size={iconsSize} name={ICONS.key} />
                 </Item>
