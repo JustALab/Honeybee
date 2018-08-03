@@ -68,14 +68,53 @@ export const DBService = {
 
   updateUserData: (email, token) => {
     db.transaction(tx => {
+      let isLoggedIn = 1;
       tx.executeSql(
-        "UPDATE user_data SET email=(:email), token=(:token) WHERE id=(:id)",
-        [email, token, 1],
+        "UPDATE user_data SET email=(:email), token=(:token), is_logged_in=(:isLoggedIn) WHERE id=(:id)",
+        [email, token, isLoggedIn, 1],
         tx => {
           console.log("user_data email and token updated.");
         },
         err => {
           console.log("user_data update failure.");
+        }
+      );
+    });
+  },
+
+  getTokenIfUserAvailable: callback => {
+    db.transaction(tx => {
+      tx.executeSql(
+        "SELECT * FROM user_data",
+        [],
+        (tx, res) => {
+          console.log("User data available. Returning token.");
+          if (res.rows.length !== 0) {
+            console.log("Row count: " + res.rows.length);
+            let row = res.rows.item(0);
+            callback(row.token, row.is_logged_in);
+          } else {
+            callback(null);
+          }
+        },
+        err => {
+          console.log("User data not available. returning null.");
+        }
+      );
+    });
+  },
+
+  unsetLoggedInStatus: () => {
+    db.transaction(tx => {
+      let isLoggedIn = 0;
+      tx.executeSql(
+        "UPDATE user_data SET is_logged_in=(:isLoggedIn)",
+        [isLoggedIn],
+        () => {
+          console.log("Login status set to 0.");
+        },
+        err => {
+          console.log("Error setting log status to 0.:" + err.message);
         }
       );
     });
