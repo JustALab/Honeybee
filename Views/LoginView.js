@@ -41,20 +41,33 @@ export class LoginView extends React.Component {
       email: "",
       password: "",
       loginButtonDisable: false,
-      isLoading: false
+      isLoading: false,
+      connectionStatus: ""
     };
     this.handleLogin = this.handleLogin.bind(this);
   }
 
-  componentDidMount = () => {
-    NetInfo.isConnected.fetch().then(isConnected => {
-      if (!isConnected) {
-        Alert.alert(
-          STRINGS.msgNoConnectivityTitle,
-          STRINGS.msgNoConnectivityContent
-        );
-      }
+  componentDidMount() {
+    NetInfo.isConnected.addEventListener(
+      "connectionChange",
+      this.handleConnectionChange
+    );
+
+    NetInfo.isConnected.fetch().done(isConnected => {
+      this.setState({ connectionStatus: isConnected });
     });
+  }
+
+  componentWillUnmount() {
+    NetInfo.isConnected.removeEventListener(
+      "connectionChange",
+      this.handleConnectionChange
+    );
+  }
+
+  handleConnectionChange = isConnected => {
+    this.setState({ connectionStatus: isConnected });
+    console.log("is connected: ${this.state.connectionStatus}");
   };
 
   validateFields = () => {
