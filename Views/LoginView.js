@@ -42,7 +42,7 @@ export class LoginView extends React.Component {
       password: "",
       loginButtonDisable: false,
       isLoading: false,
-      connectionStatus: ""
+      isNetworkConnected: ""
     };
     this.handleLogin = this.handleLogin.bind(this);
   }
@@ -54,7 +54,7 @@ export class LoginView extends React.Component {
     );
 
     NetInfo.isConnected.fetch().done(isConnected => {
-      this.setState({ connectionStatus: isConnected });
+      this.setState({ isNetworkConnected: isConnected });
     });
   }
 
@@ -66,8 +66,13 @@ export class LoginView extends React.Component {
   }
 
   handleConnectionChange = isConnected => {
-    this.setState({ connectionStatus: isConnected });
-    console.log("is connected: ${this.state.connectionStatus}");
+    this.setState({ isNetworkConnected: isConnected });
+    if (!this.state.isNetworkConnected) {
+      Alert.alert(
+        STRINGS.msgNoConnectivityTitle,
+        STRINGS.msgNoConnectivityContent
+      );
+    }
   };
 
   validateFields = () => {
