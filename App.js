@@ -1,7 +1,7 @@
-import { SplashView } from "./Views/SplashView";
+import { SplashView } from "./src/Views/SplashView";
 import { createSwitchNavigator } from "react-navigation";
-import { Login } from "./Views/Login";
-import { MainView } from "./Views/MainView";
+import { Login } from "./src/Views/Login";
+import { MainView } from "./src/Views/MainView";
 
 export default (Routes = createSwitchNavigator(
   {
