@@ -1,4 +1,4 @@
 import { AppRegistry } from 'react-native';
 import App from './App';
 
-AppRegistry.registerComponent('justalab.honeycakes', () => App);
+AppRegistry.registerComponent('justalabhoneybee', () => App);
