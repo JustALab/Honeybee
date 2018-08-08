@@ -17,7 +17,7 @@ import {
   Button,
   Spinner
 } from "native-base";
-import Icon from "react-native-vector-icons/Ionicons";
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { ICONS } from "../Config/Icons";
 import {
   primary,
@@ -161,7 +161,7 @@ export class LoginView extends React.Component {
                       this.setState({ password: value.trim() })
                     }
                   />
-                  <Icon size={iconsSize} name={ICONS.key} />
+                  <Icon size={iconsSize} name={ICONS.lock} />
                 </Item>
               </Form>
             </View>
