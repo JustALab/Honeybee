@@ -1,4 +1,4 @@
-import { SET_TOKEN } from "../Actions/Actions";
+import { SET_TOKEN } from "../Actions";
 
 export default (state = null, action) => {
   switch (action.type) {

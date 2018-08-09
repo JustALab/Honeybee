@@ -3,7 +3,7 @@ import { View, StyleSheet, StatusBar } from "react-native";
 import { Image } from "react-native";
 import { Container } from "native-base";
 import { DBService } from "../Services/DBService";
-import * as Actions from "../Actions/Actions";
+import * as Actions from "../Actions";
 import { connect } from "react-redux";
 
 class SplashView extends React.Component {

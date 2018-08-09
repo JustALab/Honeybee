@@ -6,7 +6,7 @@ import { Login } from "./src/Views/Login";
 import { MainView } from "./src/Views/MainView";
 import { Provider } from "react-redux";
 import { createStore } from "redux";
-import MainReducer from "./src/Reducers/MainReducer";
+import MainReducer from "./src/Reducers";
 
 export default class App extends React.Component {
   componentDidMount() {
