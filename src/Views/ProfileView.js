@@ -1,4 +1,5 @@
 import React from "react";
+import { Alert } from "react-native";
 import { Container, Content, Text, Button } from "native-base";
 import { HeaderLab } from "../Components/HeaderLab";
 import { FooterLab } from "../Components/FooterLab";
@@ -11,9 +12,17 @@ import Api from "../Services/Api";
 class ProfileView extends React.Component {
   componentDidMount() {
     console.log("Token from state: " + this.props.authToken);
-    Api.getCustomerData(this.props.authToken, data => {
-      console.log(data);
-    });
+    if (this.props.isNetworkConnected) {
+      Api.getCustomerData(this.props.authToken, data => {
+        console.log(data);
+      });
+    } else {
+      console.log("No internet connectivity.");
+      Alert.alert(
+        STRINGS.msgNoConnectivityTitle,
+        STRINGS.msgNoConnectivityContent
+      );
+    }
     console.log("Props:");
     console.log(this.props);
   }
@@ -39,7 +48,10 @@ class ProfileView extends React.Component {
 
 const mapStateToProps = state => {
   console.log(state);
-  return { authToken: state.authToken };
+  return {
+    authToken: state.authToken,
+    isNetworkConnected: state.isNetworkConnected
+  };
 };
 
 export default connect(mapStateToProps)(ProfileView);

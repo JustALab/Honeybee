@@ -24,53 +24,22 @@ import {
   secondary,
   onPrimary,
   onSecondary,
-  secondaryDark,
-  iosBlue,
-  primaryDark
+  secondaryDark
 } from "../Config/Colors";
 import { STRINGS } from "../Config/Strings";
 import Api from "../Services/Api";
 import { DBService } from "../Services/DBService";
+import { connect } from "react-redux";
 
-export class LoginView extends React.Component {
+class LoginView extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       email: "",
       password: "",
       loginButtonDisable: false,
-      isLoading: false,
-      isNetworkConnected: ""
+      isLoading: false
     };
-    this.handleLogin = this.handleLogin.bind(this);
-  }
-
-  componentDidMount() {
-    NetInfo.isConnected.addEventListener(
-      "connectionChange",
-      this.handleConnectionChange
-    );
-
-    NetInfo.isConnected.fetch().done(isConnected => {
-      this.setState({ isNetworkConnected: isConnected });
-    });
-  }
-
-  componentWillUnmount() {
-    NetInfo.isConnected.removeEventListener(
-      "connectionChange",
-      this.handleConnectionChange
-    );
-  }
-
-  handleConnectionChange(isConnected) {
-    this.setState({ isNetworkConnected: isConnected });
-    if (!this.state.isNetworkConnected) {
-      Alert.alert(
-        STRINGS.msgNoConnectivityTitle,
-        STRINGS.msgNoConnectivityContent
-      );
-    }
   }
 
   validateFields() {
@@ -100,29 +69,29 @@ export class LoginView extends React.Component {
         username: this.state.email,
         password: this.state.password
       };
-      NetInfo.isConnected.fetch().then(isConnected => {
-        if (isConnected) {
-          Api.login(loginPayload, token => {
-            if (token !== null) {
-              console.log("Login success! Token: " + token);
-              DBService.insertIntoUserData(this.state.email, token);
-              this.props.navigation.navigate("mainView");
-            } else {
-              this.setState({ loginButtonDisable: false, isLoading: false });
-              console.log("Login failure.");
-              Alert.alert(
-                STRINGS.msgIncorrectCredentialsTitle,
-                STRINGS.msgIncorrectCredentialsContent
-              );
-            }
-          });
-        } else {
-          Alert.alert(
-            STRINGS.msgNoConnectivityTitle,
-            STRINGS.msgNoConnectivityContent
-          );
-        }
-      });
+      if (this.props.isNetworkConnected) {
+        Api.login(loginPayload, token => {
+          if (token !== null) {
+            console.log("Login success! Token: " + token);
+            DBService.insertIntoUserData(this.state.email, token);
+            this.props.navigation.navigate("mainView");
+          } else {
+            this.setState({ loginButtonDisable: false, isLoading: false });
+            console.log("Login failure.");
+            Alert.alert(
+              STRINGS.msgIncorrectCredentialsTitle,
+              STRINGS.msgIncorrectCredentialsContent
+            );
+          }
+        });
+      } else {
+        console.log("No internet connectivity.");
+        this.setState({ loginButtonDisable: false, isLoading: false });
+        Alert.alert(
+          STRINGS.msgNoConnectivityTitle,
+          STRINGS.msgNoConnectivityContent
+        );
+      }
     }
   };
 
@@ -255,3 +224,11 @@ const styles = StyleSheet.create({
     justifyContent: "center"
   }
 });
+
+const mapStateToProps = state => {
+  return {
+    isNetworkConnected: state.isNetworkConnected
+  };
+};
+
+export default connect(mapStateToProps)(LoginView);
