@@ -1,4 +1,4 @@
+export const host = "http://198.38.88.137:8085/hc";
 
-export const host = 'http://198.38.88.137:8085';
-
-export const authUrl = '/hc/auth';
+export const authUrl = "/auth";
+export const customerUrl = "/customer/customer";

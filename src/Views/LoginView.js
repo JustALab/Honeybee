@@ -32,8 +32,6 @@ import { STRINGS } from "../Config/Strings";
 import Api from "../Services/Api";
 import { DBService } from "../Services/DBService";
 
-const isFieldsOk = false;
-
 export class LoginView extends React.Component {
   constructor(props) {
     super(props);
@@ -65,7 +63,7 @@ export class LoginView extends React.Component {
     );
   }
 
-  handleConnectionChange = isConnected => {
+  handleConnectionChange(isConnected) {
     this.setState({ isNetworkConnected: isConnected });
     if (!this.state.isNetworkConnected) {
       Alert.alert(
@@ -73,9 +71,9 @@ export class LoginView extends React.Component {
         STRINGS.msgNoConnectivityContent
       );
     }
-  };
+  }
 
-  validateFields = () => {
+  validateFields() {
     console.log(this.state.email);
     console.log(this.state.password);
     //this == & != operator will check for both null and undefined
@@ -91,11 +89,11 @@ export class LoginView extends React.Component {
       console.log("All fields are NOT OK. handleLogin() not executed.");
       isFieldsOk = false;
     }
-  };
+    return isFieldsOk;
+  }
 
   handleLogin = () => {
-    this.validateFields();
-    if (isFieldsOk) {
+    if (this.validateFields()) {
       //diable login button
       this.setState({ loginButtonDisable: true, isLoading: true });
       let loginPayload = {

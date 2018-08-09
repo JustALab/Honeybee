@@ -5,8 +5,19 @@ import { FooterLab } from "../Components/FooterLab";
 import { STRINGS } from "../Config/Strings";
 import { ICONS } from "../Config/Icons";
 import { DBService } from "../Services/DBService";
+import { connect } from "react-redux";
+import Api from "../Services/Api";
 
-export class ProfileView extends React.Component {
+class ProfileView extends React.Component {
+  componentDidMount() {
+    console.log("Token from state: " + this.props.authToken);
+    Api.getCustomerData(this.props.authToken, data => {
+      console.log(data);
+    });
+    console.log("Props:");
+    console.log(this.props);
+  }
+
   render() {
     return (
       <Container>
@@ -25,3 +36,10 @@ export class ProfileView extends React.Component {
     );
   }
 }
+
+const mapStateToProps = state => {
+  console.log(state);
+  return { authToken: state.authToken };
+};
+
+export default connect(mapStateToProps)(ProfileView);

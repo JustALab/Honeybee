@@ -1,9 +1,12 @@
-import React from 'react';
+import React from "react";
 import { BackHandler } from "react-native";
-import { SplashView } from "./src/Views/SplashView";
+import SplashView from "./src/Views/SplashView";
 import { createSwitchNavigator } from "react-navigation";
 import { Login } from "./src/Views/Login";
 import { MainView } from "./src/Views/MainView";
+import { Provider } from "react-redux";
+import { createStore } from "redux";
+import MainReducer from "./src/Reducers/MainReducer";
 
 export default class App extends React.Component {
   componentDidMount() {
@@ -20,7 +23,11 @@ export default class App extends React.Component {
   }
 
   render() {
-    return <AppRoutes />;
+    return (
+      <Provider store={createStore(MainReducer)}>
+        <AppRoutes />
+      </Provider>
+    );
   }
 }
 

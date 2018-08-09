@@ -4,7 +4,7 @@ import { CakesView } from "./CakesView";
 import { ShopView } from "./ShopView";
 import { CartView } from "./CartView";
 import { OrdersView } from "./OrdersView";
-import { ProfileView } from "./ProfileView";
+import ProfileView from "./ProfileView";
 
 export class MainView extends React.Component {
   render() {

@@ -1,0 +1,1 @@
+export default () => [{firstName: 'Ramu', lastName: 'Ramasamy'}];

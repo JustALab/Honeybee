@@ -3,8 +3,10 @@ import { View, StyleSheet, StatusBar } from "react-native";
 import { Image } from "react-native";
 import { Container } from "native-base";
 import { DBService } from "../Services/DBService";
+import * as Actions from "../Actions/Actions";
+import { connect } from "react-redux";
 
-export class SplashView extends React.Component {
+class SplashView extends React.Component {
   constructor(props) {
     super(props);
   }
@@ -14,8 +16,8 @@ export class SplashView extends React.Component {
     // DBService.unsetLoggedInStatus();
     DBService.getTokenIfUserAvailable((token, isLoggedIn) => {
       console.log("Logged in status: " + isLoggedIn);
-      console.log("Token from DB: ");
-      console.log(token);
+      console.log("Token from DB: " + token);
+      this.setTokenToState();
       if (token != null && isLoggedIn === 1) {
         setTimeout(() => {
           this.props.navigation.navigate("mainView");
@@ -28,7 +30,13 @@ export class SplashView extends React.Component {
     });
   }
 
+  setTokenToState() {
+    console.log('Setting auth token to redux state.');
+    this.props.setAuthToken(token);
+  }
+
   render() {
+    console.log(this.props);
     return (
       <Container style={styles.container}>
         <View>
@@ -55,3 +63,8 @@ const styles = StyleSheet.create({
     width: 300
   }
 });
+
+export default connect(
+  null,
+  Actions
+)(SplashView);
