@@ -17,7 +17,7 @@ class SplashView extends React.Component {
     DBService.getTokenIfUserAvailable((token, isLoggedIn) => {
       console.log("Logged in status: " + isLoggedIn);
       console.log("Token from DB: " + token);
-      this.setTokenToState();
+      this.setTokenToState(token);
       if (token != null && isLoggedIn === 1) {
         setTimeout(() => {
           this.props.navigation.navigate("mainView");
@@ -30,7 +30,7 @@ class SplashView extends React.Component {
     });
   }
 
-  setTokenToState() {
+  setTokenToState(token) {
     console.log('Setting auth token to redux state.');
     this.props.setAuthToken(token);
   }
