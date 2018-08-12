@@ -1,11 +1,10 @@
 import axios from "axios";
-import { host, authUrl, customerUrl } from "../Config/Server";
+import { host, authUrl, customerUrl, signUpCustomer } from "../Config/Server";
 
-export default (Api = {
-
-  login: (payload, callback) => {
+export default (ApiService = {
+  login: (loginCredentials, callback) => {
     axios
-      .post(host + authUrl, payload)
+      .post(host + authUrl, loginCredentials)
       .then(res => {
         callback(res.data.token);
       })
@@ -18,6 +17,17 @@ export default (Api = {
     return {
       Authorization: "Bearer " + token
     };
+  },
+
+  signUpCustomer: (customerData, callback) => {
+    axios
+      .post(host + signUpCustomer, customerData)
+      .then(res => {
+        callback(res.data);
+      })
+      .catch(err => {
+        callback(null);
+      });
   },
 
   getCustomerData: (token, callback) => {

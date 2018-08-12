@@ -1,7 +1,7 @@
 import React from "react";
 import { createStackNavigator } from "react-navigation";
 import LoginView from "./LoginView";
-import { RegisterView } from "./RegisterView";
+import RegisterView from "./RegisterView";
 import { PrivacyPolicyView } from "./PrivacyPolicyView";
 import { TermsConditions } from "./TermsConditions";
 import { STRINGS } from "../Config/Strings";

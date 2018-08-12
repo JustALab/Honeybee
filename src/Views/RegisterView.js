@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, Alert, Platform } from "react-native";
 import {
   Container,
   Content,
@@ -18,8 +18,11 @@ import {
   secondaryDark
 } from "../Config/Colors";
 import { DatePicker } from "../Components/Datepicker/Datepicker";
+import { connect } from "react-redux";
+import { STRINGS } from "../Config/Strings";
+import ApiService from "../Services/ApiService";
 
-export class RegisterView extends React.Component {
+class RegisterView extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -28,9 +31,26 @@ export class RegisterView extends React.Component {
       dob: "",
       email: "",
       mobile: "",
-      password: "",
-      confirmPassword: ""
+      password: ""
     };
+    this.handleRegister = this.handleRegister.bind(this);
+  }
+
+  handleRegister() {
+    if (this.props.isNetworkConnected) {
+      ApiService.signUpCustomer(this.state, res => {
+        console.log(res);
+
+        //reset state to initial state
+        this.setState(this.baseState);
+      });
+    } else {
+      console.log("No internet connectivity.");
+      Alert.alert(
+        STRINGS.msgNoConnectivityTitle,
+        STRINGS.msgNoConnectivityContent
+      );
+    }
   }
 
   render() {
@@ -41,12 +61,15 @@ export class RegisterView extends React.Component {
             <View>
               <Form>
                 <Item style={[styles.inputMargin]}>
-                  <Label>First name</Label>
-                  <Input />
-                </Item>
-                <Item style={[styles.inputMargin]}>
-                  <Label>Last name</Label>
-                  <Input />
+                  <Label>Full name</Label>
+                  <Input
+                    onChangeText={value =>
+                      this.setState({
+                        firstName: value.trim(),
+                        lastName: value.trim()
+                      })
+                    }
+                  />
                 </Item>
                 <Item style={[styles.inputMargin, { marginTop: 10 }]}>
                   <Label>Date of birth</Label>
@@ -74,19 +97,32 @@ export class RegisterView extends React.Component {
                 </Item>
                 <Item style={[styles.inputMargin]}>
                   <Label>Email</Label>
-                  <Input keyboardType="email-address" />
+                  <Input
+                    keyboardType="email-address"
+                    onChangeText={value =>
+                      this.setState({ email: value.trim() })
+                    }
+                  />
                 </Item>
                 <Item style={[styles.inputMargin]}>
                   <Label>Mobile</Label>
-                  <Input keyboardType="number-pad" />
+                  <Input
+                    keyboardType={
+                      Platform.OS === "ios" ? "number-pad" : "numeric"
+                    }
+                    onChangeText={value =>
+                      this.setState({ mobile: value.trim() })
+                    }
+                  />
                 </Item>
                 <Item style={[styles.inputMargin]}>
                   <Label>Password</Label>
-                  <Input secureTextEntry={true} />
-                </Item>
-                <Item style={[styles.inputMargin]}>
-                  <Label>Confirm password</Label>
-                  <Input secureTextEntry={true} />
+                  <Input
+                    secureTextEntry={true}
+                    onChangeText={value =>
+                      this.setState({ password: value.trim() })
+                    }
+                  />
                 </Item>
               </Form>
             </View>
@@ -110,7 +146,11 @@ export class RegisterView extends React.Component {
               </Text>
             </View>
             <View style={styles.btnView}>
-              <Button style={[styles.registerBtn, styles.widthStyle]} full>
+              <Button
+                style={[styles.registerBtn, styles.widthStyle]}
+                full
+                onPress={this.handleRegister}
+              >
                 <Text style={styles.btnText}>REGISTER</Text>
               </Button>
             </View>
@@ -120,6 +160,14 @@ export class RegisterView extends React.Component {
     );
   }
 }
+
+const mapStateToProps = state => {
+  return {
+    isNetworkConnected: state.isNetworkConnected
+  };
+};
+
+export default connect(mapStateToProps)(RegisterView);
 
 const iconsSize = 20;
 const styles = StyleSheet.create({

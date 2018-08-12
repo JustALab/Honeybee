@@ -27,9 +27,9 @@ import {
   secondaryDark
 } from "../Config/Colors";
 import { STRINGS } from "../Config/Strings";
-import Api from "../Services/Api";
 import { DBService } from "../Services/DBService";
 import { connect } from "react-redux";
+import ApiService from "../Services/ApiService";
 
 class LoginView extends React.Component {
   constructor(props) {
@@ -70,7 +70,7 @@ class LoginView extends React.Component {
         password: this.state.password
       };
       if (this.props.isNetworkConnected) {
-        Api.login(loginPayload, token => {
+        ApiService.login(loginPayload, token => {
           if (token !== null) {
             console.log("Login success! Token: " + token);
             DBService.insertIntoUserData(this.state.email, token);

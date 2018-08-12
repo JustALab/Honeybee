@@ -7,13 +7,13 @@ import { STRINGS } from "../Config/Strings";
 import { ICONS } from "../Config/Icons";
 import { DBService } from "../Services/DBService";
 import { connect } from "react-redux";
-import Api from "../Services/Api";
+import ApiService from "../Services/ApiService";
 
 class ProfileView extends React.Component {
   componentDidMount() {
     console.log("Token from state: " + this.props.authToken);
     if (this.props.isNetworkConnected) {
-      Api.getCustomerData(this.props.authToken, data => {
+      ApiService.getCustomerData(this.props.authToken, data => {
         console.log(data);
       });
     } else {
