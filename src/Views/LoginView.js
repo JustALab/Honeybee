@@ -73,7 +73,7 @@ class LoginView extends React.Component {
         ApiService.login(loginPayload, token => {
           if (token !== null) {
             console.log("Login success! Token: " + token);
-            DBService.insertIntoUserData(this.state.email, token);
+            DBService.insertIntoLoginData(this.state.email, token);
             this.props.navigation.navigate("mainView");
           } else {
             this.setState({ loginButtonDisable: false, isLoading: false });

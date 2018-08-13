@@ -10,17 +10,12 @@ import {
   Button,
   Label
 } from "native-base";
-import {
-  primary,
-  secondary,
-  onPrimary,
-  onSecondary,
-  secondaryDark
-} from "../Config/Colors";
+import { primary, secondary, onPrimary, secondaryDark } from "../Config/Colors";
 import { DatePicker } from "../Components/Datepicker/Datepicker";
 import { connect } from "react-redux";
-import { STRINGS } from "../Config/Strings";
+import { STRINGS, SUCCESS, MOBILE_NUMBER_EXISTS } from "../Config/Strings";
 import ApiService from "../Services/ApiService";
+import { DBService } from "../Services/DBService";
 
 class RegisterView extends React.Component {
   constructor(props) {
@@ -31,7 +26,9 @@ class RegisterView extends React.Component {
       dob: "",
       email: "",
       mobile: "",
-      password: ""
+      password: "",
+      emailVerificationStatus: "",
+      mobileVerificationStatus: ""
     };
     this.handleRegister = this.handleRegister.bind(this);
   }
@@ -40,9 +37,41 @@ class RegisterView extends React.Component {
     if (this.props.isNetworkConnected) {
       ApiService.signUpCustomer(this.state, res => {
         console.log(res);
-
-        //reset state to initial state
-        this.setState(this.baseState);
+        // this.setState(this.baseState);
+        if (res.signupStatus === SUCCESS) {
+          console.log("Sign up success. Saving data to DB.");
+          this.setState(
+            {
+              emailVerificationStatus: res.emailVerificationStatus,
+              mobileVerificationStatus: res.mobileVerificationStatus
+            },
+            () => this.saveUserRegistrationData()
+          );
+        } else if (res.signupStatus === MOBILE_NUMBER_EXISTS) {
+          console.log(
+            "Mobile number already exists. Moving to mobile verification view."
+          );
+          Alert.alert(
+            STRINGS.msgMobileNumberAlreadyExistsTitle,
+            STRINGS.msgMobileNumberAlreadyExistsContent,
+            [
+              {
+                text: "Cancel",
+                onPress: () =>
+                  console.log(
+                    "Cancel pressed in mobile number already exists dialog."
+                  )
+              },
+              {
+                text: "OK",
+                onPress: () =>
+                  console.log(
+                    "OK pressed in mobile number already exists dialog."
+                  )
+              }
+            ]
+          );
+        }
       });
     } else {
       console.log("No internet connectivity.");
@@ -51,6 +80,11 @@ class RegisterView extends React.Component {
         STRINGS.msgNoConnectivityContent
       );
     }
+  }
+
+  saveUserRegistrationData() {
+    console.log("saveUserRegistrationData method called.");
+    DBService.insertIntoUserData(this.state);
   }
 
   render() {
