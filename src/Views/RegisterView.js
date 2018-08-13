@@ -23,6 +23,8 @@ import {
 } from "../Config/Strings";
 import ApiService from "../Services/ApiService";
 import { DBService } from "../Services/DBService";
+import * as Actions from "../Actions";
+import Spinner from "react-native-loading-spinner-overlay";
 
 class RegisterView extends React.Component {
   constructor(props) {
@@ -35,16 +37,18 @@ class RegisterView extends React.Component {
       mobile: "",
       password: "",
       emailVerificationStatus: "",
-      mobileVerificationStatus: ""
+      mobileVerificationStatus: "",
+      spinner: false
     };
     this.handleRegister = this.handleRegister.bind(this);
   }
 
   handleRegister() {
     if (this.props.isNetworkConnected) {
+      this.setState({ spinner: true });
       ApiService.signUpCustomer(this.state, res => {
+        this.setState({ spinner: false });
         console.log(res);
-        // this.setState(this.baseState);
         if (res.signupStatus === SUCCESS) {
           console.log("Sign up success. Saving data to DB.");
           this.setState(
@@ -97,6 +101,7 @@ class RegisterView extends React.Component {
   }
 
   navigateToMobileVerificationView() {
+    this.props.setUserRegistrationData(this.state);
     this.props.navigation.navigate(VIEW_MOBILE_VERIFICATION);
   }
 
@@ -206,6 +211,11 @@ class RegisterView extends React.Component {
                 <Text style={styles.btnText}>REGISTER</Text>
               </Button>
             </View>
+            <Spinner
+              visible={this.state.spinner}
+              textStyle={{ color: "#fff" }}
+              textContent={STRINGS.sendingVerificationCode}
+            />
           </View>
         </Content>
       </Container>
@@ -219,7 +229,10 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps)(RegisterView);
+export default connect(
+  mapStateToProps,
+  Actions
+)(RegisterView);
 
 const iconsSize = 20;
 const styles = StyleSheet.create({

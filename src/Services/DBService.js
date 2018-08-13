@@ -24,6 +24,8 @@ const QUERY_CREATE_TABLE_USER_DATA =
 const QUERY_SELECT_ALL_FROM_LOGIN_DATA =
   "SELECT * FROM " + TABLE_LOGIN_DATA + "";
 
+const QUERY_SELECT_ALL_FROM_USER_DATA = "SELECT * FROM " + TABLE_USER_DATA + "";
+
 //insert queries
 const QUERY_INSERT_INTO_LOGIN_DATA =
   "INSERT INTO " +
@@ -44,6 +46,16 @@ const QUERY_UPDATE_ALL_LOGIN_DATA =
 const QUERY_UPDATE_LOGIN_DATA_LOGIN_STATUS =
   "UPDATE " + TABLE_LOGIN_DATA + " SET is_logged_in=(:isLoggedIn)";
 
+const QUERY_UPDATE_ALL_USER_DATA =
+  "UPDATE " +
+  TABLE_USER_DATA +
+  " SET firstName=(:firstName), lastName=(:lastName), email=(:email), mobile=(:mobile), email_verification_status=(:emailVerificationStatus), mobile_verification_status=(:mobileVerificationStatus) WHERE id=(:id)";
+
+const QUERY_UPDATE_MOBILE_VERIFICATION_STATUS =
+  "UPDATE " +
+  TABLE_USER_DATA +
+  " SET mobile_verification_status=(:status) WHERE id=(:id)";
+
 export const DBService = {
   initDB: () => {
     SQLite.DEBUG(true);
@@ -57,6 +69,7 @@ export const DBService = {
 
     db.transaction(tx => {
       // tx.executeSql("DROP TABLE IF EXISTS user_data");
+      // tx.executeSql("DROP TABLE IF EXISTS login_data");
 
       tx.executeSql(
         QUERY_CREATE_TABLE_LOGIN_DATA,
@@ -180,7 +193,7 @@ export const DBService = {
     });
   },
 
-  insertIntoUserData: (userData) => {
+  insertIntoUserData: userData => {
     db.transaction(tx => {
       const firstName = userData.firstName;
       const lastName = userData.lastName;
@@ -188,22 +201,86 @@ export const DBService = {
       const mobile = userData.mobile;
       const emailVerificationStatus = userData.emailVerificationStatus;
       const mobileVerificationStatus = userData.mobileVerificationStatus;
+
       tx.executeSql(
-        QUERY_INSERT_INTO_USER_DATA,
+        QUERY_SELECT_ALL_FROM_USER_DATA,
+        [],
+        (tx, res) => {
+          console.log("User data available. Update method called.");
+          if (res.rows.length !== 0) {
+            DBService.updateUserData(userData);
+          } else {
+            console.log("No user data available. Inserting new user data.");
+            tx.executeSql(
+              QUERY_INSERT_INTO_USER_DATA,
+              [
+                firstName,
+                lastName,
+                email,
+                mobile,
+                emailVerificationStatus,
+                mobileVerificationStatus
+              ],
+              () => {
+                console.log("Insert into " + TABLE_USER_DATA + " success.");
+              },
+              err => {
+                console.log("Insert into " + TABLE_USER_DATA + " failure.");
+                console.log(err.message);
+              }
+            );
+          }
+        },
+        err => {
+          console.log("Select from user_data failure. " + err.message);
+        }
+      );
+    });
+  },
+
+  updateUserData: userData => {
+    const firstName = userData.firstName;
+    const lastName = userData.lastName;
+    const email = userData.email;
+    const mobile = userData.mobile;
+    const emailVerificationStatus = userData.emailVerificationStatus;
+    const mobileVerificationStatus = userData.mobileVerificationStatus;
+    const id = 1;
+    db.transaction(tx => {
+      tx.executeSql(
+        QUERY_UPDATE_ALL_USER_DATA,
         [
           firstName,
           lastName,
           email,
           mobile,
           emailVerificationStatus,
-          mobileVerificationStatus
+          mobileVerificationStatus,
+          id
         ],
-        () => {
-          console.log("Insert into " + TABLE_USER_DATA + " success.");
+        tx => {
+          console.log("User data updated successfully.");
         },
         err => {
-          console.log("Insert into " + TABLE_USER_DATA + " failure.");
-          console.log(err.message);
+          console.log("User data updation failure. " + err.message);
+        }
+      );
+    });
+  },
+
+  updateMobileVerificationStaus: status => {
+    const id = 1;
+    db.transaction(tx => {
+      tx.executeSql(
+        QUERY_UPDATE_MOBILE_VERIFICATION_STATUS,
+        [status, id],
+        (tx, res) => {
+          console.log(
+            "Mobile verification status updated successfully in local db."
+          );
+        },
+        err => {
+          console.log("Mobile verification status updation failure.");
         }
       );
     });

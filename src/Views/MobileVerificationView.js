@@ -1,6 +1,5 @@
 import React from "react";
 import {
-  AppRegistry,
   StyleSheet,
   Text,
   TextInput,
@@ -13,31 +12,105 @@ import { connect } from "react-redux";
 import Spinner from "react-native-loading-spinner-overlay";
 import Form from "react-native-form";
 import { secondary, secondaryDark } from "../Config/Colors";
+import { STRINGS, VERIFIED, VIEW_LOGIN } from "../Config/Strings";
+import ApiService from "../Services/ApiService";
+import { DBService } from "../Services/DBService";
 
-const MAX_LENGTH_CODE = 6;
+const MAX_LENGTH_CODE = 4;
 
 class MobileVerificationView extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      spinner: false
+      spinner: false,
+      code: ""
     };
+    this.handleVerifyMobileNumber = this.handleVerifyMobileNumber.bind(this);
+    this.handleResendVerificationCode = this.handleResendVerificationCode.bind(
+      this
+    );
+    this.handleVerificationResponse = this.handleVerificationResponse.bind(
+      this
+    );
   }
 
   handleResendVerificationCode() {}
 
+  handleVerifyMobileNumber() {
+    if (this.props.isNetworkConnected) {
+      if (this.state.code.length === MAX_LENGTH_CODE) {
+        const { userData } = this.props;
+        this.setState({ spinner: true });
+        ApiService.verifyMobileNumber(
+          {
+            email: userData.email,
+            mobile: userData.mobile,
+            otp: this.state.code
+          },
+          res => this.handleVerificationResponse(res)
+        );
+      }
+    } else {
+      console.log("No internet connectivity.");
+      Alert.alert(
+        STRINGS.msgNoConnectivityTitle,
+        STRINGS.msgNoConnectivityContent
+      );
+    }
+  }
+
+  handleVerificationResponse(res) {
+    console.log(res);
+    this.setState({ spinner: false }, () => {
+      if (res === VERIFIED) {
+        DBService.updateMobileVerificationStaus(VERIFIED);
+        Alert.alert(
+          STRINGS.msgSuccessTitle,
+          STRINGS.msgMobileVerificationSuccess,
+          [
+            {
+              text: "OK",
+              onPress: () => {
+                console.log(
+                  "Success! OK pressed in success message. Moving to login screen."
+                );
+                this.props.navigation.navigate(VIEW_LOGIN);
+              }
+            }
+          ]
+        );
+      } else {
+        Alert.alert(
+          STRINGS.msgErrorTitle,
+          STRINGS.msgIncorrectVerificationCode,
+          [
+            {
+              text: "OK",
+              onPress: () => {
+                console.log(
+                  "Incorrect verification code: OK pressed in success message."
+                );
+              }
+            }
+          ]
+        );
+      }
+    });
+  }
+
   renderFooter() {
     return (
       <View>
-        <Text style={styles.wrongNumberText} onPress={this._tryAgain}>
-          Resend verification code
-        </Text>
+        <TouchableOpacity onPress={this.handleResendVerificationCode}>
+          <Text style={styles.header}>Resend verification code</Text>
+        </TouchableOpacity>
       </View>
     );
   }
 
   render() {
-    let headerText = "Verify OTP";
+    let headerText =
+      "Verification code sent to mobile number " + this.props.userData.mobile;
     let buttonText = "Verify";
     return (
       <View style={styles.container}>
@@ -52,8 +125,10 @@ class MobileVerificationView extends React.Component {
               underlineColorAndroid={"transparent"}
               autoCapitalize={"none"}
               autoCorrect={false}
-              onChangeText={this._onChangeText}
-              placeholder={"_ _ _ _ _ _"}
+              onChangeText={value => {
+                this.setState({ code: value });
+              }}
+              placeholder={"_ _ _ _ "}
               keyboardType={Platform.OS === "ios" ? "number-pad" : "numeric"}
               style={[styles.textInput, styles.textStyle]}
               returnKeyType="go"
@@ -61,13 +136,13 @@ class MobileVerificationView extends React.Component {
               placeholderTextColor={secondaryDark}
               selectionColor={secondary}
               maxLength={MAX_LENGTH_CODE}
-              onSubmitEditing={this._getSubmitAction}
+              onSubmitEditing={this.handleVerifyMobileNumber}
             />
           </View>
 
           <TouchableOpacity
             style={styles.button}
-            onPress={this._getSubmitAction}
+            onPress={this.handleVerifyMobileNumber}
           >
             <Text style={styles.buttonText}>{buttonText}</Text>
           </TouchableOpacity>
@@ -77,8 +152,8 @@ class MobileVerificationView extends React.Component {
 
         <Spinner
           visible={this.state.spinner}
-          textContent={"One moment..."}
           textStyle={{ color: "#fff" }}
+          textContent={STRINGS.verifyingMobileNumber}
         />
       </View>
     );
@@ -86,8 +161,10 @@ class MobileVerificationView extends React.Component {
 }
 
 export const mapStateToProps = state => {
+  console.log(state);
   return {
-    isNetworkConnected: state.isNetworkConnected
+    isNetworkConnected: state.isNetworkConnected,
+    userData: state.userRegistrationData
   };
 };
 
@@ -100,7 +177,7 @@ const styles = StyleSheet.create({
   header: {
     textAlign: "center",
     marginTop: 60,
-    fontSize: 22,
+    fontSize: 15,
     margin: 20,
     color: "#4A4A4A"
   },

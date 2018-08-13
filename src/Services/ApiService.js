@@ -1,5 +1,11 @@
 import axios from "axios";
-import { host, authUrl, customerUrl, signUpCustomer } from "../Config/Server";
+import {
+  host,
+  authUrl,
+  customerUrl,
+  signUpCustomer,
+  verifyMobileNumber
+} from "../Config/Server";
 
 export default (ApiService = {
   login: (loginCredentials, callback) => {
@@ -41,9 +47,18 @@ export default (ApiService = {
         console.log("Fetching customer data failure");
         callback(null);
       });
-  }, 
-
-  getMobileVerificationCode: () => {
-
   },
+
+  verifyMobileNumber: (userData, callback) => {
+    axios
+      .put(host + verifyMobileNumber, userData)
+      .then(res => {
+        callback(res.data);
+        console.log("Mobile number verification success.");
+      })
+      .catch(err => {
+        callback(null);
+        console.log("Mobile number verification failure. " + err.message);
+      });
+  }
 });
