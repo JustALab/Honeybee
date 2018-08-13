@@ -5,6 +5,7 @@ import { Container } from "native-base";
 import { DBService } from "../Services/DBService";
 import * as Actions from "../Actions";
 import { connect } from "react-redux";
+import { VIEW_MAIN, VIEW_LOGIN } from "../Config/Strings";
 
 class SplashView extends React.Component {
   constructor(props) {
@@ -20,11 +21,11 @@ class SplashView extends React.Component {
       if (token != null && isLoggedIn === 1) {
         this.setTokenToState(token);
         setTimeout(() => {
-          this.props.navigation.navigate("mainView");
+          this.props.navigation.navigate(VIEW_MAIN);
         }, 2000);
       } else {
         setTimeout(() => {
-          this.props.navigation.navigate("login");
+          this.props.navigation.navigate(VIEW_LOGIN);
         }, 2000);
       }
     });

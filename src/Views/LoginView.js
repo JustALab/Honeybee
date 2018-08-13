@@ -26,7 +26,7 @@ import {
   onSecondary,
   secondaryDark
 } from "../Config/Colors";
-import { STRINGS } from "../Config/Strings";
+import { STRINGS, VIEW_REGISTER, VIEW_MAIN } from "../Config/Strings";
 import { DBService } from "../Services/DBService";
 import { connect } from "react-redux";
 import ApiService from "../Services/ApiService";
@@ -76,7 +76,7 @@ class LoginView extends React.Component {
             console.log("Login success! Token: " + token);
             this.props.setAuthToken(token);
             DBService.insertIntoLoginData(this.state.email, token);
-            this.props.navigation.navigate("mainView");
+            this.props.navigation.navigate(VIEW_MAIN);
           } else {
             this.setState({ loginButtonDisable: false, isLoading: false });
             console.log("Login failure.");
@@ -137,7 +137,7 @@ class LoginView extends React.Component {
             <View style={styles.linksView}>
               <Text
                 style={{ color: secondaryDark }}
-                onPress={() => this.props.navigation.navigate("register")}
+                onPress={() => this.props.navigation.navigate(VIEW_REGISTER)}
               >
                 Register
               </Text>
@@ -233,4 +233,7 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps, Actions)(LoginView);
+export default connect(
+  mapStateToProps,
+  Actions
+)(LoginView);

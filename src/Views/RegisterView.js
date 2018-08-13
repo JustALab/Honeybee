@@ -13,7 +13,14 @@ import {
 import { primary, secondary, onPrimary, secondaryDark } from "../Config/Colors";
 import { DatePicker } from "../Components/Datepicker/Datepicker";
 import { connect } from "react-redux";
-import { STRINGS, SUCCESS, MOBILE_NUMBER_EXISTS } from "../Config/Strings";
+import {
+  STRINGS,
+  SUCCESS,
+  MOBILE_NUMBER_EXISTS,
+  NOT_VERIFIED,
+  VIEW_LOGIN,
+  VIEW_MOBILE_VERIFICATION
+} from "../Config/Strings";
 import ApiService from "../Services/ApiService";
 import { DBService } from "../Services/DBService";
 
@@ -45,32 +52,39 @@ class RegisterView extends React.Component {
               emailVerificationStatus: res.emailVerificationStatus,
               mobileVerificationStatus: res.mobileVerificationStatus
             },
-            () => this.saveUserRegistrationData()
+            () => {
+              this.saveUserRegistrationData();
+              this.navigateToMobileVerificationView();
+            }
           );
         } else if (res.signupStatus === MOBILE_NUMBER_EXISTS) {
-          console.log(
-            "Mobile number already exists. Moving to mobile verification view."
-          );
-          Alert.alert(
-            STRINGS.msgMobileNumberAlreadyExistsTitle,
-            STRINGS.msgMobileNumberAlreadyExistsContent,
-            [
-              {
-                text: "Cancel",
-                onPress: () =>
-                  console.log(
-                    "Cancel pressed in mobile number already exists dialog."
-                  )
-              },
-              {
-                text: "OK",
-                onPress: () =>
-                  console.log(
-                    "OK pressed in mobile number already exists dialog."
-                  )
-              }
-            ]
-          );
+          console.log("Mobile number already exists.");
+          if (res.mobileVerificationStatus === NOT_VERIFIED) {
+            this.navigateToMobileVerificationView();
+          } else {
+            Alert.alert(
+              STRINGS.msgMobileNumberAlreadyExistsTitle,
+              STRINGS.msgMobileNumberAlreadyExistsContent,
+              [
+                {
+                  text: "Cancel",
+                  onPress: () =>
+                    console.log(
+                      "Cancel pressed in mobile number already exists dialog."
+                    )
+                },
+                {
+                  text: "OK",
+                  onPress: () => {
+                    console.log(
+                      "OK pressed in mobile number already exists dialog. Moving to login screen."
+                    );
+                    this.props.navigation.navigate(VIEW_LOGIN);
+                  }
+                }
+              ]
+            );
+          }
         }
       });
     } else {
@@ -80,6 +94,10 @@ class RegisterView extends React.Component {
         STRINGS.msgNoConnectivityContent
       );
     }
+  }
+
+  navigateToMobileVerificationView() {
+    this.props.navigation.navigate(VIEW_MOBILE_VERIFICATION);
   }
 
   saveUserRegistrationData() {

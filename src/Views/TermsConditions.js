@@ -19,10 +19,7 @@ export class TermsConditions extends React.Component {
 
 const styles = {
     viewStyle: {
-        flex: 1,
-        flexDirection: 'column',
-        alignItems: 'center',
-        textAlign: 'justify'
+        
     },
     textStyle: {
         paddingTop: 20

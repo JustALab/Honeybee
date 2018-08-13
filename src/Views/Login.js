@@ -7,6 +7,7 @@ import { TermsConditions } from "./TermsConditions";
 import { STRINGS } from "../Config/Strings";
 import { onPrimary, secondary, secondaryDark } from "../Config/Colors";
 import { MainView } from "../Views/MainView";
+import MobileVerificationView from "../Views/MobileVerificationView";
 
 export class Login extends React.Component {
   componentWillMount() {
@@ -42,6 +43,12 @@ const LoginNavigator = createStackNavigator(
       screen: TermsConditions,
       navigationOptions: {
         title: STRINGS.termsConditions
+      }
+    },
+    mobileVerification: {
+      screen: MobileVerificationView,
+      navigationOptions: {
+        title: STRINGS.mobileVerification
       }
     },
     mainView: {

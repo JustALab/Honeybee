@@ -41,5 +41,9 @@ export default (ApiService = {
         console.log("Fetching customer data failure");
         callback(null);
       });
-  }
+  }, 
+
+  getMobileVerificationCode: () => {
+
+  },
 });
