@@ -30,6 +30,7 @@ import { STRINGS } from "../Config/Strings";
 import { DBService } from "../Services/DBService";
 import { connect } from "react-redux";
 import ApiService from "../Services/ApiService";
+import * as Actions from "../Actions";
 
 class LoginView extends React.Component {
   constructor(props) {
@@ -73,6 +74,7 @@ class LoginView extends React.Component {
         ApiService.login(loginPayload, token => {
           if (token !== null) {
             console.log("Login success! Token: " + token);
+            this.props.setAuthToken(token);
             DBService.insertIntoLoginData(this.state.email, token);
             this.props.navigation.navigate("mainView");
           } else {
@@ -231,4 +233,4 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps)(LoginView);
+export default connect(mapStateToProps, Actions)(LoginView);

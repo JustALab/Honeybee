@@ -32,7 +32,7 @@ export default (ApiService = {
 
   getCustomerData: (token, callback) => {
     axios
-      .get(host + customerUrl, { headers: Api.buildAuthHeader(token) })
+      .get(host + customerUrl, { headers: ApiService.buildAuthHeader(token) })
       .then(res => {
         console.log("Fetching customer data success");
         callback(res.data);
