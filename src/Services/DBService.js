@@ -280,7 +280,7 @@ export const DBService = {
           );
         },
         err => {
-          console.log("Mobile verification status updation failure.");
+          console.log("Mobile verification status updation failure: " + err.message);
         }
       );
     });

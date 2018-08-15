@@ -1,4 +1,5 @@
 import React from "react";
+import { BackHandler } from "react-native";
 import { createStackNavigator } from "react-navigation";
 import LoginView from "./LoginView";
 import RegisterView from "./RegisterView";
@@ -12,6 +13,18 @@ import MobileVerificationView from "../Views/MobileVerificationView";
 export class Login extends React.Component {
   componentWillMount() {
     console.disableYellowBox = true;
+  }
+  componentDidMount() {
+    BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
+  }
+
+  componentWillUnmount() {
+    BackHandler.removeEventListener("hardwareBackPress", this.handleBackButton);
+  }
+
+  handleBackButton() {
+    console.log("Back button is pressed");
+    return true;
   }
 
   render() {
@@ -48,7 +61,8 @@ const LoginNavigator = createStackNavigator(
     mobileVerification: {
       screen: MobileVerificationView,
       navigationOptions: {
-        title: STRINGS.mobileVerification
+        swipeEnabled: false,
+        header: null
       }
     },
     mainView: {

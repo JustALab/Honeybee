@@ -23,32 +23,69 @@ class MobileVerificationView extends React.Component {
     super(props);
     this.state = {
       spinner: false,
-      code: ""
+      code: "",
+      mobile: ""
     };
-    this.handleVerifyMobileNumber = this.handleVerifyMobileNumber.bind(this);
     this.handleResendVerificationCode = this.handleResendVerificationCode.bind(
       this
     );
     this.handleVerificationResponse = this.handleVerificationResponse.bind(
       this
     );
+    this.handleVerifyMobileNumber = this.handleVerifyMobileNumber.bind(this);
   }
 
-  handleResendVerificationCode() {}
+  handleResendVerificationCode() {
+    if (this.props.isNetworkConnected) {
+      this.setState({ spinner: true }, () => {
+        ApiService.resendVerificationCode(this.props.customerId, () => {
+          this.setState({ spinner: false });
+          console.log("Successfully OTP sent again.");
+        });
+      });
+    } else {
+      console.log("No internet connectivity.");
+      Alert.alert(
+        STRINGS.msgNoConnectivityTitle,
+        STRINGS.msgNoConnectivityContent
+      );
+    }
+  }
+
+  // handleUpdateMobileNumber() {
+  //   if (this.props.isNetworkConnected) {
+  //     this.setState({ spinner: true }, () => {
+  //       const customerData = {
+  //         customerId: this.props.customerId,
+  //         mobile: this.state.mobile
+  //       };
+  //       ApiService.updateMobileOnSignUp(customerData, () => {
+  //         this.setState({ spinner: false });
+  //       });
+  //     });
+  //   } else {
+  //     console.log("No internet connectivity.");
+  //     Alert.alert(
+  //       STRINGS.msgNoConnectivityTitle,
+  //       STRINGS.msgNoConnectivityContent
+  //     );
+  //   }
+  // }
 
   handleVerifyMobileNumber() {
     if (this.props.isNetworkConnected) {
       if (this.state.code.length === MAX_LENGTH_CODE) {
         const { userData } = this.props;
-        this.setState({ spinner: true });
-        ApiService.verifyMobileNumber(
-          {
-            email: userData.email,
-            mobile: userData.mobile,
-            otp: this.state.code
-          },
-          res => this.handleVerificationResponse(res)
-        );
+        this.setState({ spinner: true }, () => {
+          ApiService.verifyMobileNumber(
+            {
+              email: userData.email,
+              mobile: userData.mobile,
+              otp: this.state.code
+            },
+            res => this.handleVerificationResponse(res)
+          );
+        });
       }
     } else {
       console.log("No internet connectivity.");
@@ -61,60 +98,80 @@ class MobileVerificationView extends React.Component {
 
   handleVerificationResponse(res) {
     console.log(res);
-    this.setState({ spinner: false }, () => {
-      if (res === VERIFIED) {
-        DBService.updateMobileVerificationStaus(VERIFIED);
-        Alert.alert(
-          STRINGS.msgSuccessTitle,
-          STRINGS.msgMobileVerificationSuccess,
-          [
-            {
-              text: "OK",
-              onPress: () => {
-                console.log(
-                  "Success! OK pressed in success message. Moving to login screen."
-                );
-                this.props.navigation.navigate(VIEW_LOGIN);
+    console.log("STATE CALLBACK BEFORE");
+    this.setState({ spinner: false }, () =>
+      setTimeout(() => {
+        if (res === VERIFIED) {
+          console.log("STATE CALLBACK");
+          DBService.updateMobileVerificationStaus(VERIFIED);
+          Alert.alert(
+            STRINGS.msgSuccessTitle,
+            STRINGS.msgMobileVerificationSuccess,
+            [
+              {
+                text: "OK",
+                onPress: () => {
+                  console.log(
+                    "Success! OK pressed in success message. Moving to login screen."
+                  );
+                  this.props.navigation.navigate(VIEW_LOGIN);
+                }
               }
-            }
-          ]
-        );
-      } else {
-        Alert.alert(
-          STRINGS.msgErrorTitle,
-          STRINGS.msgIncorrectVerificationCode,
-          [
-            {
-              text: "OK",
-              onPress: () => {
-                console.log(
-                  "Incorrect verification code: OK pressed in success message."
-                );
-              }
-            }
-          ]
-        );
-      }
-    });
+            ]
+          );
+        } else {
+          Alert.alert(
+            STRINGS.msgErrorTitle,
+            STRINGS.msgIncorrectVerificationCode
+          );
+        }
+      }, 300)
+    );
+  }
+
+  renderUpdateMobile() {
+    return (
+      <View>
+        <TouchableOpacity
+          onPress={() => {
+            console.log("Update mobile number pressed.");
+          }}
+        >
+          <Text style={styles.footer}>Entered a wrong mobile number?</Text>
+        </TouchableOpacity>
+      </View>
+    );
   }
 
   renderFooter() {
     return (
       <View>
         <TouchableOpacity onPress={this.handleResendVerificationCode}>
-          <Text style={styles.header}>Resend verification code</Text>
+          <Text style={styles.footer}>Resend verification code</Text>
         </TouchableOpacity>
       </View>
     );
   }
 
   render() {
+    console.log(this.state);
+    console.log(this.props);
     let headerText =
-      "Verification code sent to mobile number " + this.props.userData.mobile;
+      "Verification code sent to your mobile number. " +
+      this.props.userData.mobile;
     let buttonText = "Verify";
+    let textStyle = {
+      height: 50,
+      textAlign: "center",
+      fontSize: 40,
+      fontWeight: "bold",
+      fontFamily: "Courier"
+    };
     return (
       <View style={styles.container}>
         <Text style={styles.header}>{headerText}</Text>
+
+        {this.renderUpdateMobile()}
 
         <Form ref={"form"} style={styles.form}>
           <View style={{ flexDirection: "row" }}>
@@ -125,18 +182,15 @@ class MobileVerificationView extends React.Component {
               underlineColorAndroid={"transparent"}
               autoCapitalize={"none"}
               autoCorrect={false}
-              onChangeText={value => {
-                this.setState({ code: value });
-              }}
-              placeholder={"_ _ _ _ "}
+              onChangeText={value => this.setState({ code: value })}
+              placeholder={"_ _ _ _"}
               keyboardType={Platform.OS === "ios" ? "number-pad" : "numeric"}
-              style={[styles.textInput, styles.textStyle]}
+              style={[styles.textInput, textStyle]}
               returnKeyType="go"
               autoFocus
               placeholderTextColor={secondaryDark}
               selectionColor={secondary}
               maxLength={MAX_LENGTH_CODE}
-              onSubmitEditing={this.handleVerifyMobileNumber}
             />
           </View>
 
@@ -150,11 +204,7 @@ class MobileVerificationView extends React.Component {
           {this.renderFooter()}
         </Form>
 
-        <Spinner
-          visible={this.state.spinner}
-          textStyle={{ color: "#fff" }}
-          textContent={STRINGS.verifyingMobileNumber}
-        />
+        <Spinner visible={this.state.spinner} textStyle={{ color: "#fff" }} />
       </View>
     );
   }
@@ -164,7 +214,8 @@ export const mapStateToProps = state => {
   console.log(state);
   return {
     isNetworkConnected: state.isNetworkConnected,
-    userData: state.userRegistrationData
+    userData: state.userRegistrationData,
+    customerId: state.customerId
   };
 };
 
@@ -205,32 +256,9 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "bold"
   },
-  wrongNumberText: {
+  footer: {
     margin: 10,
     fontSize: 14,
     textAlign: "center"
-  },
-  disclaimerText: {
-    marginTop: 30,
-    fontSize: 12,
-    color: "grey"
-  },
-  callingCodeView: {
-    alignItems: "center",
-    justifyContent: "center"
-  },
-  callingCodeText: {
-    fontSize: 20,
-    color: secondary,
-    fontFamily: "Helvetica",
-    fontWeight: "bold",
-    paddingRight: 10
-  },
-  textStyle: {
-    height: 50,
-    textAlign: "center",
-    fontSize: 40,
-    fontWeight: "bold",
-    fontFamily: "Courier"
   }
 });

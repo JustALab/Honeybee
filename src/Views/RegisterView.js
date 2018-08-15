@@ -19,7 +19,9 @@ import {
   MOBILE_NUMBER_EXISTS,
   NOT_VERIFIED,
   VIEW_LOGIN,
-  VIEW_MOBILE_VERIFICATION
+  VIEW_MOBILE_VERIFICATION,
+  MOBILE_LINKED_WITH_OTHER_EMAIL,
+  EMAIL_LINKED_WITH_OTHER_MOBILE
 } from "../Config/Strings";
 import ApiService from "../Services/ApiService";
 import { DBService } from "../Services/DBService";
@@ -47,6 +49,7 @@ class RegisterView extends React.Component {
     if (this.props.isNetworkConnected) {
       this.setState({ spinner: true });
       ApiService.signUpCustomer(this.state, res => {
+        this.props.setCustomerId(res.customerId);
         this.setState({ spinner: false });
         console.log(res);
         if (res.signupStatus === SUCCESS) {
@@ -89,6 +92,10 @@ class RegisterView extends React.Component {
               ]
             );
           }
+        } else if (res.signupStatus === MOBILE_LINKED_WITH_OTHER_EMAIL) {
+          Alert.alert(STRINGS.msgErrorTitle, res.message + ": " + res.email);
+        } else if (res.signupStatus === EMAIL_LINKED_WITH_OTHER_MOBILE) {
+          Alert.alert(STRINGS.msgErrorTitle, res.message + ": " + res.mobile);
         }
       });
     } else {
