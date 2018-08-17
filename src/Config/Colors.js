@@ -4,7 +4,7 @@ export const primaryDark = '#aebfbe';
 export const onPrimary = '#424242';
 
 export const secondary = '#00acc1';
-export const secondaryLight = '#5ddef';
+export const secondaryLight = '#5ddef4';
 export const secondaryDark = '#007c91';
 export const onSecondary = '#000000';
 
