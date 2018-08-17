@@ -151,6 +151,7 @@ class RegisterView extends React.Component {
                       })
                     }
                     autoCapitalize={"words"}
+                    autoFocus
                   />
                 </Item>
                 <Item style={[styles.inputMargin, { marginTop: 10 }]}>

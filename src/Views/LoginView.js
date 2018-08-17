@@ -3,9 +3,10 @@ import {
   StyleSheet,
   View,
   Image,
-  NetInfo,
   Alert,
-  ActivityIndicator
+  ActivityIndicator,
+  Platform,
+  KeyboardAvoidingView
 } from "react-native";
 import {
   Container,
@@ -14,17 +15,17 @@ import {
   Input,
   Item,
   Text,
-  Button,
-  Spinner
+  Button
 } from "native-base";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import FaIcon from "react-native-vector-icons/FontAwesome";
 import { ICONS } from "../Config/Icons";
 import {
   primary,
   secondary,
   onPrimary,
-  onSecondary,
-  secondaryDark
+  secondaryDark,
+  iconInactive
 } from "../Config/Colors";
 import { STRINGS, VIEW_REGISTER, VIEW_MAIN } from "../Config/Strings";
 import { DBService } from "../Services/DBService";
@@ -36,7 +37,7 @@ class LoginView extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      email: "",
+      mobile: "",
       password: "",
       loginButtonDisable: false,
       isLoading: false
@@ -48,8 +49,8 @@ class LoginView extends React.Component {
     console.log(this.state.password);
     //this == & != operator will check for both null and undefined
     if (
-      this.state.email != null &&
-      this.state.email !== "" &&
+      this.state.mobile != null &&
+      this.state.mobile !== "" &&
       this.state.password != null &&
       this.state.password !== ""
     ) {
@@ -67,7 +68,7 @@ class LoginView extends React.Component {
       //diable login button
       this.setState({ loginButtonDisable: true, isLoading: true });
       let loginPayload = {
-        username: this.state.email,
+        username: this.state.mobile,
         password: this.state.password
       };
       if (this.props.isNetworkConnected) {
@@ -101,7 +102,11 @@ class LoginView extends React.Component {
     return (
       <Container>
         <Content padder contentContainerStyle={styles.content}>
-          <View style={styles.mainView}>
+          <KeyboardAvoidingView
+            style={styles.mainView}
+            behavior="padding"
+            enabled
+          >
             <View style={styles.imageView}>
               <Image
                 style={styles.image}
@@ -113,14 +118,22 @@ class LoginView extends React.Component {
               <Form>
                 <Item style={[styles.widthStyle, styles.inputMargin]}>
                   <Input
-                    placeholder="Email"
-                    keyboardType="email-address"
+                    placeholder="Mobile number"
+                    keyboardType={
+                      Platform.OS === "ios" ? "number-pad" : "numeric"
+                    }
                     onChangeText={value =>
                       this.setState({ email: value.trim() })
                     }
                     autoCapitalize="none"
+                    autoFocus
+                    maxLength={10}
                   />
-                  <Icon size={iconsSize} name={ICONS.mail} />
+                  <FaIcon
+                    size={iconsSize + 8}
+                    name={ICONS.mobile}
+                    style={[{ marginRight: 5 }, styles.iconColor]}
+                  />
                 </Item>
                 <Item style={[styles.inputMargin, styles.widthStyle]}>
                   <Input
@@ -129,8 +142,13 @@ class LoginView extends React.Component {
                     onChangeText={value =>
                       this.setState({ password: value.trim() })
                     }
+                    autoCapitalize="none"
                   />
-                  <Icon size={iconsSize} name={ICONS.lock} />
+                  <Icon
+                    size={iconsSize}
+                    name={ICONS.lock}
+                    style={styles.iconColor}
+                  />
                 </Item>
               </Form>
             </View>
@@ -154,7 +172,7 @@ class LoginView extends React.Component {
                 <Text style={styles.btnText}>SIGN IN</Text>
               </Button>
             </View>
-          </View>
+          </KeyboardAvoidingView>
           {this.state.isLoading && (
             <View style={styles.spinner}>
               <ActivityIndicator size="large" color={secondaryDark} />
@@ -177,8 +195,6 @@ const styles = StyleSheet.create({
     width: 100
   },
   imageView: {
-    // flex: 1,
-    // justifyContent: 'center',
     alignItems: "center"
   },
   signInBtn: {
@@ -224,6 +240,9 @@ const styles = StyleSheet.create({
     bottom: 0,
     alignItems: "center",
     justifyContent: "center"
+  },
+  iconColor: {
+    color: iconInactive
   }
 });
 

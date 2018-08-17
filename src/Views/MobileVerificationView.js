@@ -6,11 +6,11 @@ import {
   TouchableOpacity,
   View,
   Platform,
-  Alert
+  Alert,
+  KeyboardAvoidingView
 } from "react-native";
 import { connect } from "react-redux";
 import Spinner from "react-native-loading-spinner-overlay";
-import Form from "react-native-form";
 import { secondary, secondaryDark, secondaryLight } from "../Config/Colors";
 import { STRINGS, VERIFIED, VIEW_LOGIN } from "../Config/Strings";
 import ApiService from "../Services/ApiService";
@@ -34,8 +34,6 @@ class MobileVerificationView extends React.Component {
       this
     );
     this.getSubmitAction = this.getSubmitAction.bind(this);
-    // this.handleUpdateMobileNumber = this.handleUpdateMobileNumber.bind(this);
-    // this.handleVerifyMobileNumber = this.handleVerifyMobileNumber.bind(this);
   }
 
   handleResendVerificationCode() {
@@ -55,6 +53,7 @@ class MobileVerificationView extends React.Component {
     }
   }
 
+  //needs to be handled. save moible number in database and also in redux state.
   handleUpdateMobileNumber() {
     console.log("Update mobile number invoked.");
     if (this.props.isNetworkConnected) {
@@ -84,7 +83,6 @@ class MobileVerificationView extends React.Component {
         this.setState({ spinner: true }, () => {
           ApiService.verifyMobileNumber(
             {
-              email: userData.email,
               mobile: userData.mobile,
               otp: this.state.textValue
             },
@@ -204,13 +202,12 @@ class MobileVerificationView extends React.Component {
           fontFamily: "Courier"
         };
     return (
-      <View style={styles.container}>
+      <KeyboardAvoidingView style={styles.container} behavior="padding" enabled>
         <Text style={styles.header}>{headerText}</Text>
 
         {this.renderUpdateMobile()}
 
         <View style={styles.form}>
-          {/* <Form ref={"form"} style={styles.form}> */}
           <View style={{ flexDirection: "row" }}>
             <TextInput
               type={"TextInput"}
@@ -240,11 +237,10 @@ class MobileVerificationView extends React.Component {
           </TouchableOpacity>
 
           {this.renderFooter()}
-          {/* </Form> */}
         </View>
 
         <Spinner visible={this.state.spinner} textStyle={{ color: "#fff" }} />
-      </View>
+      </KeyboardAvoidingView>
     );
   }
 }

@@ -13,5 +13,6 @@ export const ICONS = {
     mail: 'email-outline',
     lock: 'lock-open-outline',
     signup: 'user-follow',
-    forgotPassword: 'question'
+    forgotPassword: 'question',
+    mobile: "mobile"
 };
