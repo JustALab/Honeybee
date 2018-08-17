@@ -152,6 +152,7 @@ class RegisterView extends React.Component {
                     }
                     autoCapitalize={"words"}
                     autoFocus
+                    returnKeyType = "done"
                   />
                 </Item>
                 <Item style={[styles.inputMargin, { marginTop: 10 }]}>
@@ -186,6 +187,7 @@ class RegisterView extends React.Component {
                       this.setState({ email: value.trim() })
                     }
                     autoCapitalize={"none"}
+                    returnKeyType = "done"
                   />
                 </Item>
                 <Item style={[styles.inputMargin]}>
@@ -197,6 +199,7 @@ class RegisterView extends React.Component {
                     onChangeText={value =>
                       this.setState({ mobile: value.trim() })
                     }
+                    returnKeyType = "done"
                   />
                 </Item>
                 <Item style={[styles.inputMargin]}>
@@ -207,6 +210,7 @@ class RegisterView extends React.Component {
                       this.setState({ password: value.trim() })
                     }
                     autoCapitalize={"none"}
+                    returnKeyType = "done"
                   />
                 </Item>
               </Form>
