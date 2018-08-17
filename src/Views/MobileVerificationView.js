@@ -125,7 +125,7 @@ class MobileVerificationView extends React.Component {
             STRINGS.msgIncorrectVerificationCode
           );
         }
-      }, 300)
+      }, 100)
     );
   }
 

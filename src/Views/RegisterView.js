@@ -43,61 +43,15 @@ class RegisterView extends React.Component {
       spinner: false
     };
     this.handleRegister = this.handleRegister.bind(this);
+    this.handleRegisterResponse = this.handleRegisterResponse.bind(this);
   }
 
   handleRegister() {
     if (this.props.isNetworkConnected) {
       this.setState({ spinner: true });
-      ApiService.signUpCustomer(this.state, res => {
-        this.props.setCustomerId(res.customerId);
-        this.setState({ spinner: false });
-        console.log(res);
-        if (res.signupStatus === SUCCESS) {
-          console.log("Sign up success. Saving data to DB.");
-          this.setState(
-            {
-              emailVerificationStatus: res.emailVerificationStatus,
-              mobileVerificationStatus: res.mobileVerificationStatus
-            },
-            () => {
-              this.saveUserRegistrationData();
-              this.navigateToMobileVerificationView();
-            }
-          );
-        } else if (res.signupStatus === MOBILE_NUMBER_EXISTS) {
-          console.log("Mobile number already exists.");
-          if (res.mobileVerificationStatus === NOT_VERIFIED) {
-            this.navigateToMobileVerificationView();
-          } else {
-            Alert.alert(
-              STRINGS.msgMobileNumberAlreadyExistsTitle,
-              STRINGS.msgMobileNumberAlreadyExistsContent,
-              [
-                {
-                  text: "Cancel",
-                  onPress: () =>
-                    console.log(
-                      "Cancel pressed in mobile number already exists dialog."
-                    )
-                },
-                {
-                  text: "OK",
-                  onPress: () => {
-                    console.log(
-                      "OK pressed in mobile number already exists dialog. Moving to login screen."
-                    );
-                    this.props.navigation.navigate(VIEW_LOGIN);
-                  }
-                }
-              ]
-            );
-          }
-        } else if (res.signupStatus === MOBILE_LINKED_WITH_OTHER_EMAIL) {
-          Alert.alert(STRINGS.msgErrorTitle, res.message + ": " + res.email);
-        } else if (res.signupStatus === EMAIL_LINKED_WITH_OTHER_MOBILE) {
-          Alert.alert(STRINGS.msgErrorTitle, res.message + ": " + res.mobile);
-        }
-      });
+      ApiService.signUpCustomer(this.state, res =>
+        this.handleRegisterResponse(res)
+      );
     } else {
       console.log("No internet connectivity.");
       Alert.alert(
@@ -105,6 +59,59 @@ class RegisterView extends React.Component {
         STRINGS.msgNoConnectivityContent
       );
     }
+  }
+
+  handleRegisterResponse(res) {
+    setTimeout(() => {
+      this.props.setCustomerId(res.customerId);
+      this.setState({ spinner: false });
+      console.log(res);
+      if (res.signupStatus === SUCCESS) {
+        console.log("Sign up success. Saving data to DB.");
+        this.setState(
+          {
+            emailVerificationStatus: res.emailVerificationStatus,
+            mobileVerificationStatus: res.mobileVerificationStatus
+          },
+          () => {
+            this.saveUserRegistrationData();
+            this.navigateToMobileVerificationView();
+          }
+        );
+      } else if (res.signupStatus === MOBILE_NUMBER_EXISTS) {
+        console.log("Mobile number already exists.");
+        if (res.mobileVerificationStatus === NOT_VERIFIED) {
+          this.navigateToMobileVerificationView();
+        } else {
+          Alert.alert(
+            STRINGS.msgMobileNumberAlreadyExistsTitle,
+            STRINGS.msgMobileNumberAlreadyExistsContent,
+            [
+              {
+                text: "Cancel",
+                onPress: () =>
+                  console.log(
+                    "Cancel pressed in mobile number already exists dialog."
+                  )
+              },
+              {
+                text: "OK",
+                onPress: () => {
+                  console.log(
+                    "OK pressed in mobile number already exists dialog. Moving to login screen."
+                  );
+                  this.props.navigation.navigate(VIEW_LOGIN);
+                }
+              }
+            ]
+          );
+        }
+      } else if (res.signupStatus === MOBILE_LINKED_WITH_OTHER_EMAIL) {
+        Alert.alert(STRINGS.msgErrorTitle, res.message + ": " + res.email);
+      } else if (res.signupStatus === EMAIL_LINKED_WITH_OTHER_MOBILE) {
+        Alert.alert(STRINGS.msgErrorTitle, res.message + ": " + res.mobile);
+      }
+    }, 100);
   }
 
   navigateToMobileVerificationView() {

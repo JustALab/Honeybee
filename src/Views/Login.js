@@ -61,8 +61,8 @@ const LoginNavigator = createStackNavigator(
     mobileVerification: {
       screen: MobileVerificationView,
       navigationOptions: {
-        swipeEnabled: false,
-        header: null
+        title: STRINGS.mobileVerification,
+        headerLeft: null
       }
     },
     mainView: {
