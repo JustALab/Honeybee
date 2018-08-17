@@ -150,6 +150,7 @@ class RegisterView extends React.Component {
                         lastName: value.trim()
                       })
                     }
+                    autoCapitalize={"words"}
                   />
                 </Item>
                 <Item style={[styles.inputMargin, { marginTop: 10 }]}>
@@ -183,6 +184,7 @@ class RegisterView extends React.Component {
                     onChangeText={value =>
                       this.setState({ email: value.trim() })
                     }
+                    autoCapitalize={"none"}
                   />
                 </Item>
                 <Item style={[styles.inputMargin]}>
@@ -203,6 +205,7 @@ class RegisterView extends React.Component {
                     onChangeText={value =>
                       this.setState({ password: value.trim() })
                     }
+                    autoCapitalize={"none"}
                   />
                 </Item>
               </Form>

@@ -11,20 +11,21 @@ import {
 import { connect } from "react-redux";
 import Spinner from "react-native-loading-spinner-overlay";
 import Form from "react-native-form";
-import { secondary, secondaryDark } from "../Config/Colors";
+import { secondary, secondaryDark, secondaryLight } from "../Config/Colors";
 import { STRINGS, VERIFIED, VIEW_LOGIN } from "../Config/Strings";
 import ApiService from "../Services/ApiService";
 import { DBService } from "../Services/DBService";
 
 const MAX_LENGTH_CODE = 4;
+const MAX_LENGTH_MOBILE = 10;
 
 class MobileVerificationView extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      enterCode: true,
       spinner: false,
-      code: "",
-      mobile: ""
+      textValue: ""
     };
     this.handleResendVerificationCode = this.handleResendVerificationCode.bind(
       this
@@ -32,7 +33,9 @@ class MobileVerificationView extends React.Component {
     this.handleVerificationResponse = this.handleVerificationResponse.bind(
       this
     );
-    this.handleVerifyMobileNumber = this.handleVerifyMobileNumber.bind(this);
+    this.getSubmitAction = this.getSubmitAction.bind(this);
+    // this.handleUpdateMobileNumber = this.handleUpdateMobileNumber.bind(this);
+    // this.handleVerifyMobileNumber = this.handleVerifyMobileNumber.bind(this);
   }
 
   handleResendVerificationCode() {
@@ -52,36 +55,38 @@ class MobileVerificationView extends React.Component {
     }
   }
 
-  // handleUpdateMobileNumber() {
-  //   if (this.props.isNetworkConnected) {
-  //     this.setState({ spinner: true }, () => {
-  //       const customerData = {
-  //         customerId: this.props.customerId,
-  //         mobile: this.state.mobile
-  //       };
-  //       ApiService.updateMobileOnSignUp(customerData, () => {
-  //         this.setState({ spinner: false });
-  //       });
-  //     });
-  //   } else {
-  //     console.log("No internet connectivity.");
-  //     Alert.alert(
-  //       STRINGS.msgNoConnectivityTitle,
-  //       STRINGS.msgNoConnectivityContent
-  //     );
-  //   }
-  // }
+  handleUpdateMobileNumber() {
+    console.log("Update mobile number invoked.");
+    if (this.props.isNetworkConnected) {
+      this.setState({ spinner: true }, () => {
+        const customerData = {
+          customerId: this.props.customerId,
+          mobile: this.state.textValue
+        };
+        ApiService.updateMobileOnSignUp(customerData, () => {
+          this.setState({ spinner: false });
+        });
+      });
+    } else {
+      console.log("No internet connectivity.");
+      Alert.alert(
+        STRINGS.msgNoConnectivityTitle,
+        STRINGS.msgNoConnectivityContent
+      );
+    }
+  }
 
   handleVerifyMobileNumber() {
+    console.log("Verify mobile number invoked.");
     if (this.props.isNetworkConnected) {
-      if (this.state.code.length === MAX_LENGTH_CODE) {
+      if (this.state.textValue.length === MAX_LENGTH_CODE) {
         const { userData } = this.props;
         this.setState({ spinner: true }, () => {
           ApiService.verifyMobileNumber(
             {
               email: userData.email,
               mobile: userData.mobile,
-              otp: this.state.code
+              otp: this.state.textValue
             },
             res => this.handleVerificationResponse(res)
           );
@@ -129,25 +134,47 @@ class MobileVerificationView extends React.Component {
     );
   }
 
+  getSubmitAction() {
+    this.state.enterCode
+      ? this.handleVerifyMobileNumber()
+      : this.handleUpdateMobileNumber();
+  }
+
   renderUpdateMobile() {
-    return (
-      <View>
-        <TouchableOpacity
-          onPress={() => {
-            console.log("Update mobile number pressed.");
-          }}
-        >
-          <Text style={styles.footer}>Entered a wrong mobile number?</Text>
-        </TouchableOpacity>
-      </View>
-    );
+    if (this.state.enterCode) {
+      return (
+        <View>
+          <TouchableOpacity
+            onPress={() => {
+              console.log("Update mobile number pressed.");
+              this.setState({ enterCode: false, textValue: "" });
+            }}
+          >
+            <Text style={styles.footer}>Entered a wrong mobile number?</Text>
+          </TouchableOpacity>
+        </View>
+      );
+    }
+
+    return <View />;
   }
 
   renderFooter() {
+    if (this.state.enterCode) {
+      return (
+        <View>
+          <TouchableOpacity onPress={this.handleResendVerificationCode}>
+            <Text style={styles.footer}>Resend verification code</Text>
+          </TouchableOpacity>
+        </View>
+      );
+    }
     return (
       <View>
-        <TouchableOpacity onPress={this.handleResendVerificationCode}>
-          <Text style={styles.footer}>Resend verification code</Text>
+        <TouchableOpacity
+          onPress={() => this.setState({ enterCode: true, textValue: "" })}
+        >
+          <Text style={styles.footer}>Cancel</Text>
         </TouchableOpacity>
       </View>
     );
@@ -156,17 +183,26 @@ class MobileVerificationView extends React.Component {
   render() {
     console.log(this.state);
     console.log(this.props);
-    let headerText =
-      "Verification code sent to your mobile number. " +
-      this.props.userData.mobile;
-    let buttonText = "Verify";
-    let textStyle = {
-      height: 50,
-      textAlign: "center",
-      fontSize: 40,
-      fontWeight: "bold",
-      fontFamily: "Courier"
-    };
+    let headerText = this.state.enterCode
+      ? "Verification code sent to your mobile number. " +
+        this.props.userData.mobile
+      : "What's your mobile number?";
+    let buttonText = this.state.enterCode ? "Verify" : "Send Code";
+    let textStyle = this.state.enterCode
+      ? {
+          height: 50,
+          textAlign: "center",
+          fontSize: 40,
+          fontWeight: "bold",
+          fontFamily: "Courier"
+        }
+      : {
+          height: 30,
+          textAlign: "center",
+          fontSize: 20,
+          fontWeight: "bold",
+          fontFamily: "Courier"
+        };
     return (
       <View style={styles.container}>
         <Text style={styles.header}>{headerText}</Text>
@@ -177,27 +213,28 @@ class MobileVerificationView extends React.Component {
           {/* <Form ref={"form"} style={styles.form}> */}
           <View style={{ flexDirection: "row" }}>
             <TextInput
-              ref={"textInput"}
-              name={"code"}
               type={"TextInput"}
               underlineColorAndroid={"transparent"}
               autoCapitalize={"none"}
               autoCorrect={false}
-              onChangeText={value => this.setState({ code: value })}
-              placeholder={"_ _ _ _"}
+              onChangeText={value => this.setState({ textValue: value })}
+              placeholder={this.state.enterCode ? "_ _ _ _" : "Mobile number"}
               keyboardType={Platform.OS === "ios" ? "number-pad" : "numeric"}
               style={[styles.textInput, textStyle]}
               returnKeyType="go"
               autoFocus
-              placeholderTextColor={secondaryDark}
+              placeholderTextColor={secondary}
               selectionColor={secondary}
-              maxLength={MAX_LENGTH_CODE}
+              maxLength={
+                this.state.enterCode ? MAX_LENGTH_CODE : MAX_LENGTH_MOBILE
+              }
+              value={this.state.textValue}
             />
           </View>
 
           <TouchableOpacity
             style={styles.button}
-            onPress={this.handleVerifyMobileNumber}
+            onPress={this.getSubmitAction}
           >
             <Text style={styles.buttonText}>{buttonText}</Text>
           </TouchableOpacity>
@@ -229,7 +266,7 @@ const styles = StyleSheet.create({
   },
   header: {
     textAlign: "center",
-    marginTop: 60,
+    marginTop: 20,
     fontSize: 15,
     margin: 20,
     color: "#4A4A4A"
@@ -259,7 +296,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold"
   },
   footer: {
-    margin: 10,
+    margin: 25,
     fontSize: 14,
     textAlign: "center"
   }
