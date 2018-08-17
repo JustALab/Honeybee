@@ -45,7 +45,7 @@ class LoginView extends React.Component {
   }
 
   validateFields() {
-    console.log(this.state.email);
+    console.log(this.state.mobile);
     console.log(this.state.password);
     //this == & != operator will check for both null and undefined
     if (
@@ -76,7 +76,7 @@ class LoginView extends React.Component {
           if (token !== null) {
             console.log("Login success! Token: " + token);
             this.props.setAuthToken(token);
-            DBService.insertIntoLoginData(this.state.email, token);
+            DBService.insertIntoLoginData(this.state.mobile, token);
             this.props.navigation.navigate(VIEW_MAIN);
           } else {
             this.setState({ loginButtonDisable: false, isLoading: false });
@@ -123,7 +123,7 @@ class LoginView extends React.Component {
                       Platform.OS === "ios" ? "number-pad" : "numeric"
                     }
                     onChangeText={value =>
-                      this.setState({ email: value.trim() })
+                      this.setState({ mobile: value.trim() })
                     }
                     autoCapitalize="none"
                     autoFocus

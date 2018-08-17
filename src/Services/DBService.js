@@ -13,7 +13,7 @@ const TABLE_USER_DATA = "user_data";
 const QUERY_CREATE_TABLE_LOGIN_DATA =
   "CREATE TABLE IF NOT EXISTS " +
   TABLE_LOGIN_DATA +
-  " (id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER, first_name VARCHAR(50), last_name VARCHAR(50), email VARCHAR(200) NOT NULL, mobile VARCHAR(10), is_logged_in INTEGER DEFAULT 0, token TEXT)";
+  " (id INTEGER PRIMARY KEY AUTOINCREMENT, mobile VARCHAR(10) NOT NULL, is_logged_in INTEGER DEFAULT 0, token TEXT)";
 
 const QUERY_CREATE_TABLE_USER_DATA =
   "CREATE TABLE IF NOT EXISTS " +
@@ -30,7 +30,7 @@ const QUERY_SELECT_ALL_FROM_USER_DATA = "SELECT * FROM " + TABLE_USER_DATA + "";
 const QUERY_INSERT_INTO_LOGIN_DATA =
   "INSERT INTO " +
   TABLE_LOGIN_DATA +
-  " (email, is_logged_in, token) VALUES (:email, :isLoggedIn, :token)";
+  " (mobile, is_logged_in, token) VALUES (:mobile, :isLoggedIn, :token)";
 
 const QUERY_INSERT_INTO_USER_DATA =
   "INSERT INTO " +
@@ -41,7 +41,7 @@ const QUERY_INSERT_INTO_USER_DATA =
 const QUERY_UPDATE_ALL_LOGIN_DATA =
   "UPDATE " +
   TABLE_LOGIN_DATA +
-  " SET email=(:email), token=(:token), is_logged_in=(:isLoggedIn) WHERE id=(:id)";
+  " SET mobile=(:mobile), token=(:token), is_logged_in=(:isLoggedIn) WHERE id=(:id)";
 
 const QUERY_UPDATE_LOGIN_DATA_LOGIN_STATUS =
   "UPDATE " + TABLE_LOGIN_DATA + " SET is_logged_in=(:isLoggedIn)";
@@ -69,7 +69,7 @@ export const DBService = {
 
     db.transaction(tx => {
       // tx.executeSql("DROP TABLE IF EXISTS user_data");
-      // tx.executeSql("DROP TABLE IF EXISTS login_data");
+      tx.executeSql("DROP TABLE IF EXISTS login_data");
 
       tx.executeSql(
         QUERY_CREATE_TABLE_LOGIN_DATA,
@@ -103,7 +103,7 @@ export const DBService = {
     });
   },
 
-  insertIntoLoginData: (email, token) => {
+  insertIntoLoginData: (mobile, token) => {
     db.transaction(tx => {
       tx.executeSql(
         QUERY_SELECT_ALL_FROM_LOGIN_DATA,
@@ -113,7 +113,7 @@ export const DBService = {
             let isLoggedIn = 1;
             tx.executeSql(
               QUERY_INSERT_INTO_LOGIN_DATA,
-              [email, isLoggedIn, token],
+              [mobile, isLoggedIn, token],
               tx => {
                 console.log("user data inserted successfully.");
               },
@@ -125,7 +125,7 @@ export const DBService = {
             );
           } else {
             console.log("User data already available. Updating user data.");
-            DBService.updateLoginData(email, token);
+            DBService.updateLoginData(mobile, token);
           }
         },
         err => {
@@ -136,14 +136,14 @@ export const DBService = {
     });
   },
 
-  updateLoginData: (email, token) => {
+  updateLoginData: (mobile, token) => {
     db.transaction(tx => {
       let isLoggedIn = 1;
       tx.executeSql(
         QUERY_UPDATE_ALL_LOGIN_DATA,
-        [email, token, isLoggedIn, 1],
+        [mobile, token, isLoggedIn, 1],
         tx => {
-          console.log("" + TABLE_LOGIN_DATA + " email and token updated.");
+          console.log("" + TABLE_LOGIN_DATA + " mobile and token updated.");
         },
         err => {
           console.log("" + TABLE_LOGIN_DATA + " update failure.");
@@ -280,7 +280,9 @@ export const DBService = {
           );
         },
         err => {
-          console.log("Mobile verification status updation failure: " + err.message);
+          console.log(
+            "Mobile verification status updation failure: " + err.message
+          );
         }
       );
     });
