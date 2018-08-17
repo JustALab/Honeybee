@@ -125,7 +125,7 @@ class MobileVerificationView extends React.Component {
             STRINGS.msgIncorrectVerificationCode
           );
         }
-      }, 100)
+      }, 300)
     );
   }
 
@@ -173,7 +173,8 @@ class MobileVerificationView extends React.Component {
 
         {this.renderUpdateMobile()}
 
-        <Form ref={"form"} style={styles.form}>
+        <View style={styles.form}>
+          {/* <Form ref={"form"} style={styles.form}> */}
           <View style={{ flexDirection: "row" }}>
             <TextInput
               ref={"textInput"}
@@ -202,7 +203,8 @@ class MobileVerificationView extends React.Component {
           </TouchableOpacity>
 
           {this.renderFooter()}
-        </Form>
+          {/* </Form> */}
+        </View>
 
         <Spinner visible={this.state.spinner} textStyle={{ color: "#fff" }} />
       </View>

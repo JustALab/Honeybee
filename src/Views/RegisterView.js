@@ -44,6 +44,7 @@ class RegisterView extends React.Component {
     };
     this.handleRegister = this.handleRegister.bind(this);
     this.handleRegisterResponse = this.handleRegisterResponse.bind(this);
+    this.disableSpinner = this.disableSpinner.bind(this);
   }
 
   handleRegister() {
@@ -64,9 +65,9 @@ class RegisterView extends React.Component {
   handleRegisterResponse(res) {
     setTimeout(() => {
       this.props.setCustomerId(res.customerId);
-      this.setState({ spinner: false });
       console.log(res);
       if (res.signupStatus === SUCCESS) {
+        this.disableSpinner();
         console.log("Sign up success. Saving data to DB.");
         this.setState(
           {
@@ -79,6 +80,7 @@ class RegisterView extends React.Component {
           }
         );
       } else if (res.signupStatus === MOBILE_NUMBER_EXISTS) {
+        this.disableSpinner();
         console.log("Mobile number already exists.");
         if (res.mobileVerificationStatus === NOT_VERIFIED) {
           this.navigateToMobileVerificationView();
@@ -107,11 +109,19 @@ class RegisterView extends React.Component {
           );
         }
       } else if (res.signupStatus === MOBILE_LINKED_WITH_OTHER_EMAIL) {
-        Alert.alert(STRINGS.msgErrorTitle, res.message + ": " + res.email);
+        Alert.alert(STRINGS.msgErrorTitle, res.message + ": " + res.email, [
+          { text: "Ok", onPress: this.disableSpinner }
+        ]);
       } else if (res.signupStatus === EMAIL_LINKED_WITH_OTHER_MOBILE) {
-        Alert.alert(STRINGS.msgErrorTitle, res.message + ": " + res.mobile);
+        Alert.alert(STRINGS.msgErrorTitle, res.message + ": " + res.mobile, [
+          { text: "Ok", onPress: this.disableSpinner }
+        ]);
       }
-    }, 100);
+    }, 300);
+  }
+
+  disableSpinner() {
+    this.setState({ spinner: false });
   }
 
   navigateToMobileVerificationView() {
@@ -228,7 +238,6 @@ class RegisterView extends React.Component {
             <Spinner
               visible={this.state.spinner}
               textStyle={{ color: "#fff" }}
-              textContent={STRINGS.sendingVerificationCode}
             />
           </View>
         </Content>
