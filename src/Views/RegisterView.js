@@ -16,7 +16,6 @@ import { connect } from "react-redux";
 import {
   STRINGS,
   SUCCESS,
-  MOBILE_NUMBER_EXISTS,
   NOT_VERIFIED,
   VIEW_LOGIN,
   VIEW_MOBILE_VERIFICATION,

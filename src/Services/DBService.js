@@ -290,6 +290,7 @@ export const DBService = {
       );
     });
   },
+  
   updateMobileNumber: mobile => {
     const id = 1;
     db.transaction(tx => {
