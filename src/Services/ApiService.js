@@ -52,6 +52,7 @@ export default (ApiService = {
   },
 
   verifyMobileNumber: (userData, callback) => {
+    console.log("To verify: " + JSON.stringify(userData));
     axios
       .put(HOST + URL_VERIFY_MOBILE_NUMBER, userData)
       .then(res => {
@@ -80,8 +81,10 @@ export default (ApiService = {
   updateMobileOnSignUp: (custMobileData, callback) => {
     axios
       .put(HOST + URL_UPDATE_MOBILE_ON_SIGNUP, custMobileData)
-      .then(() => {
+      .then(res => {
         callback(res.data);
+        console.log(custMobileData);
+        console.log(HOST + URL_UPDATE_MOBILE_ON_SIGNUP);
         console.log("Update mobile on signup success.");
       })
       .catch(err => {

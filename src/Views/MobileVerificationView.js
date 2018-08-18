@@ -12,9 +12,16 @@ import {
 import { connect } from "react-redux";
 import Spinner from "react-native-loading-spinner-overlay";
 import { secondary, secondaryDark, secondaryLight } from "../Config/Colors";
-import { STRINGS, VERIFIED, VIEW_LOGIN } from "../Config/Strings";
+import {
+  STRINGS,
+  VERIFIED,
+  VIEW_LOGIN,
+  SUCCESS,
+  MOBILE_NUMBER_EXISTS
+} from "../Config/Strings";
 import ApiService from "../Services/ApiService";
 import { DBService } from "../Services/DBService";
+import * as Actions from "../Actions";
 
 const MAX_LENGTH_CODE = 4;
 const MAX_LENGTH_MOBILE = 10;
@@ -31,6 +38,9 @@ class MobileVerificationView extends React.Component {
       this
     );
     this.handleVerificationResponse = this.handleVerificationResponse.bind(
+      this
+    );
+    this.handleUpdateMobileNumberResponse = this.handleUpdateMobileNumberResponse.bind(
       this
     );
     this.getSubmitAction = this.getSubmitAction.bind(this);
@@ -53,7 +63,6 @@ class MobileVerificationView extends React.Component {
     }
   }
 
-  //needs to be handled. save moible number in database and also in redux state.
   handleUpdateMobileNumber() {
     console.log("Update mobile number invoked.");
     if (this.props.isNetworkConnected) {
@@ -62,8 +71,8 @@ class MobileVerificationView extends React.Component {
           customerId: this.props.customerId,
           mobile: this.state.textValue
         };
-        ApiService.updateMobileOnSignUp(customerData, () => {
-          this.setState({ spinner: false });
+        ApiService.updateMobileOnSignUp(customerData, res => {
+          this.handleUpdateMobileNumberResponse(res);
         });
       });
     } else {
@@ -73,6 +82,30 @@ class MobileVerificationView extends React.Component {
         STRINGS.msgNoConnectivityContent
       );
     }
+  }
+
+  async handleUpdateMobileNumberResponse(res) {
+    console.log("handleUpdateMobileNumberResponse method called.");
+    this.setState({ spinner: false }, () => {
+      setTimeout(() => {
+        if (res === SUCCESS) {
+          Alert.alert(
+            STRINGS.msgMobileNumberUpdatedTitle,
+            STRINGS.msgMobileNumberUpdatedContent
+          );
+          DBService.updateMobileNumber(this.state.textValue);
+          let updatedUserRegistrationData = this.props.userData;
+          updatedUserRegistrationData.mobile = this.state.textValue;
+          this.props.setUserRegistrationData(updatedUserRegistrationData);
+          this.setState({ enterCode: true, textValue: "" });
+        } else if (res === MOBILE_NUMBER_EXISTS) {
+          Alert.alert(
+            STRINGS.msgMobileNumberAlreadyExistsTitle,
+            STRINGS.msgMobileNumberAlreadyExistsTryAgainContent
+          );
+        }
+      }, 100);
+    });
   }
 
   handleVerifyMobileNumber() {
@@ -128,7 +161,7 @@ class MobileVerificationView extends React.Component {
             STRINGS.msgIncorrectVerificationCode
           );
         }
-      }, 300)
+      }, 100)
     );
   }
 
@@ -254,7 +287,10 @@ export const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps)(MobileVerificationView);
+export default connect(
+  mapStateToProps,
+  Actions
+)(MobileVerificationView);
 
 const styles = StyleSheet.create({
   container: {

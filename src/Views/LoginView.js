@@ -128,7 +128,6 @@ class LoginView extends React.Component {
                     autoCapitalize="none"
                     autoFocus
                     maxLength={10}
-                    returnKeyType = "done"
                   />
                   <FaIcon
                     size={iconsSize + 8}
@@ -144,7 +143,6 @@ class LoginView extends React.Component {
                       this.setState({ password: value.trim() })
                     }
                     autoCapitalize="none"
-                    returnKeyType="done"
                   />
                   <Icon
                     size={iconsSize}

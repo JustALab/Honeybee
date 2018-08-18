@@ -43,6 +43,9 @@ const QUERY_UPDATE_ALL_LOGIN_DATA =
   TABLE_LOGIN_DATA +
   " SET mobile=(:mobile), token=(:token), is_logged_in=(:isLoggedIn) WHERE id=(:id)";
 
+const QUERY_UPDATE_USER_DATA_MOBILE =
+  "UPDATE " + TABLE_USER_DATA + " SET mobile=(:mobile) WHERE id=(:id)";
+
 const QUERY_UPDATE_LOGIN_DATA_LOGIN_STATUS =
   "UPDATE " + TABLE_LOGIN_DATA + " SET is_logged_in=(:isLoggedIn)";
 
@@ -282,6 +285,23 @@ export const DBService = {
         err => {
           console.log(
             "Mobile verification status updation failure: " + err.message
+          );
+        }
+      );
+    });
+  },
+  updateMobileNumber: mobile => {
+    const id = 1;
+    db.transaction(tx => {
+      tx.executeSql(
+        QUERY_UPDATE_USER_DATA_MOBILE,
+        [mobile, id],
+        (tx, res) => {
+          console.log("Mobile number " + mobile + " updated in database.");
+        },
+        err => {
+          console.log(
+            "Mobile number updation in database failure: " + err.message
           );
         }
       );

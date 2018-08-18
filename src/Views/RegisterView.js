@@ -21,7 +21,8 @@ import {
   VIEW_LOGIN,
   VIEW_MOBILE_VERIFICATION,
   MOBILE_LINKED_WITH_OTHER_EMAIL,
-  EMAIL_LINKED_WITH_OTHER_MOBILE
+  EMAIL_LINKED_WITH_OTHER_MOBILE,
+  USER_EXISTS
 } from "../Config/Strings";
 import ApiService from "../Services/ApiService";
 import { DBService } from "../Services/DBService";
@@ -67,10 +68,10 @@ class RegisterView extends React.Component {
       this.props.setCustomerId(res.customerId);
       console.log(res);
       if (res.signupStatus === SUCCESS) {
-        this.disableSpinner();
         console.log("Sign up success. Saving data to DB.");
         this.setState(
           {
+            spinner: false,
             emailVerificationStatus: res.emailVerificationStatus,
             mobileVerificationStatus: res.mobileVerificationStatus
           },
@@ -79,35 +80,38 @@ class RegisterView extends React.Component {
             this.navigateToMobileVerificationView();
           }
         );
-      } else if (res.signupStatus === MOBILE_NUMBER_EXISTS) {
-        this.disableSpinner();
-        console.log("Mobile number already exists.");
-        if (res.mobileVerificationStatus === NOT_VERIFIED) {
-          this.navigateToMobileVerificationView();
-        } else {
-          Alert.alert(
-            STRINGS.msgMobileNumberAlreadyExistsTitle,
-            STRINGS.msgMobileNumberAlreadyExistsContent,
-            [
-              {
-                text: "Cancel",
-                onPress: () =>
-                  console.log(
-                    "Cancel pressed in mobile number already exists dialog."
-                  )
-              },
-              {
-                text: "OK",
-                onPress: () => {
-                  console.log(
-                    "OK pressed in mobile number already exists dialog. Moving to login screen."
-                  );
-                  this.props.navigation.navigate(VIEW_LOGIN);
-                }
-              }
-            ]
-          );
-        }
+      } else if (res.signupStatus === USER_EXISTS) {
+        console.log("User already exists.");
+        this.setState({ spinner: false }, () =>
+          setTimeout(() => {
+            if (res.mobileVerificationStatus === NOT_VERIFIED) {
+              this.navigateToMobileVerificationView();
+            } else {
+              Alert.alert(
+                STRINGS.msgUserExistsTitle,
+                STRINGS.msgUserExistsContent,
+                [
+                  {
+                    text: "Cancel",
+                    onPress: () =>
+                      console.log(
+                        "Cancel pressed in user already exists dialog."
+                      )
+                  },
+                  {
+                    text: "OK",
+                    onPress: () => {
+                      console.log(
+                        "OK pressed in user already exists dialog. Moving to login screen."
+                      );
+                      this.props.navigation.navigate(VIEW_LOGIN);
+                    }
+                  }
+                ]
+              );
+            }
+          }, 100)
+        );
       } else if (res.signupStatus === MOBILE_LINKED_WITH_OTHER_EMAIL) {
         Alert.alert(STRINGS.msgErrorTitle, res.message + ": " + res.email, [
           { text: "Ok", onPress: this.disableSpinner }
@@ -152,7 +156,6 @@ class RegisterView extends React.Component {
                     }
                     autoCapitalize={"words"}
                     autoFocus
-                    returnKeyType = "done"
                   />
                 </Item>
                 <Item style={[styles.inputMargin, { marginTop: 10 }]}>
@@ -187,7 +190,6 @@ class RegisterView extends React.Component {
                       this.setState({ email: value.trim() })
                     }
                     autoCapitalize={"none"}
-                    returnKeyType = "done"
                   />
                 </Item>
                 <Item style={[styles.inputMargin]}>
@@ -199,7 +201,6 @@ class RegisterView extends React.Component {
                     onChangeText={value =>
                       this.setState({ mobile: value.trim() })
                     }
-                    returnKeyType = "done"
                   />
                 </Item>
                 <Item style={[styles.inputMargin]}>
@@ -210,7 +211,6 @@ class RegisterView extends React.Component {
                       this.setState({ password: value.trim() })
                     }
                     autoCapitalize={"none"}
-                    returnKeyType = "done"
                   />
                 </Item>
               </Form>

@@ -22,17 +22,25 @@ export const STRINGS = {
   msgMobileNumberAlreadyExistsTitle: "Mobile Number Exists",
   msgMobileNumberAlreadyExistsContent:
     "Entered mobile number already exists. Please login.",
+  msgMobileNumberAlreadyExistsTryAgainContent:
+    "Entered mobile number already exists. Try again!",
+  msgMobileNumberUpdatedTitle: "Mobile number Updated",
+  msgMobileNumberUpdatedContent: "Mobile number updated successfully.",
   sendingVerificationCode: "Sending verification code...",
   mobileVerification: "Mobile Verification",
   verifyingMobileNumber: "Verifying mobile number...",
   msgSuccessTitle: "Success",
   msgErrorTitle: "Error",
   msgMobileVerificationSuccess: "Mobile number verified successfully.",
-  msgIncorrectVerificationCode: "Incorrect verification code entered."
+  msgIncorrectVerificationCode: "Incorrect verification code entered.",
+  msgUserExistsTitle: "User Exists",
+  msgUserExistsContent: "User already exists. Please login."
 };
 
 export const MOBILE_NUMBER_EXISTS = "MOBILE_NUMBER_EXISTS";
+export const USER_EXISTS = "USER_EXISTS";
 export const SUCCESS = "SUCCESS";
+export const FAILURE = "FAILURE";
 export const NOT_VERIFIED = "NOT_VERIFIED";
 export const VERIFIED = "VERIFIED";
 export const EMAIL_LINKED_WITH_OTHER_MOBILE = "EMAIL_LINKED_WITH_OTHER_MOBILE";
