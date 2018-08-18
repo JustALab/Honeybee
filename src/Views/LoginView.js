@@ -32,6 +32,7 @@ import { DBService } from "../Services/DBService";
 import { connect } from "react-redux";
 import ApiService from "../Services/ApiService";
 import * as Actions from "../Actions";
+import * as Animatable from "react-native-animatable";
 
 class LoginView extends React.Component {
   constructor(props) {
@@ -153,12 +154,15 @@ class LoginView extends React.Component {
               </Form>
             </View>
             <View style={styles.linksView}>
-              <Text
+              <Animatable.Text
+                animation="fadeIn"
+                iterationCount="infinite"
+                direction="alternate-reverse"
                 style={{ color: secondaryDark }}
                 onPress={() => this.props.navigation.navigate(VIEW_REGISTER)}
               >
                 Register
-              </Text>
+              </Animatable.Text>
               <Text style={styles.text}> | </Text>
               <Text style={styles.text}>Forgot Password</Text>
             </View>
