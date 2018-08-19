@@ -102,80 +102,95 @@ class LoginView extends React.Component {
   render() {
     return (
       <Container>
-        <Content padder contentContainerStyle={styles.content}>
+        <Content
+          padder
+          contentContainerStyle={styles.content}
+          scrollEnabled={false}
+        >
           <KeyboardAvoidingView
             style={styles.mainView}
             behavior="padding"
             enabled
           >
-            <View style={styles.imageView}>
+            {/* <View style={styles.imageView}>
+                <Image
+                  style={styles.image}
+                  resizeMode={"contain"}
+                  source={require("./images/hc_300.png")}
+                />
+              </View> */}
+            <Animatable.View animation="slideInUp" style={styles.imageView}>
               <Image
                 style={styles.image}
                 resizeMode={"contain"}
                 source={require("./images/hc_300.png")}
               />
-            </View>
-            <View>
-              <Form>
-                <Item style={[styles.widthStyle, styles.inputMargin]}>
-                  <Input
-                    placeholder="Mobile number"
-                    keyboardType={
-                      Platform.OS === "ios" ? "number-pad" : "numeric"
-                    }
-                    onChangeText={value =>
-                      this.setState({ mobile: value.trim() })
-                    }
-                    autoCapitalize="none"
-                    autoFocus
-                    maxLength={10}
-                  />
-                  <FaIcon
-                    size={iconsSize + 8}
-                    name={ICONS.mobile}
-                    style={[{ marginRight: 5 }, styles.iconColor]}
-                  />
-                </Item>
-                <Item style={[styles.inputMargin, styles.widthStyle]}>
-                  <Input
-                    placeholder="Password"
-                    secureTextEntry={true}
-                    onChangeText={value =>
-                      this.setState({ password: value.trim() })
-                    }
-                    autoCapitalize="none"
-                  />
-                  <Icon
-                    size={iconsSize}
-                    name={ICONS.lock}
-                    style={styles.iconColor}
-                  />
-                </Item>
-              </Form>
-            </View>
-            <View style={styles.linksView}>
-              <Animatable.Text
+            </Animatable.View>
+            <Animatable.View animation="fadeInUp">
+              <View>
+                <Form>
+                  <Item style={[styles.widthStyle, styles.inputMargin]}>
+                    <Input
+                      placeholder="Mobile number"
+                      keyboardType={
+                        Platform.OS === "ios" ? "number-pad" : "numeric"
+                      }
+                      onChangeText={value =>
+                        this.setState({ mobile: value.trim() })
+                      }
+                      autoCapitalize="none"
+                      maxLength={10}
+                    />
+                    <FaIcon
+                      size={iconsSize + 8}
+                      name={ICONS.mobile}
+                      style={[{ marginRight: 5 }, styles.iconColor]}
+                    />
+                  </Item>
+                  <Item style={[styles.inputMargin, styles.widthStyle]}>
+                    <Input
+                      placeholder="Password"
+                      secureTextEntry={true}
+                      onChangeText={value =>
+                        this.setState({ password: value.trim() })
+                      }
+                      autoCapitalize="none"
+                    />
+                    <Icon
+                      size={iconsSize}
+                      name={ICONS.lock}
+                      style={styles.iconColor}
+                    />
+                  </Item>
+                </Form>
+              </View>
+              <View style={styles.btnView}>
+                <Button
+                  style={[styles.signInBtn, { width: "35%" }]}
+                  onPress={this.handleLogin}
+                  disabled={this.state.loginButtonDisable}
+                  full
+                >
+                  <Text style={styles.btnText}>Log In</Text>
+                </Button>
+              </View>
+              <View style={styles.linksView}>
+                {/* <Animatable.Text
                 animation="fadeIn"
                 iterationCount="infinite"
                 direction="alternate-reverse"
-                style={{ color: secondaryDark }}
-                onPress={() => this.props.navigation.navigate(VIEW_REGISTER)}
-              >
-                Register
-              </Animatable.Text>
-              <Text style={styles.text}> | </Text>
-              <Text style={styles.text}>Forgot Password</Text>
-            </View>
-            <View style={styles.btnView}>
-              <Button
-                style={[styles.signInBtn, styles.widthStyle]}
-                onPress={this.handleLogin}
-                full
-                disabled={this.state.loginButtonDisable}
-              >
-                <Text style={styles.btnText}>SIGN IN</Text>
-              </Button>
-            </View>
+                
+              /> */}
+                <Text
+                  style={[styles.text, { color: secondaryDark }]}
+                  onPress={() => this.props.navigation.navigate(VIEW_REGISTER)}
+                >
+                  Register
+                </Text>
+                <Text> | </Text>
+                <Text style={styles.text}>Forgot Password</Text>
+              </View>
+            </Animatable.View>
           </KeyboardAvoidingView>
           {this.state.isLoading && (
             <View style={styles.spinner}>
@@ -196,22 +211,26 @@ const styles = StyleSheet.create({
   },
   image: {
     height: 100,
-    width: 100
+    width: 100,
+    marginBottom: 20
   },
   imageView: {
     alignItems: "center"
   },
   signInBtn: {
-    backgroundColor: secondary
+    backgroundColor: secondary,
+    borderRadius: 25,
+    backgroundColor: "#007981"
   },
   btnText: {
-    color: primary
+    color: primary,
+    textAlign: "center"
   },
   btnView: {
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    paddingTop: 30
+    paddingTop: 15
   },
   mainView: {
     flex: 1,
@@ -225,7 +244,8 @@ const styles = StyleSheet.create({
     paddingTop: 10
   },
   text: {
-    color: onPrimary
+    color: onPrimary,
+    fontSize: 14
   },
   registerBtnText: {
     color: secondaryDark

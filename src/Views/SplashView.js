@@ -45,7 +45,7 @@ class SplashView extends React.Component {
           <Image
             style={styles.image}
             resizeMode={"contain"}
-            source={require("./images/hc_logo.png")}
+            source={require("./images/hc_300.png")}
           />
         </View>
       </Container>
@@ -60,8 +60,8 @@ const styles = StyleSheet.create({
     alignItems: "center"
   },
   image: {
-    height: 300,
-    width: 300
+    height: 100,
+    width: 100
   }
 });
 

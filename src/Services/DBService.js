@@ -72,7 +72,7 @@ export const DBService = {
 
     db.transaction(tx => {
       // tx.executeSql("DROP TABLE IF EXISTS user_data");
-      tx.executeSql("DROP TABLE IF EXISTS login_data");
+      // tx.executeSql("DROP TABLE IF EXISTS login_data");
 
       tx.executeSql(
         QUERY_CREATE_TABLE_LOGIN_DATA,

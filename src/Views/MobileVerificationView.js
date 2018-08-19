@@ -181,7 +181,7 @@ class MobileVerificationView extends React.Component {
               this.setState({ enterCode: false, textValue: "" });
             }}
           >
-            <Text style={styles.footer}>Entered a wrong mobile number?</Text>
+            <Text style={styles.updateNumber}>Wanna change mobile number?</Text>
           </TouchableOpacity>
         </View>
       );
@@ -215,8 +215,7 @@ class MobileVerificationView extends React.Component {
     console.log(this.state);
     console.log(this.props);
     let headerText = this.state.enterCode
-      ? "Verification code sent to your mobile number. " +
-        this.props.userData.mobile
+      ? "Verification code sent to: " + this.props.userData.mobile
       : "What's your mobile number?";
     let buttonText = this.state.enterCode ? "Verify" : "Send Code";
     let textStyle = this.state.enterCode
@@ -300,11 +299,10 @@ const styles = StyleSheet.create({
     textAlign: "center",
     marginTop: 20,
     fontSize: 15,
-    margin: 20,
     color: "#4A4A4A"
   },
   form: {
-    margin: 20
+    margin: 5
   },
   textInput: {
     padding: 0,
@@ -328,7 +326,12 @@ const styles = StyleSheet.create({
     fontWeight: "bold"
   },
   footer: {
-    margin: 25,
+    marginTop: 30,
+    fontSize: 14,
+    textAlign: "center"
+  },
+  updateNumber: {
+    marginTop: 5,
     fontSize: 14,
     textAlign: "center"
   }
