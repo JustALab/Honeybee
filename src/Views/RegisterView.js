@@ -38,6 +38,7 @@ class RegisterView extends React.Component {
       email: "",
       mobile: "",
       password: "",
+      confirmPassword: "",
       emailVerificationStatus: "",
       mobileVerificationStatus: "",
       spinner: false
@@ -49,10 +50,18 @@ class RegisterView extends React.Component {
 
   handleRegister() {
     if (this.props.isNetworkConnected) {
-      this.setState({ spinner: true });
-      ApiService.signUpCustomer(this.state, res =>
-        this.handleRegisterResponse(res)
-      );
+      if (this.state.password === this.state.confirmPassword) {
+        this.setState({ spinner: true });
+        ApiService.signUpCustomer(this.state, res =>
+          this.handleRegisterResponse(res)
+        );
+      } else {
+        console.log("Passwords not matching.");
+        Alert.alert(
+          STRINGS.msgPasswordNoMatchTitle,
+          STRINGS.msgPasswordNoMatchContent
+        );
+      }
     } else {
       console.log("No internet connectivity.");
       Alert.alert(
@@ -208,6 +217,16 @@ class RegisterView extends React.Component {
                     secureTextEntry={true}
                     onChangeText={value =>
                       this.setState({ password: value.trim() })
+                    }
+                    autoCapitalize={"none"}
+                  />
+                </Item>
+                <Item style={[styles.inputMargin]}>
+                  <Label>Confirm Password</Label>
+                  <Input
+                    secureTextEntry={true}
+                    onChangeText={value =>
+                      this.setState({ confirmPassword: value.trim() })
                     }
                     autoCapitalize={"none"}
                   />

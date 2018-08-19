@@ -34,7 +34,10 @@ export const STRINGS = {
   msgMobileVerificationSuccess: "Mobile number verified successfully.",
   msgIncorrectVerificationCode: "Incorrect verification code entered.",
   msgUserExistsTitle: "User Exists",
-  msgUserExistsContent: "User already exists. Please login."
+  msgUserExistsContent: "User already exists. Please login.",
+  msgPasswordNoMatchTitle: "Error!",
+  msgPasswordNoMatchContent:
+    "Entered passwords did not match. Please try again."
 };
 
 export const MOBILE_NUMBER_EXISTS = "MOBILE_NUMBER_EXISTS";
