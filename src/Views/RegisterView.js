@@ -163,7 +163,7 @@ class RegisterView extends React.Component {
             <View>
               <Form>
                 <Item style={[styles.inputMargin]}>
-                  <Label>Full name</Label>
+                  {/* <Label>Full name</Label> */}
                   <Input
                     onChangeText={value =>
                       this.setState({
@@ -173,14 +173,15 @@ class RegisterView extends React.Component {
                     }
                     autoCapitalize={"words"}
                     autoFocus
+                    placeholder="Full name"
                   />
                 </Item>
                 <Item style={[styles.inputMargin, { marginTop: 10 }]}>
-                  <Label>Date of birth</Label>
+                  {/* <Label>Date of birth</Label> */}
                   <DatePicker
                     date={this.state.dob}
                     mode="date"
-                    placeholder="Select date"
+                    placeholder="Date of Birth"
                     format="DD-MM-YYYY"
                     maxDate={new Date()}
                     customStyles={{
@@ -200,17 +201,18 @@ class RegisterView extends React.Component {
                   />
                 </Item>
                 <Item style={[styles.inputMargin]}>
-                  <Label>Email</Label>
+                  {/* <Label>Email</Label> */}
                   <Input
                     keyboardType="email-address"
                     onChangeText={value =>
                       this.setState({ email: value.trim() })
                     }
                     autoCapitalize={"none"}
+                    placeholder="Email"
                   />
                 </Item>
                 <Item style={[styles.inputMargin]}>
-                  <Label>Mobile</Label>
+                  {/* <Label>Mobile</Label> */}
                   <Input
                     keyboardType={
                       Platform.OS === "ios" ? "number-pad" : "numeric"
@@ -218,30 +220,46 @@ class RegisterView extends React.Component {
                     onChangeText={value =>
                       this.setState({ mobile: value.trim() })
                     }
+                    placeholder="Mobile number"
                   />
                 </Item>
                 <Item style={[styles.inputMargin]}>
-                  <Label>Password</Label>
+                  {/* <Label>Password</Label> */}
                   <Input
                     secureTextEntry={true}
                     onChangeText={value =>
                       this.setState({ password: value.trim() })
                     }
                     autoCapitalize={"none"}
+                    placeholder="Password"
                   />
                 </Item>
                 <Item style={[styles.inputMargin]}>
-                  <Label>Confirm Password</Label>
+                  {/* <Label>Confirm Password</Label> */}
                   <Input
                     secureTextEntry={true}
                     onChangeText={value =>
                       this.setState({ confirmPassword: value.trim() })
                     }
                     autoCapitalize={"none"}
+                    placeholder="Confirm Password"
                   />
                 </Item>
               </Form>
             </View>
+            
+            <View style={styles.btnView}>
+              <Button
+                style={[styles.registerBtn, { width: "35%" }]}
+                // {[styles.registerBtn, styles.widthStyle]}
+                full
+                onPress={this.handleRegister}
+              >
+                <Text style={styles.btnText}>REGISTER</Text>
+              </Button>
+            </View>
+
+
             <View style={{ paddingTop: 20 }}>
               <Text style={styles.textSize}>
                 By clicking "REGISTER", I confirm that I have read and agreed to
@@ -261,15 +279,7 @@ class RegisterView extends React.Component {
                 </Text>
               </Text>
             </View>
-            <View style={styles.btnView}>
-              <Button
-                style={[styles.registerBtn, styles.widthStyle]}
-                full
-                onPress={this.handleRegister}
-              >
-                <Text style={styles.btnText}>REGISTER</Text>
-              </Button>
-            </View>
+            
             <Spinner
               visible={this.state.spinner}
               textStyle={{ color: white }}
@@ -308,7 +318,9 @@ const styles = StyleSheet.create({
     alignItems: "center"
   },
   registerBtn: {
-    backgroundColor: secondary
+    backgroundColor: secondary,
+    borderRadius: 25,
+    backgroundColor: "#007981"
   },
   btnText: {
     color: primary
@@ -331,7 +343,7 @@ const styles = StyleSheet.create({
     width: "100%"
   },
   inputMargin: {
-    marginLeft: 0
+    marginLeft: 4
   },
   linkText: {
     color: secondaryDark
