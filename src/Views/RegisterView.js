@@ -10,7 +10,13 @@ import {
   Button,
   Label
 } from "native-base";
-import { primary, secondary, onPrimary, secondaryDark } from "../Config/Colors";
+import {
+  primary,
+  secondary,
+  onPrimary,
+  secondaryDark,
+  white
+} from "../Config/Colors";
 import { DatePicker } from "../Components/Datepicker/Datepicker";
 import { connect } from "react-redux";
 import {
@@ -27,6 +33,7 @@ import ApiService from "../Services/ApiService";
 import { DBService } from "../Services/DBService";
 import * as Actions from "../Actions";
 import Spinner from "react-native-loading-spinner-overlay";
+import { toUpperCaseFirstOfEachWord } from "../Commons/Utils";
 
 class RegisterView extends React.Component {
   constructor(props) {
@@ -81,7 +88,9 @@ class RegisterView extends React.Component {
           {
             spinner: false,
             emailVerificationStatus: res.emailVerificationStatus,
-            mobileVerificationStatus: res.mobileVerificationStatus
+            mobileVerificationStatus: res.mobileVerificationStatus,
+            firstName: toUpperCaseFirstOfEachWord(firstName),
+            lastName: toUpperCaseFirstOfEachWord(lastName)
           },
           () => {
             this.saveUserRegistrationData();
@@ -263,7 +272,7 @@ class RegisterView extends React.Component {
             </View>
             <Spinner
               visible={this.state.spinner}
-              textStyle={{ color: "#fff" }}
+              textStyle={{ color: white }}
             />
           </View>
         </Content>

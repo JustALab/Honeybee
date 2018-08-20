@@ -11,7 +11,12 @@ import {
 } from "react-native";
 import { connect } from "react-redux";
 import Spinner from "react-native-loading-spinner-overlay";
-import { secondary, secondaryDark, secondaryLight } from "../Config/Colors";
+import {
+  secondary,
+  secondaryDark,
+  secondaryLight,
+  white
+} from "../Config/Colors";
 import {
   STRINGS,
   VERIFIED,
@@ -271,7 +276,7 @@ class MobileVerificationView extends React.Component {
           {this.renderFooter()}
         </View>
 
-        <Spinner visible={this.state.spinner} textStyle={{ color: "#fff" }} />
+        <Spinner visible={this.state.spinner} textStyle={{ color: white }} />
       </KeyboardAvoidingView>
     );
   }

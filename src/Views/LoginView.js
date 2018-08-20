@@ -25,7 +25,8 @@ import {
   secondary,
   onPrimary,
   secondaryDark,
-  iconInactive
+  iconInactive,
+  logoTeal
 } from "../Config/Colors";
 import { STRINGS, VIEW_REGISTER, VIEW_MAIN } from "../Config/Strings";
 import { DBService } from "../Services/DBService";
@@ -220,7 +221,7 @@ const styles = StyleSheet.create({
   signInBtn: {
     backgroundColor: secondary,
     borderRadius: 25,
-    backgroundColor: "#007981"
+    backgroundColor: logoTeal
   },
   btnText: {
     color: primary,
