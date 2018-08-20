@@ -94,10 +94,6 @@ class MobileVerificationView extends React.Component {
     this.setState({ spinner: false }, () => {
       setTimeout(() => {
         if (res === SUCCESS) {
-          Alert.alert(
-            STRINGS.msgMobileNumberUpdatedTitle,
-            STRINGS.msgMobileNumberUpdatedContent
-          );
           DBService.updateMobileNumber(this.state.textValue);
           let updatedUserRegistrationData = this.props.userData;
           updatedUserRegistrationData.mobile = this.state.textValue;

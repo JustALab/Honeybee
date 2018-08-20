@@ -2,8 +2,8 @@ import React from "react";
 import { NetInfo, Alert } from "react-native";
 import SplashView from "./SplashView";
 import { createSwitchNavigator } from "react-navigation";
-import { Login } from "./Login";
-import { MainView } from "./MainView";
+import LoginNavigator from "../Navigators/LoginNavigator";
+import MainNavigator from "../Navigators/MainNavigator";
 import { connect } from "react-redux";
 import * as Actions from "../Actions";
 import { STRINGS } from "../Config/Strings";
@@ -54,12 +54,8 @@ const AppRoutes = createSwitchNavigator(
     splash: {
       screen: SplashView
     },
-    login: {
-      screen: Login
-    },
-    mainView: {
-      screen: MainView
-    }
+    login: LoginNavigator,
+    mainView: MainNavigator
   },
   {
     initialRouteName: "splash",

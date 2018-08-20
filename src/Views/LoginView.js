@@ -79,6 +79,7 @@ class LoginView extends React.Component {
             console.log("Login success! Token: " + token);
             this.props.setAuthToken(token);
             DBService.insertIntoLoginData(this.state.mobile, token);
+            this.setState({ isLoading: false });
             this.props.navigation.navigate(VIEW_MAIN);
           } else {
             this.setState({ loginButtonDisable: false, isLoading: false });

@@ -89,8 +89,8 @@ class RegisterView extends React.Component {
             spinner: false,
             emailVerificationStatus: res.emailVerificationStatus,
             mobileVerificationStatus: res.mobileVerificationStatus,
-            firstName: toUpperCaseFirstOfEachWord(firstName),
-            lastName: toUpperCaseFirstOfEachWord(lastName)
+            firstName: toUpperCaseFirstOfEachWord(this.state.firstName),
+            lastName: toUpperCaseFirstOfEachWord(this.state.lastName)
           },
           () => {
             this.saveUserRegistrationData();
