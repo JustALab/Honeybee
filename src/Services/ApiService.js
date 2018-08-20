@@ -46,7 +46,7 @@ export default (ApiService = {
         callback(res.data);
       })
       .catch(err => {
-        console.log("Fetching customer data failure");
+        console.log("Fetching customer data failure: " + err.message);
         callback(null);
       });
   },
