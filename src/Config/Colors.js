@@ -8,6 +8,8 @@ export const secondaryLight = "#5ddef4";
 export const secondaryDark = "#007c91";
 export const onSecondary = "#000000";
 
+export const background1 = "#f4f6f7";
+
 export const iconInactive = "#b0bec5";
 export const iconActive = "#26a69a";
 

@@ -61,3 +61,5 @@ export const VIEW_SHOP = "shop";
 export const VIEW_CART = "cart";
 export const VIEW_ORDERS = "orders";
 export const VIEW_PROFILE = "profile";
+export const VIEW_PROFILE_TERMS = "profileTerms";
+export const VIEW_PROFILE_PRIVACY = "profilePrivacyPolicy";
