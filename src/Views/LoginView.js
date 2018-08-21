@@ -70,36 +70,50 @@ class LoginView extends React.Component {
   handleLogin = () => {
     if (this.validateFields()) {
       //diable login button
-      this.setState({ loginButtonDisable: true, spinner: true });
-      let loginPayload = {
-        username: this.state.mobile,
-        password: this.state.password
-      };
-      if (this.props.isNetworkConnected) {
-        ApiService.login(loginPayload, token => {
-          if (token !== null) {
-            console.log("Login success! Token: " + token);
-            this.props.setAuthToken(token);
-            DBService.insertIntoLoginData(this.state.mobile, token);
-            this.setState({ spinner: false });
-            this.props.navigation.navigate(VIEW_MAIN);
-          } else {
-            this.setState({ loginButtonDisable: false, spinner: false });
-            console.log("Login failure.");
-            Alert.alert(
-              STRINGS.msgIncorrectCredentialsTitle,
-              STRINGS.msgIncorrectCredentialsContent
-            );
-          }
-        });
-      } else {
-        console.log("No internet connectivity.");
-        this.setState({ loginButtonDisable: false, spinner: false });
-        Alert.alert(
-          STRINGS.msgNoConnectivityTitle,
-          STRINGS.msgNoConnectivityContent
-        );
-      }
+      this.setState({ loginButtonDisable: true, spinner: true }, () => {
+        if (this.props.isNetworkConnected) {
+          ApiService.login(
+            {
+              username: this.state.mobile,
+              password: this.state.password
+            },
+            token => {
+              if (token !== null) {
+                console.log("Login success! Token: " + token);
+                this.props.setAuthToken(token);
+                DBService.insertIntoLoginData(this.state.mobile, token);
+                this.setState({ spinner: false });
+                this.props.navigation.navigate(VIEW_MAIN);
+              } else {
+                this.setState(
+                  { loginButtonDisable: false, spinner: false },
+                  () =>
+                    setTimeout(() => {
+                      console.log("Login failure.");
+                      Alert.alert(
+                        STRINGS.msgIncorrectCredentialsTitle,
+                        STRINGS.msgIncorrectCredentialsContent
+                      );
+                    }, 10)
+                );
+              }
+            }
+          );
+        } else {
+          console.log("No internet connectivity.");
+          this.setState(
+            { loginButtonDisable: false, spinner: false },
+            () =>
+              setTimeout(() => {
+                Alert.alert(
+                  STRINGS.msgNoConnectivityTitle,
+                  STRINGS.msgNoConnectivityContent
+                );
+              }),
+            10
+          );
+        }
+      });
     }
   };
 
