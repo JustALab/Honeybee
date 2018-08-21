@@ -3,7 +3,12 @@ import { Alert, StyleSheet, View } from "react-native";
 import { Container, Content, Text, Button } from "native-base";
 import { HeaderLab } from "../Components/HeaderLab";
 import { FooterLab } from "../Components/FooterLab";
-import { STRINGS, VIEW_LOGIN, VIEW_TERMS } from "../Config/Strings";
+import {
+  STRINGS,
+  VIEW_LOGIN,
+  VIEW_TERMS,
+  VIEW_PROFILE_LOGIN
+} from "../Config/Strings";
 import { ICONS } from "../Config/Icons";
 import { DBService } from "../Services/DBService";
 import { connect } from "react-redux";
@@ -99,7 +104,7 @@ class ProfileView extends React.Component {
           <Button
             onPress={() => {
               DBService.unsetLoggedInStatus();
-              this.props.navigation.navigate(VIEW_LOGIN);
+              this.props.navigation.navigate(VIEW_PROFILE_LOGIN);
             }}
           >
             <Text>Sign Out</Text>
