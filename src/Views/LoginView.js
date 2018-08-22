@@ -82,8 +82,11 @@ class LoginView extends React.Component {
                 console.log("Login success! Token: " + token);
                 this.props.setAuthToken(token);
                 DBService.insertIntoLoginData(this.state.mobile, token);
-                this.setState({ spinner: false });
-                this.props.navigation.navigate(VIEW_MAIN);
+                //enable login button here because when logout pressed from profile, login view will be displayed with login button disabled.
+                this.setState(
+                  { spinner: false, loginButtonDisable: false },
+                  () => this.props.navigation.navigate(VIEW_MAIN)
+                );
               } else {
                 this.setState(
                   { loginButtonDisable: false, spinner: false },
