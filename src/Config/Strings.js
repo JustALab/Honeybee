@@ -65,4 +65,3 @@ export const VIEW_ORDERS = "orders";
 export const VIEW_PROFILE = "profile";
 export const VIEW_PROFILE_TERMS = "profileTerms";
 export const VIEW_PROFILE_PRIVACY = "profilePrivacyPolicy";
-export const VIEW_PROFILE_LOGIN = "profieLogin";

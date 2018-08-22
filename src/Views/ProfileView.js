@@ -5,7 +5,6 @@ import { HeaderLab } from "../Components/HeaderLab";
 import { FooterLab } from "../Components/FooterLab";
 import {
   STRINGS,
-  VIEW_PROFILE_LOGIN,
   VIEW_PROFILE_PRIVACY,
   VIEW_PROFILE_TERMS,
   VIEW_LOGIN
