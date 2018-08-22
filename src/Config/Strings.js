@@ -37,7 +37,9 @@ export const STRINGS = {
   msgUserExistsContent: "User already exists. Please login.",
   msgPasswordNoMatchTitle: "Error!",
   msgPasswordNoMatchContent:
-    "Entered passwords did not match. Please try again."
+    "Entered passwords did not match. Please try again.",
+  areYouSure: "Are you sure?",
+  confirm: "Confirm"
 };
 
 export const MOBILE_NUMBER_EXISTS = "MOBILE_NUMBER_EXISTS";

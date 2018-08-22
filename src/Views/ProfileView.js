@@ -5,9 +5,9 @@ import { HeaderLab } from "../Components/HeaderLab";
 import { FooterLab } from "../Components/FooterLab";
 import {
   STRINGS,
-  VIEW_LOGIN,
-  VIEW_TERMS,
-  VIEW_PROFILE_LOGIN
+  VIEW_PROFILE_LOGIN,
+  VIEW_PROFILE_PRIVACY,
+  VIEW_PROFILE_TERMS
 } from "../Config/Strings";
 import { ICONS } from "../Config/Icons";
 import { DBService } from "../Services/DBService";
@@ -23,8 +23,11 @@ class ProfileView extends React.Component {
     super(props);
     this.state = {
       spinner: false,
-      dataReady: false
+      dataReady: false,
+      customerAddresses: []
     };
+    this.handleLogOut = this.handleLogOut.bind(this);
+    this.deleteAddress = this.deleteAddress.bind(this);
   }
 
   componentDidMount() {
@@ -37,7 +40,11 @@ class ProfileView extends React.Component {
           ApiService.getCustomerData(this.props.authToken, data => {
             console.log(data);
             this.props.setCustomerData(data);
-            this.setState({ spinner: false, dataReady: true });
+            this.setState({
+              spinner: false,
+              dataReady: true,
+              customerAddresses: data.customerAddressList
+            });
           });
         });
       } else {
@@ -47,7 +54,25 @@ class ProfileView extends React.Component {
           STRINGS.msgNoConnectivityContent
         );
       }
+    } else {
+      this.setState({
+        customerAddresses: this.props.customerData.customerAddressList
+      });
     }
+  }
+
+  handleLogOut() {
+    Alert.alert(STRINGS.confirm, STRINGS.areYouSure, [
+      {
+        text: "Yes",
+        onPress: () => {
+          DBService.unsetLoggedInStatus();
+          this.props.navigation.navigate(VIEW_PROFILE_LOGIN);
+          console.log("Logging out.");
+        }
+      },
+      { text: "No" }
+    ]);
   }
 
   renderAvatarTexts() {
@@ -71,14 +96,59 @@ class ProfileView extends React.Component {
     );
   }
 
+  renderAddressList() {
+    const addressList = this.state.customerAddresses;
+    return (
+      <View style={styles.addressList}>
+        <List>
+          {addressList.map(address => (
+            <ListItem
+              key={address.addressId}
+              title={address.deliveryAddressType}
+              subtitle={address.address}
+              subtitleNumberOfLines={4}
+              rightIcon={{ name: ICONS.delete }}
+              onPressRightIcon={() => this.deleteAddress(address.addressId)}
+            />
+          ))}
+        </List>
+      </View>
+    );
+  }
+
+  deleteAddress(addressId) {
+    Alert.alert(STRINGS.confirm, STRINGS.areYouSure, [
+      {
+        text: "Yes",
+        onPress: () => {
+          let addressList = this.state.customerAddresses;
+          for (let index = 0; index < addressList.length; index++) {
+            if (addressList[index].addressId === addressId) {
+              addressList.splice(index, 1);
+              break;
+            }
+          }
+          ApiService.deleteCustomerAddress(this.props.authToken, addressId);
+          this.setState({ customerAddresses: addressList }, () => {
+            let customerData = this.props.customerData;
+            customerData.customerAddressList = addressList;
+            this.props.setCustomerData(customerData);
+          });
+        }
+      },
+      { text: "No" }
+    ]);
+  }
+
   renderFunctionList() {
     return (
       <View>
         <List>
           <ListItem
-            key="terms"
-            title="Terms & Conditions"
-            onPress={() => this.props.navigation.navigate("profileTerms")}
+            key="logOut"
+            hideChevron
+            title="Log Out"
+            onPress={this.handleLogOut}
           />
         </List>
       </View>
@@ -89,7 +159,7 @@ class ProfileView extends React.Component {
     return (
       <Container>
         <HeaderLab title={STRINGS.profile} leftButton={ICONS.menu} />
-        <Content>
+        <Content style={styles.content} scrollEnabled={false}>
           <View style={styles.avatarView}>
             <Avatar
               large
@@ -100,15 +170,8 @@ class ProfileView extends React.Component {
             />
             {this.state.dataReady && this.renderAvatarTexts()}
           </View>
+          {this.state.dataReady && this.renderAddressList()}
           {this.renderFunctionList()}
-          <Button
-            onPress={() => {
-              DBService.unsetLoggedInStatus();
-              this.props.navigation.navigate(VIEW_PROFILE_LOGIN);
-            }}
-          >
-            <Text>Sign Out</Text>
-          </Button>
           <Spinner visible={this.state.spinner} textStyle={{ color: white }} />
         </Content>
         <FooterLab activeButton={STRINGS.profile} {...this.props} />
@@ -132,6 +195,9 @@ export default connect(
 )(ProfileView);
 
 const styles = StyleSheet.create({
+  content: {
+    backgroundColor: background1
+  },
   avatarView: {
     flex: 1,
     justifyContent: "center",
@@ -156,5 +222,8 @@ const styles = StyleSheet.create({
   avatarTextView: {
     justifyContent: "center",
     alignItems: "center"
+  },
+  addressList: {
+    marginTop: -15
   }
 });

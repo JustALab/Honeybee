@@ -6,7 +6,8 @@ import {
   URL_SIGNUP_CUSTOMER,
   URL_VERIFY_MOBILE_NUMBER,
   URL_RESEND_VERIFICATION_CODE,
-  URL_UPDATE_MOBILE_ON_SIGNUP
+  URL_UPDATE_MOBILE_ON_SIGNUP,
+  URL_DELETE_CUST_ADDR
 } from "../Config/Server";
 
 export default (ApiService = {
@@ -91,5 +92,16 @@ export default (ApiService = {
         console.log("Update mobile on signup error: " + err.message);
         callback(null);
       });
+  },
+
+  deleteCustomerAddress: (token, addressId) => {
+    axios
+      .delete(HOST + URL_DELETE_CUST_ADDR + addressId, {
+        headers: ApiService.buildAuthHeader(token)
+      })
+      .then(() => console.log("Successfully deleted customer address/"))
+      .catch(err =>
+        console.log("Error deleting customer address: " + err.message)
+      );
   }
 });

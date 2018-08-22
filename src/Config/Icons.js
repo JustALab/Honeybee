@@ -14,5 +14,6 @@ export const ICONS = {
     lock: 'lock-open-outline',
     signup: 'user-follow',
     forgotPassword: 'question',
-    mobile: "mobile"
+    mobile: "mobile",
+    delete: "delete"
 };

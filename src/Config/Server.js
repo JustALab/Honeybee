@@ -7,3 +7,4 @@ export const URL_SIGNUP_CUSTOMER = "/signup/customer";
 export const URL_VERIFY_MOBILE_NUMBER = "/signup/verifyMobile";
 export const URL_RESEND_VERIFICATION_CODE = "/signup/resendVerificationCode/";
 export const URL_UPDATE_MOBILE_ON_SIGNUP = "/signup/updateMobileOnSignup";
+export const URL_DELETE_CUST_ADDR = "/customer/deleteAddress/";
