@@ -1,7 +1,17 @@
 import React from "react";
-import { Alert, StyleSheet, View } from "react-native";
-import { Container, Content, Text, Button } from "native-base";
-import { HeaderLab } from "../Components/HeaderLab";
+import { Alert, StyleSheet, View, TouchableOpacity } from "react-native";
+import {
+  Container,
+  Content,
+  Text,
+  Button,
+  Header,
+  Right,
+  Body,
+  Title,
+  Left,
+  ActionSheet
+} from "native-base";
 import { FooterLab } from "../Components/FooterLab";
 import {
   STRINGS,
@@ -17,6 +27,17 @@ import * as Actions from "../Actions";
 import Spinner from "react-native-loading-spinner-overlay";
 import { white, onPrimary, background1 } from "../Config/Colors";
 import { Avatar, List, ListItem } from "react-native-elements";
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+
+const ACTION_SHEET_BUTTONS = [
+  "Change Password",
+  STRINGS.privacyPolicy,
+  STRINGS.termsConditions,
+  "Log Out",
+  "Cancel"
+];
+const CANCEL_INDEX = 4;
+const DESTRUCTIVE_INDEX = 3;
 
 class ProfileView extends React.Component {
   constructor(props) {
@@ -141,25 +162,55 @@ class ProfileView extends React.Component {
     ]);
   }
 
-  renderFunctionList() {
+  renderHeader() {
     return (
-      <View>
-        <List>
-          <ListItem
-            key="logOut"
-            hideChevron
-            title="Log Out"
-            onPress={this.handleLogOut}
-          />
-        </List>
-      </View>
+      <Header>
+        <Left />
+        <Body>
+          <Title style={styles.headerTitle}>Profile</Title>
+        </Body>
+        <Right>
+          <TouchableOpacity
+            onPress={() => {
+              ActionSheet.show(
+                {
+                  options: ACTION_SHEET_BUTTONS,
+                  cancelButtonIndex: CANCEL_INDEX,
+                  destructiveButtonIndex: DESTRUCTIVE_INDEX
+                },
+                buttonIndex => {
+                  switch (buttonIndex) {
+                    case 0:
+                      console.log("Change password clicked.");
+                      break;
+                    case 1:
+                      console.log("Moving to privacy policy.");
+                      this.props.navigation.navigate(VIEW_PROFILE_PRIVACY);
+                      break;
+                    case 2:
+                      console.log("Moving to terms and conditions.");
+                      this.props.navigation.navigate(VIEW_PROFILE_TERMS);
+                      break;
+                    case 3:
+                      console.log("Logging Out");
+                      this.handleLogOut();
+                      break;
+                  }
+                }
+              );
+            }}
+          >
+            <Icon name={ICONS.verticalDots} size={25} />
+          </TouchableOpacity>
+        </Right>
+      </Header>
     );
   }
 
   render() {
     return (
       <Container>
-        <HeaderLab title={STRINGS.profile} leftButton={ICONS.menu} />
+        {this.renderHeader()}
         <Content style={styles.content} scrollEnabled={false}>
           <View style={styles.avatarView}>
             <Avatar
@@ -172,7 +223,6 @@ class ProfileView extends React.Component {
             {this.state.dataReady && this.renderAvatarTexts()}
           </View>
           {this.state.dataReady && this.renderAddressList()}
-          {this.renderFunctionList()}
           <Spinner visible={this.state.spinner} textStyle={{ color: white }} />
         </Content>
         <FooterLab activeButton={STRINGS.profile} {...this.props} />
@@ -198,6 +248,9 @@ export default connect(
 const styles = StyleSheet.create({
   content: {
     backgroundColor: background1
+  },
+  headerTitle: {
+    color: onPrimary
   },
   avatarView: {
     flex: 1,

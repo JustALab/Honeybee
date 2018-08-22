@@ -15,5 +15,6 @@ export const ICONS = {
     signup: 'user-follow',
     forgotPassword: 'question',
     mobile: "mobile",
-    delete: "delete"
+    delete: "delete",
+    verticalDots: "dots-vertical"
 };

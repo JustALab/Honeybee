@@ -4,6 +4,7 @@ import { Provider } from "react-redux";
 import { createStore } from "redux";
 import MainReducer from "./src/Reducers";
 import AppMain from "./src/Views";
+import { Root } from "native-base";
 
 export default class App extends React.Component {
   componentDidMount() {
@@ -22,7 +23,9 @@ export default class App extends React.Component {
   render() {
     return (
       <Provider store={createStore(MainReducer)}>
-        <AppMain />
+        <Root>
+          <AppMain />
+        </Root>
       </Provider>
     );
   }
