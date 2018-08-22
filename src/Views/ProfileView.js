@@ -7,7 +7,8 @@ import {
   STRINGS,
   VIEW_PROFILE_LOGIN,
   VIEW_PROFILE_PRIVACY,
-  VIEW_PROFILE_TERMS
+  VIEW_PROFILE_TERMS,
+  VIEW_LOGIN
 } from "../Config/Strings";
 import { ICONS } from "../Config/Icons";
 import { DBService } from "../Services/DBService";
@@ -62,12 +63,13 @@ class ProfileView extends React.Component {
   }
 
   handleLogOut() {
+    console.log("Log out called.");
     Alert.alert(STRINGS.confirm, STRINGS.areYouSure, [
       {
         text: "Yes",
         onPress: () => {
           DBService.unsetLoggedInStatus();
-          this.props.navigation.navigate(VIEW_PROFILE_LOGIN);
+          this.props.navigation.navigate(VIEW_LOGIN);
           console.log("Logging out.");
         }
       },

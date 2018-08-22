@@ -4,7 +4,6 @@ import { PrivacyPolicyView } from "../Views/PrivacyPolicyView";
 import { TermsConditions } from "../Views/TermsConditions";
 import LoginView from "../Views/LoginView";
 import { STRINGS } from "../Config/Strings";
-import { onPrimary, onSecondary, secondaryDark } from "../Config/Colors";
 
 export default createStackNavigator(
   {
@@ -24,12 +23,6 @@ export default createStackNavigator(
       screen: PrivacyPolicyView,
       navigationOptions: {
         title: STRINGS.privacyPolicy
-      }
-    },
-    profieLogin: {
-      screen: LoginView,
-      navigationOptions: {
-        header: null
       }
     }
   },
