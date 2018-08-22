@@ -18,23 +18,17 @@ export const setNetworkConnStatus = isNetworkConnected => {
   };
 };
 
-export const setUserRegistrationData = userData => {
-  return {
-    type: SET_USER_REGISTRATION_DATA,
-    userData
-  };
-};
+export const setUserRegistrationData = userData => ({
+  type: SET_USER_REGISTRATION_DATA,
+  userData
+});
 
-export const setCustomerId = customerId => {
-  return {
-    type: SET_CUSTOMER_ID,
-    customerId
-  };
-};
+export const setCustomerId = customerId => ({
+  type: SET_CUSTOMER_ID,
+  customerId
+});
 
-export const setCustomerData = customerData => {
-  return {
-    type: SET_CUSTOMER_DATA,
-    customerData
-  };
-};
+export const setCustomerData = customerData => ({
+  type: SET_CUSTOMER_DATA,
+  customerData
+});
