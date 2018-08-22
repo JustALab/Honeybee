@@ -29,16 +29,6 @@ import { white, onPrimary, background1 } from "../Config/Colors";
 import { Avatar, List, ListItem } from "react-native-elements";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
-const ACTION_SHEET_BUTTONS = [
-  "Change Password",
-  STRINGS.privacyPolicy,
-  STRINGS.termsConditions,
-  "Log Out",
-  "Cancel"
-];
-const CANCEL_INDEX = 4;
-const DESTRUCTIVE_INDEX = 3;
-
 class ProfileView extends React.Component {
   constructor(props) {
     super(props);
@@ -163,6 +153,16 @@ class ProfileView extends React.Component {
   }
 
   renderHeader() {
+    const ACTION_SHEET_BUTTONS = [
+      "Change Password",
+      STRINGS.privacyPolicy,
+      STRINGS.termsConditions,
+      "Log Out",
+      "Cancel"
+    ];
+    const CANCEL_INDEX = 4;
+    const DESTRUCTIVE_INDEX = 3;
+
     return (
       <Header>
         <Left />
