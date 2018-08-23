@@ -1,6 +1,6 @@
 export const ICONS = {
     menu: 'ios-menu',
-    close: 'ios-close',
+    close: 'window-close',
     backIos: 'ios-arrow-back',
     backAndroid: 'md-arrow-back',
     cake: 'cake',

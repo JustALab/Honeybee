@@ -1,5 +1,5 @@
 import React from "react";
-import { Alert, StyleSheet, View, TouchableOpacity } from "react-native";
+import { Alert, StyleSheet, View, TouchableOpacity, Modal } from "react-native";
 import {
   Container,
   Content,
@@ -25,9 +25,10 @@ import { connect } from "react-redux";
 import ApiService from "../Services/ApiService";
 import * as Actions from "../Actions";
 import Spinner from "react-native-loading-spinner-overlay";
-import { white, onPrimary, background1 } from "../Config/Colors";
+import { white, onPrimary, background1, secondaryDark } from "../Config/Colors";
 import { Avatar, List, ListItem } from "react-native-elements";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import commonStyles from "../Commons/Styles";
 
 class ProfileView extends React.Component {
   constructor(props) {
@@ -35,7 +36,8 @@ class ProfileView extends React.Component {
     this.state = {
       spinner: false,
       dataReady: false,
-      customerAddresses: []
+      customerAddresses: [],
+      modalVisible: false
     };
     this.handleLogOut = this.handleLogOut.bind(this);
     this.deleteAddress = this.deleteAddress.bind(this);
@@ -152,6 +154,59 @@ class ProfileView extends React.Component {
     ]);
   }
 
+  renderAvatar() {
+    return (
+      <Avatar
+        large
+        rounded
+        source={require("./images/user_avatar.jpg")}
+        onPress={() => console.log("Works!")}
+        activeOpacity={0.7}
+      />
+    );
+  }
+
+  showModal() {
+    this.setState({ modalVisible: true });
+  }
+
+  hideModal() {
+    this.setState({ modalVisible: false });
+  }
+
+  renderChangePasswordModal() {
+    return (
+      <Modal
+        animationType="slide"
+        transparent={false}
+        visible={this.state.modalVisible}
+        presentationStyle="formSheet"
+      >
+        <View>
+          <Header>
+            <Left>
+              <TouchableOpacity onPress={() => this.hideModal()}>
+                <Icon
+                  name={ICONS.close}
+                  size={ICON_SIZE}
+                  style={styles.modalCloseIcon}
+                />
+              </TouchableOpacity>
+            </Left>
+            <Body style={commonStyles.headerBody}>
+              <Title style={commonStyles.headerTitle}>Change Password</Title>
+            </Body>
+            <Right>
+              <TouchableOpacity>
+                <Text style={styles.modalSaveButton}>Save</Text>
+              </TouchableOpacity>
+            </Right>
+          </Header>
+        </View>
+      </Modal>
+    );
+  }
+
   renderHeader() {
     const ACTION_SHEET_BUTTONS = [
       "Change Password",
@@ -167,7 +222,7 @@ class ProfileView extends React.Component {
       <Header>
         <Left />
         <Body>
-          <Title style={styles.headerTitle}>Profile</Title>
+          <Title style={commonStyles.headerTitle}>Profile</Title>
         </Body>
         <Right>
           <TouchableOpacity
@@ -182,6 +237,7 @@ class ProfileView extends React.Component {
                   switch (buttonIndex) {
                     case 0:
                       console.log("Change password clicked.");
+                      this.showModal();
                       break;
                     case 1:
                       console.log("Moving to privacy policy.");
@@ -200,7 +256,7 @@ class ProfileView extends React.Component {
               );
             }}
           >
-            <Icon name={ICONS.verticalDots} size={25} />
+            <Icon name={ICONS.verticalDots} size={ICON_SIZE} />
           </TouchableOpacity>
         </Right>
       </Header>
@@ -213,23 +269,20 @@ class ProfileView extends React.Component {
         {this.renderHeader()}
         <Content style={styles.content} scrollEnabled={false}>
           <View style={styles.avatarView}>
-            <Avatar
-              large
-              rounded
-              source={require("./images/user_avatar.jpg")}
-              onPress={() => console.log("Works!")}
-              activeOpacity={0.7}
-            />
+            {this.renderAvatar()}
             {this.state.dataReady && this.renderAvatarTexts()}
           </View>
           {this.state.dataReady && this.renderAddressList()}
           <Spinner visible={this.state.spinner} textStyle={{ color: white }} />
+          {this.renderChangePasswordModal()}
         </Content>
         <FooterLab activeButton={STRINGS.profile} {...this.props} />
       </Container>
     );
   }
 }
+
+const ICON_SIZE = 25;
 
 const mapStateToProps = state => {
   console.log(state);
@@ -248,9 +301,6 @@ export default connect(
 const styles = StyleSheet.create({
   content: {
     backgroundColor: background1
-  },
-  headerTitle: {
-    color: onPrimary
   },
   avatarView: {
     flex: 1,
@@ -279,5 +329,11 @@ const styles = StyleSheet.create({
   },
   addressList: {
     marginTop: -15
+  },
+  modalSaveButton: {
+    color: secondaryDark
+  },
+  modalCloseIcon: {
+    color: secondaryDark
   }
 });
