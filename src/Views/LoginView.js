@@ -26,7 +26,8 @@ import {
   onPrimary,
   secondaryDark,
   iconInactive,
-  logoTeal
+  logoTeal,
+  white
 } from "../Config/Colors";
 import { STRINGS, VIEW_REGISTER, VIEW_MAIN } from "../Config/Strings";
 import { DBService } from "../Services/DBService";
@@ -34,6 +35,7 @@ import { connect } from "react-redux";
 import ApiService from "../Services/ApiService";
 import * as Actions from "../Actions";
 import * as Animatable from "react-native-animatable";
+import Spinner from "react-native-loading-spinner-overlay";
 
 class LoginView extends React.Component {
   constructor(props) {
@@ -42,7 +44,7 @@ class LoginView extends React.Component {
       mobile: "",
       password: "",
       loginButtonDisable: false,
-      isLoading: false
+      spinner: false
     };
   }
 
@@ -68,36 +70,53 @@ class LoginView extends React.Component {
   handleLogin = () => {
     if (this.validateFields()) {
       //diable login button
-      this.setState({ loginButtonDisable: true, isLoading: true });
-      let loginPayload = {
-        username: this.state.mobile,
-        password: this.state.password
-      };
-      if (this.props.isNetworkConnected) {
-        ApiService.login(loginPayload, token => {
-          if (token !== null) {
-            console.log("Login success! Token: " + token);
-            this.props.setAuthToken(token);
-            DBService.insertIntoLoginData(this.state.mobile, token);
-            this.setState({ isLoading: false });
-            this.props.navigation.navigate(VIEW_MAIN);
-          } else {
-            this.setState({ loginButtonDisable: false, isLoading: false });
-            console.log("Login failure.");
-            Alert.alert(
-              STRINGS.msgIncorrectCredentialsTitle,
-              STRINGS.msgIncorrectCredentialsContent
-            );
-          }
-        });
-      } else {
-        console.log("No internet connectivity.");
-        this.setState({ loginButtonDisable: false, isLoading: false });
-        Alert.alert(
-          STRINGS.msgNoConnectivityTitle,
-          STRINGS.msgNoConnectivityContent
-        );
-      }
+      this.setState({ loginButtonDisable: true, spinner: true }, () => {
+        if (this.props.isNetworkConnected) {
+          ApiService.login(
+            {
+              username: this.state.mobile,
+              password: this.state.password
+            },
+            token => {
+              if (token !== null) {
+                console.log("Login success! Token: " + token);
+                this.props.setAuthToken(token);
+                DBService.insertIntoLoginData(this.state.mobile, token);
+                //enable login button here because when logout pressed from profile, login view will be displayed with login button disabled.
+                this.setState(
+                  { spinner: false, loginButtonDisable: false },
+                  () => this.props.navigation.navigate(VIEW_MAIN)
+                );
+              } else {
+                this.setState(
+                  { loginButtonDisable: false, spinner: false },
+                  () =>
+                    setTimeout(() => {
+                      console.log("Login failure.");
+                      Alert.alert(
+                        STRINGS.msgIncorrectCredentialsTitle,
+                        STRINGS.msgIncorrectCredentialsContent
+                      );
+                    }, 10)
+                );
+              }
+            }
+          );
+        } else {
+          console.log("No internet connectivity.");
+          this.setState(
+            { loginButtonDisable: false, spinner: false },
+            () =>
+              setTimeout(() => {
+                Alert.alert(
+                  STRINGS.msgNoConnectivityTitle,
+                  STRINGS.msgNoConnectivityContent
+                );
+              }),
+            10
+          );
+        }
+      });
     }
   };
 
@@ -114,13 +133,6 @@ class LoginView extends React.Component {
             behavior="padding"
             enabled
           >
-            {/* <View style={styles.imageView}>
-                <Image
-                  style={styles.image}
-                  resizeMode={"contain"}
-                  source={require("./images/hc_300.png")}
-                />
-              </View> */}
             <Animatable.View animation="slideInUp" style={styles.imageView}>
               <Image
                 style={styles.image}
@@ -142,6 +154,7 @@ class LoginView extends React.Component {
                       }
                       autoCapitalize="none"
                       maxLength={10}
+                      value={this.state.mobile}
                     />
                     <FaIcon
                       size={iconsSize + 8}
@@ -157,6 +170,7 @@ class LoginView extends React.Component {
                         this.setState({ password: value.trim() })
                       }
                       autoCapitalize="none"
+                      value={this.state.password}
                     />
                     <Icon
                       size={iconsSize}
@@ -177,12 +191,6 @@ class LoginView extends React.Component {
                 </Button>
               </View>
               <View style={styles.linksView}>
-                {/* <Animatable.Text
-                animation="fadeIn"
-                iterationCount="infinite"
-                direction="alternate-reverse"
-                
-              /> */}
                 <Text
                   style={[styles.text, { color: secondaryDark }]}
                   onPress={() => this.props.navigation.navigate(VIEW_REGISTER)}
@@ -194,11 +202,7 @@ class LoginView extends React.Component {
               </View>
             </Animatable.View>
           </KeyboardAvoidingView>
-          {this.state.isLoading && (
-            <View style={styles.spinner}>
-              <ActivityIndicator size="large" color={secondaryDark} />
-            </View>
-          )}
+          <Spinner visible={this.state.spinner} textStyle={{ color: white }} />
         </Content>
       </Container>
     );
@@ -257,15 +261,6 @@ const styles = StyleSheet.create({
   },
   inputMargin: {
     marginLeft: 0
-  },
-  spinner: {
-    position: "absolute",
-    left: 0,
-    right: 0,
-    top: 0,
-    bottom: 0,
-    alignItems: "center",
-    justifyContent: "center"
   },
   iconColor: {
     color: iconInactive

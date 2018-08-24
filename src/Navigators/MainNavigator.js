@@ -3,7 +3,7 @@ import { CakesView } from "../Views/CakesView";
 import { ShopView } from "../Views/ShopView";
 import { CartView } from "../Views/CartView";
 import { OrdersView } from "../Views/OrdersView";
-import ProfileView from "../Views/ProfileView";
+import ProfileNavigator from "../Navigators/ProfileNavigator";
 
 export default createSwitchNavigator(
   {
@@ -20,7 +20,7 @@ export default createSwitchNavigator(
       screen: OrdersView
     },
     profile: {
-      screen: ProfileView
+      screen: ProfileNavigator
     }
   },
   {

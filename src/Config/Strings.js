@@ -37,7 +37,9 @@ export const STRINGS = {
   msgUserExistsContent: "User already exists. Please login.",
   msgPasswordNoMatchTitle: "Error!",
   msgPasswordNoMatchContent:
-    "Entered passwords did not match. Please try again."
+    "Entered passwords did not match. Please try again.",
+  areYouSure: "Are you sure?",
+  confirm: "Confirm"
 };
 
 export const MOBILE_NUMBER_EXISTS = "MOBILE_NUMBER_EXISTS";
@@ -61,3 +63,5 @@ export const VIEW_SHOP = "shop";
 export const VIEW_CART = "cart";
 export const VIEW_ORDERS = "orders";
 export const VIEW_PROFILE = "profile";
+export const VIEW_PROFILE_TERMS = "profileTerms";
+export const VIEW_PROFILE_PRIVACY = "profilePrivacyPolicy";

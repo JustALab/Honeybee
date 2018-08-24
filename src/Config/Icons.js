@@ -1,6 +1,6 @@
 export const ICONS = {
     menu: 'ios-menu',
-    close: 'ios-close',
+    close: 'window-close',
     backIos: 'ios-arrow-back',
     backAndroid: 'md-arrow-back',
     cake: 'cake',
@@ -14,5 +14,7 @@ export const ICONS = {
     lock: 'lock-open-outline',
     signup: 'user-follow',
     forgotPassword: 'question',
-    mobile: "mobile"
+    mobile: "mobile",
+    delete: "delete",
+    verticalDots: "dots-vertical"
 };

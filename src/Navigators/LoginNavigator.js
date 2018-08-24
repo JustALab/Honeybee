@@ -7,6 +7,7 @@ import { STRINGS } from "../Config/Strings";
 import { secondaryDark } from "../Config/Colors";
 import MainNavigator from "./MainNavigator";
 import MobileVerificationView from "../Views/MobileVerificationView";
+import commonStyles from "../Commons/Styles";
 
 export default createStackNavigator(
   {
@@ -25,20 +26,22 @@ export default createStackNavigator(
     privacy: {
       screen: PrivacyPolicyView,
       navigationOptions: {
-        title: STRINGS.privacyPolicy
+        title: STRINGS.privacyPolicy,
+        headerTitleStyle: commonStyles.headerNavigatorTitle
       }
     },
     terms: {
       screen: TermsConditions,
       navigationOptions: {
-        title: STRINGS.termsConditions
+        title: STRINGS.termsConditions,
+        headerTitleStyle: commonStyles.headerNavigatorTitle
       }
     },
     mobileVerification: {
       screen: MobileVerificationView,
       navigationOptions: {
         title: STRINGS.mobileVerification,
-        headerLeft: null
+        headerTitleStyle: commonStyles.headerNavigatorTitle
       }
     },
     mainView: {
@@ -55,7 +58,8 @@ export default createStackNavigator(
       headerTitleStyle: {
         color: secondaryDark,
         alignItems: "center"
-      }
+      },
+      headerBackTitle: null
     }
   }
 );
