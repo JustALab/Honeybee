@@ -81,6 +81,7 @@ class ProfileView extends React.Component {
         text: "Yes",
         onPress: () => {
           DBService.unsetLoggedInStatus();
+          this.props.setCustomerData(null);
           this.props.navigation.navigate(VIEW_LOGIN);
           console.log("Logging out.");
         }
@@ -90,24 +91,28 @@ class ProfileView extends React.Component {
   }
 
   renderAvatarTexts() {
-    return (
-      <View>
-        <View style={styles.avatarTextView}>
-          <Text style={styles.avatarNameText}>
-            {this.props.customerData.firstName}
-          </Text>
+    if(this.props.customerData != null) {
+      return (
+        <View>
+          <View style={styles.avatarTextView}>
+            <Text style={styles.avatarNameText}>
+              {this.props.customerData.firstName}
+            </Text>
+          </View>
+          <View style={[styles.avatarContactView, styles.avatarTextView]}>
+            <Text style={styles.avatarContactText}>
+              {this.props.customerData.mobile}
+            </Text>
+            <Text style={{ color: onPrimary }}> | </Text>
+            <Text style={styles.avatarContactText}>
+              {this.props.customerData.email}
+            </Text>
+          </View>
         </View>
-        <View style={[styles.avatarContactView, styles.avatarTextView]}>
-          <Text style={styles.avatarContactText}>
-            {this.props.customerData.mobile}
-          </Text>
-          <Text style={{ color: onPrimary }}> | </Text>
-          <Text style={styles.avatarContactText}>
-            {this.props.customerData.email}
-          </Text>
-        </View>
-      </View>
-    );
+      );
+    } 
+
+    return <View />;
   }
 
   renderAddressList() {
