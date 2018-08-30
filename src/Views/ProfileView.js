@@ -10,14 +10,18 @@ import {
   Body,
   Title,
   Left,
-  ActionSheet
+  ActionSheet,
+  Input,
+  Item
 } from "native-base";
 import { FooterLab } from "../Components/FooterLab";
 import {
   STRINGS,
   VIEW_PROFILE_PRIVACY,
   VIEW_PROFILE_TERMS,
-  VIEW_LOGIN
+  VIEW_LOGIN,
+  SUCCESS,
+  INCORRECT_OLD_PASSWORD
 } from "../Config/Strings";
 import { ICONS } from "../Config/Icons";
 import { DBService } from "../Services/DBService";
@@ -25,22 +29,38 @@ import { connect } from "react-redux";
 import ApiService from "../Services/ApiService";
 import * as Actions from "../Actions";
 import Spinner from "react-native-loading-spinner-overlay";
-import { white, onPrimary, background1, secondaryDark } from "../Config/Colors";
+import {
+  white,
+  onPrimary,
+  background1,
+  secondaryDark,
+  onSecondary,
+  secondary
+} from "../Config/Colors";
 import { Avatar, List, ListItem } from "react-native-elements";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import commonStyles from "../Commons/Styles";
+import Overlay from "../Components/OverlayModal";
 
 class ProfileView extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       spinner: false,
+      changePasswordSpinner: false,
       dataReady: false,
       customerAddresses: [],
-      modalVisible: false
+      modalVisible: false,
+      oldPassword: "",
+      newPassword: "",
+      confirmNewPassword: "",
+      reponseText: "",
+      isChangePasswordFailure: false,
+      showPasswordErrorMsg: false
     };
     this.handleLogOut = this.handleLogOut.bind(this);
     this.deleteAddress = this.deleteAddress.bind(this);
+    this.handleChangePassword = this.handleChangePassword.bind(this);
   }
 
   componentDidMount() {
@@ -81,6 +101,7 @@ class ProfileView extends React.Component {
         text: "Yes",
         onPress: () => {
           DBService.unsetLoggedInStatus();
+          this.props.setCustomerData(null);
           this.props.navigation.navigate(VIEW_LOGIN);
           console.log("Logging out.");
         }
@@ -90,24 +111,28 @@ class ProfileView extends React.Component {
   }
 
   renderAvatarTexts() {
-    return (
-      <View>
-        <View style={styles.avatarTextView}>
-          <Text style={styles.avatarNameText}>
-            {this.props.customerData.firstName}
-          </Text>
+    if (this.props.customerData != null) {
+      return (
+        <View>
+          <View style={styles.avatarTextView}>
+            <Text style={styles.avatarNameText}>
+              {this.props.customerData.firstName}
+            </Text>
+          </View>
+          <View style={[styles.avatarContactView, styles.avatarTextView]}>
+            <Text style={styles.avatarContactText}>
+              {this.props.customerData.mobile}
+            </Text>
+            <Text style={{ color: onPrimary }}> | </Text>
+            <Text style={styles.avatarContactText}>
+              {this.props.customerData.email}
+            </Text>
+          </View>
         </View>
-        <View style={[styles.avatarContactView, styles.avatarTextView]}>
-          <Text style={styles.avatarContactText}>
-            {this.props.customerData.mobile}
-          </Text>
-          <Text style={{ color: onPrimary }}> | </Text>
-          <Text style={styles.avatarContactText}>
-            {this.props.customerData.email}
-          </Text>
-        </View>
-      </View>
-    );
+      );
+    }
+
+    return <View />;
   }
 
   renderAddressList() {
@@ -174,36 +199,119 @@ class ProfileView extends React.Component {
     this.setState({ modalVisible: false });
   }
 
+  enableDdisableChangePasswordButton() {
+    const { oldPassword, newPassword, confirmNewPassword } = this.state;
+    if (
+      oldPassword.length > 0 &&
+      newPassword.length > 0 &&
+      confirmNewPassword.length > 0
+    ) {
+      return false;
+    }
+    return true;
+  }
+
+  handleChangePassword() {
+    const { oldPassword, newPassword, confirmNewPassword } = this.state;
+    if (newPassword === confirmNewPassword) {
+      this.setState({ showPasswordErrorMsg: false }, () => {
+        this.setState({ changePasswordSpinner: true }, () => {
+          ApiService.changePassword(
+            oldPassword,
+            newPassword,
+            this.props.authToken,
+            res => {
+              console.log(res);
+              this.setState({ changePasswordSpinner: false }, () => {
+                let response = "";
+                if (res === INCORRECT_OLD_PASSWORD) {
+                  response = STRINGS.incorrectOldPassword;
+                  this.setState({
+                    reponseText: response,
+                    showPasswordErrorMsg: true
+                  });
+                } else {
+                  this.setState(
+                    {
+                      showPasswordErrorMsg: false,
+                      modalVisible: false
+                    },
+                    () =>
+                      setTimeout(() => {
+                        Alert.alert(SUCCESS, STRINGS.changePasswordSuccess);
+                      }, 10)
+                  );
+                }
+              });
+            }
+          );
+        });
+      });
+    } else {
+      let response = STRINGS.msgPasswordNoMatchContent;
+      this.setState({ reponseText: response }, () => {
+        this.setState({ showPasswordErrorMsg: true });
+      });
+    }
+  }
+
   renderChangePasswordModal() {
     return (
-      <Modal
-        animationType="slide"
-        transparent={false}
+      <Overlay
         visible={this.state.modalVisible}
-        presentationStyle="formSheet"
+        closeOnTouchOutside
+        onClose={() => this.setState({ modalVisible: false })}
+        animationType="zoomIn"
+        containerStyle={{ backgroundColor: onPrimary }}
+        childrenWrapperStyle={{ backgroundColor: "#eee" }}
+        animationDuration={500}
       >
-        <View>
-          <Header>
-            <Left>
-              <TouchableOpacity onPress={() => this.hideModal()}>
-                <Icon
-                  name={ICONS.close}
-                  size={ICON_SIZE}
-                  style={styles.modalCloseIcon}
-                />
-              </TouchableOpacity>
-            </Left>
-            <Body style={commonStyles.headerBody}>
-              <Title style={commonStyles.headerTitle}>Change Password</Title>
-            </Body>
-            <Right>
-              <TouchableOpacity>
-                <Text style={styles.modalSaveButton}>Save</Text>
-              </TouchableOpacity>
-            </Right>
-          </Header>
+        <View style={styles.changePasswordModalView}>
+          <Item>
+            <Input
+              placeholder="Old Password"
+              onChangeText={value =>
+                this.setState({ oldPassword: value.trim() })
+              }
+              secureTextEntry
+            />
+          </Item>
+          <Item>
+            <Input
+              placeholder="New Password"
+              onChangeText={value =>
+                this.setState({ newPassword: value.trim() })
+              }
+              secureTextEntry
+            />
+          </Item>
+          <Item>
+            <Input
+              placeholder="Confirm New Password"
+              onChangeText={value =>
+                this.setState({ confirmNewPassword: value.trim() })
+              }
+              secureTextEntry
+            />
+          </Item>
+          {this.state.showPasswordErrorMsg && (
+            <View>
+              <Text style={styles.passwordErrorMsg}>
+                {this.state.reponseText}
+              </Text>
+            </View>
+          )}
+          <Button
+            full
+            style={styles.changePasswordButton}
+            disabled={this.enableDdisableChangePasswordButton()}
+            onPress={this.handleChangePassword}
+          >
+            <Text>Change Password</Text>
+          </Button>
+          <Spinner visible={this.state.changePasswordSpinner} />
         </View>
-      </Modal>
+      </Overlay>
     );
   }
 
@@ -273,7 +381,7 @@ class ProfileView extends React.Component {
             {this.state.dataReady && this.renderAvatarTexts()}
           </View>
           {this.state.dataReady && this.renderAddressList()}
-          <Spinner visible={this.state.spinner} textStyle={{ color: white }} />
+          <Spinner visible={this.state.spinner} />
           {this.renderChangePasswordModal()}
         </Content>
         <FooterLab activeButton={STRINGS.profile} {...this.props} />
@@ -335,5 +443,17 @@ const styles = StyleSheet.create({
   },
   modalCloseIcon: {
     color: secondaryDark
+  },
+  changePasswordButton: {
+    backgroundColor: secondary
+  },
+  changePasswordModalView: {
+    width: "100%"
+  },
+  passwordErrorMsg: {
+    color: "red",
+    fontSize: 15,
+    paddingTop: 8,
+    paddingBottom: 8
   }
 });

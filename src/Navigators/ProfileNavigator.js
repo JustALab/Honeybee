@@ -34,7 +34,6 @@ export default createStackNavigator(
     navigationOptions: {
       headerTintColor: secondaryDark,
       headerTitleStyle: {
-        color: secondaryDark,
         alignItems: "center"
       }
     }

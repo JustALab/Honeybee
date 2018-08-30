@@ -39,9 +39,12 @@ export const STRINGS = {
   msgPasswordNoMatchContent:
     "Entered passwords did not match. Please try again.",
   areYouSure: "Are you sure?",
-  confirm: "Confirm"
+  confirm: "Confirm",
+  changePasswordSuccess: "Password changed successfully.",
+  incorrectOldPassword: "Incorrect old password entered. Please try again."
 };
 
+//status
 export const MOBILE_NUMBER_EXISTS = "MOBILE_NUMBER_EXISTS";
 export const USER_EXISTS = "USER_EXISTS";
 export const SUCCESS = "SUCCESS";
@@ -50,6 +53,7 @@ export const NOT_VERIFIED = "NOT_VERIFIED";
 export const VERIFIED = "VERIFIED";
 export const EMAIL_LINKED_WITH_OTHER_MOBILE = "EMAIL_LINKED_WITH_OTHER_MOBILE";
 export const MOBILE_LINKED_WITH_OTHER_EMAIL = "MOBILE_LINKED_WITH_OTHER_EMAIL";
+export const INCORRECT_OLD_PASSWORD = "INCORRECT_OLD_PASSWORD";
 
 //views
 export const VIEW_LOGIN = "login";

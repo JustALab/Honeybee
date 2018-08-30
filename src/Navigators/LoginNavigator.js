@@ -20,7 +20,8 @@ export default createStackNavigator(
     register: {
       screen: RegisterView,
       navigationOptions: {
-        title: STRINGS.register
+        title: STRINGS.register,
+        headerTitleStyle: commonStyles.headerNavigatorTitle
       }
     },
     privacy: {
@@ -56,7 +57,6 @@ export default createStackNavigator(
     navigationOptions: {
       headerTintColor: secondaryDark,
       headerTitleStyle: {
-        color: secondaryDark,
         alignItems: "center"
       },
       headerBackTitle: null
