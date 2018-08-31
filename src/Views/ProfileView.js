@@ -50,7 +50,7 @@ class ProfileView extends React.Component {
       changePasswordSpinner: false,
       dataReady: false,
       customerAddresses: [],
-      modalVisible: false,
+      changePasswordModalVisible: false,
       oldPassword: "",
       newPassword: "",
       confirmNewPassword: "",
@@ -192,11 +192,11 @@ class ProfileView extends React.Component {
   }
 
   showModal() {
-    this.setState({ modalVisible: true });
+    this.setState({ changePasswordModalVisible: true });
   }
 
   hideModal() {
-    this.setState({ modalVisible: false });
+    this.setState({ changePasswordModalVisible: false });
   }
 
   enableDdisableChangePasswordButton() {
@@ -234,7 +234,7 @@ class ProfileView extends React.Component {
                   this.setState(
                     {
                       showPasswordErrorMsg: false,
-                      modalVisible: false
+                      changePasswordModalVisible: false
                     },
                     () =>
                       setTimeout(() => {
@@ -258,9 +258,9 @@ class ProfileView extends React.Component {
   renderChangePasswordModal() {
     return (
       <Overlay
-        visible={this.state.modalVisible}
+        visible={this.state.changePasswordModalVisible}
         closeOnTouchOutside
-        onClose={() => this.setState({ modalVisible: false })}
+        onClose={() => this.setState({ changePasswordModalVisible: false })}
         animationType="zoomIn"
         containerStyle={{ backgroundColor: onPrimary }}
         childrenWrapperStyle={{ backgroundColor: "#eee" }}
