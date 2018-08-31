@@ -23,8 +23,10 @@ import MaterialIcon from "react-native-vector-icons/MaterialIcons";
 import { ICONS } from "../Config/Icons";
 import CommonStyles from "../Commons/Styles";
 import { Col, Grid } from "react-native-easy-grid";
+import { connect } from "react-redux";
+import * as Actions from "../Actions";
 
-export class CakesView extends React.Component {
+class CakesView extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -90,10 +92,7 @@ export class CakesView extends React.Component {
           </TouchableOpacity>
         </Left>
         <Body>
-          <Title style={CommonStyles.headerTitle}>
-            Delivery
-          </Title>
-          >
+          <Title style={CommonStyles.headerTitle}>Delivery</Title>>
         </Body>
         <Right />
       </Header>
@@ -127,6 +126,17 @@ export class CakesView extends React.Component {
     );
   }
 }
+
+const mapStateToProps = state => ({
+  authToken: state.authToken,
+  isNetworkConnected: state.isNetworkConnected,
+  customerData: state.customerData
+});
+
+export default connect(
+  mapStateToProps,
+  Actions
+)(CakesView);
 
 const iconSize = 25;
 const styles = StyleSheet.create({
