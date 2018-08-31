@@ -4,6 +4,7 @@ import { Header, Left, Right, Body, Icon, Title } from "native-base";
 import { ICONS } from "../Config/Icons";
 import { STRINGS } from "../Config/Strings";
 import { primary, secondary, onPrimary } from "../Config/Colors";
+import CommonStyles from "../Commons/Styles";
 
 export class HeaderLab extends React.Component {
   render() {
@@ -22,7 +23,7 @@ export class HeaderLab extends React.Component {
       <Header style={styles.header}>
         <Left>{headerLeftIcon}</Left>
         <Body>
-          <Title style={styles.headerText}>{this.props.title}</Title>
+          <Title style={CommonStyles.headerTitle}>{this.props.title}</Title>
         </Body>
         <Right />
       </Header>
@@ -37,8 +38,5 @@ const styles = StyleSheet.create({
   },
   header: {
     backgroundColor: primary
-  },
-  headerText: {
-    color: onPrimary
   }
 });
