@@ -384,14 +384,11 @@ class ProfileView extends React.Component {
 
 const ICON_SIZE = 25;
 
-const mapStateToProps = state => {
-  console.log(state);
-  return {
-    authToken: state.authToken,
-    isNetworkConnected: state.isNetworkConnected,
-    customerData: state.customerData
-  };
-};
+const mapStateToProps = state => ({
+  authToken: state.authToken,
+  isNetworkConnected: state.isNetworkConnected,
+  customerData: state.customerData
+});
 
 export default connect(
   mapStateToProps,
