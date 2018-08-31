@@ -1,35 +1,128 @@
-import React from 'react';
-import {StyleSheet, View, StatusBar} from 'react-native';
-import {Container, Content, Text, Header, Left, Right, Body, Title} from 'native-base';
-import {FooterLab} from '../Components/FooterLab';
-import { STRINGS } from '../Config/Strings';
-import {primary, onPrimary, iconActive, secondary} from '../Config/Colors';
-import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
-import {ICONS} from '../Config/Icons';
+import React from "react";
+import {
+  StyleSheet,
+  View,
+  StatusBar,
+  Text,
+  TouchableOpacity,
+  Modal
+} from "react-native";
+import {
+  Container,
+  Content,
+  Body,
+  Header,
+  Left,
+  Title,
+  Right
+} from "native-base";
+import { FooterLab } from "../Components/FooterLab";
+import { STRINGS } from "../Config/Strings";
+import { primary, onPrimary, iconActive, secondary } from "../Config/Colors";
+import MaterialIcon from "react-native-vector-icons/MaterialIcons";
+import { ICONS } from "../Config/Icons";
+import CommonStyles from "../Commons/Styles";
+import { Col, Grid } from "react-native-easy-grid";
 
 export class CakesView extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      locationTimeModalVisible: false,
+      selectedAddress: "Choose your location...",
+      selectedAddressType: "",
+      selectedDate: "",
+      selectedTime: "ASAP"
+    };
+  }
+
+  renderHeader() {
+    return (
+      <TouchableOpacity
+        onPress={() => this.setState({ locationTimeModalVisible: true })}
+      >
+        <Header>
+          <Body style={styles.headerBody}>
+            <Grid>
+              <Col size={75} style={styles.locationViewCol}>
+                <View style={styles.locationView}>
+                  <MaterialIcon
+                    name={ICONS.location}
+                    size={iconSize}
+                    style={[styles.headerIcon, { marginTop: 6 }]}
+                  />
+                  <Text style={styles.headerLocationText}>
+                    {this.state.selectedAddress}
+                  </Text>
+                </View>
+              </Col>
+              <Col size={25} style={styles.timeViewCol}>
+                <View style={styles.timeView}>
+                  <MaterialIcon
+                    name={ICONS.time}
+                    size={iconSize}
+                    style={styles.headerIcon}
+                  />
+                  <Text style={[styles.headerTimeText]}>
+                    {this.state.selectedTime}
+                  </Text>
+                </View>
+              </Col>
+            </Grid>
+          </Body>
+        </Header>
+      </TouchableOpacity>
+    );
+  }
+
+  renderModalHeader() {
+    return (
+      <Header>
+        <Left>
+          <TouchableOpacity
+            onPress={() => this.setState({ locationTimeModalVisible: false })}
+          >
+            <MaterialIcon
+              name={STRINGS.close}
+              size={25}
+              style={styles.modalCloseIcon}
+            />
+          </TouchableOpacity>
+        </Left>
+        <Body>
+          <Title style={CommonStyles.headerTitle}>
+            Delivery
+          </Title>
+          >
+        </Body>
+        <Right />
+      </Header>
+    );
+  }
+
+  renderLocationTimeModal() {
+    return (
+      <Modal
+        animationType="slide"
+        transparent={false}
+        visible={this.state.locationTimeModalVisible}
+        onRequestClose={() => {
+          this.setState({ locationTimeModalVisible: false });
+        }}
+      >
+        <View>{this.renderModalHeader()}</View>
+      </Modal>
+    );
+  }
+
   render() {
     return (
       <Container>
-        <StatusBar barStyle='dark-content' backgroundColor='black' />
-        <Header style={styles.header}>
-          <Left >
-            <MaterialIcon name={ICONS.location} size={iconSize} style={styles.headerLeftIcon}/>
-          </Left>
-          <Body>
-            <Title style={styles.headerTitle}>10, Techno Park, Karapakkam</Title>
-          </Body>
-          <Right>
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <MaterialIcon name={ICONS.time} size={iconSize} style={styles.rightIcon}/>
-              <Text style={styles.headerTimeColor}>27, July</Text>
-            </View>
-          </Right>
-        </Header>
-        <Content>
-            <Text>{STRINGS.cakes}</Text>
-        </Content>
-        <FooterLab activeButton={STRINGS.cakes} {...this.props}/>
+        <StatusBar barStyle="dark-content" backgroundColor="black" />
+        {this.renderHeader()}
+        <Content style={CommonStyles.statusBarMargin} />
+        {this.renderLocationTimeModal()}
+        <FooterLab activeButton={STRINGS.cakes} {...this.props} />
       </Container>
     );
   }
@@ -37,24 +130,46 @@ export class CakesView extends React.Component {
 
 const iconSize = 25;
 const styles = StyleSheet.create({
-  header: {
-    backgroundColor: primary
+  headerBody: {
+    flex: 3
   },
-  headerTitle: {
-    color: onPrimary,
-    marginLeft: -30
-  }, 
-  headerLeftIcon: {
+  headerIcon: {
     color: iconActive
   },
-  rightIcon: {
-    color: iconActive,
+  headerLocationText: {
+    color: onPrimary,
+    marginTop: 3,
+    flex: 1,
+    flexWrap: "wrap",
+    marginLeft: 3,
+    fontSize: 13
   },
-  flexBoxx: { 
-    flexDirection: 'row', 
-    alignItems: 'center' 
+  headerTimeText: {
+    color: onPrimary,
+    marginTop: 0,
+    flex: 1,
+    flexWrap: "wrap",
+    marginLeft: 3,
+    fontSize: 18,
+    fontWeight: "bold"
   },
-  headerTimeColor: {
-    color: onPrimary
+  locationView: {
+    flexDirection: "row",
+    alignItems: "center"
+  },
+  timeView: {
+    flexDirection: "row",
+    alignItems: "center"
+  },
+  timeViewCol: {
+    justifyContent: "center",
+    alignItems: "flex-end"
+  },
+  locationViewCol: {
+    justifyContent: "flex-start",
+    alignItems: "center"
+  },
+  modalCloseIcon: {
+    color: iconActive
   }
 });
