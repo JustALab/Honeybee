@@ -191,14 +191,6 @@ class ProfileView extends React.Component {
     );
   }
 
-  showModal() {
-    this.setState({ changePasswordModalVisible: true });
-  }
-
-  hideModal() {
-    this.setState({ changePasswordModalVisible: false });
-  }
-
   enableDdisableChangePasswordButton() {
     const { oldPassword, newPassword, confirmNewPassword } = this.state;
     if (
@@ -345,7 +337,7 @@ class ProfileView extends React.Component {
                   switch (buttonIndex) {
                     case 0:
                       console.log("Change password clicked.");
-                      this.showModal();
+                      this.setState({ changePasswordModalVisible: true });
                       break;
                     case 1:
                       console.log("Moving to privacy policy.");
