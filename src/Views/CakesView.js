@@ -14,7 +14,11 @@ import {
   Header,
   Left,
   Title,
-  Right
+  Right,
+  Picker,
+  Form,
+  Item,
+  Icon
 } from "native-base";
 import { FooterLab } from "../Components/FooterLab";
 import { STRINGS } from "../Config/Strings";
@@ -25,17 +29,81 @@ import CommonStyles from "../Commons/Styles";
 import { Col, Grid } from "react-native-easy-grid";
 import { connect } from "react-redux";
 import * as Actions from "../Actions";
+import Spinner from "react-native-loading-spinner-overlay";
+import ApiService from "../Services/ApiService";
 
 class CakesView extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       locationTimeModalVisible: false,
+      spinner: false,
       selectedAddress: "Choose your location...",
       selectedAddressType: "",
       selectedDate: "",
-      selectedTime: "ASAP"
+      selectedTime: "ASAP",
+      dataReady: false,
+      customerAddresses: [],
+      selectedAddressType: "",
+      locationsList: []
     };
+  }
+
+  componentDidMount() {
+    if (this.props.customerData !== null) {
+      this.setState({ dataReady: true });
+    }
+    if (this.props.customerData == null) {
+      if (this.props.isNetworkConnected) {
+        //set spinner true and get all data from Honeycomb and then set spinner false
+        this.setState({ spinner: true }, () => {
+          //get customer data
+          let promiseCustomerData = new Promise((resolve, reject) => {
+            ApiService.getCustomerData(this.props.authToken, data => {
+              if (data !== null) {
+                resolve(data);
+              } else {
+                reject(null);
+              }
+            });
+          });
+
+          //get locations list
+          let promiseLocationsList = new Promise((resolve, reject) => {
+            ApiService.getLocationList(this.props.authToken, data => {
+              if (data !== null) {
+                resolve(data);
+              } else {
+                reject(null);
+              }
+            });
+          });
+
+          Promise.all([promiseCustomerData, promiseLocationsList]).then(
+            values => {
+              console.log(values);
+              this.props.setCustomerData(values[0]);
+              this.setState({
+                spinner: false,
+                dataReady: true,
+                customerAddressList: values[0].customerAddressList,
+                locationsList: values[1]
+              });
+            }
+          );
+        });
+      } else {
+        console.log("No internet connectivity.");
+        Alert.alert(
+          STRINGS.msgNoConnectivityTitle,
+          STRINGS.msgNoConnectivityContent
+        );
+      }
+    } else {
+      this.setState({
+        customerAddresses: this.props.customerData.customerAddressList
+      });
+    }
   }
 
   renderHeader() {
@@ -99,6 +167,29 @@ class CakesView extends React.Component {
     );
   }
 
+  renderLocationPicker() {}
+
+  renderAddressTypePicker() {
+    return (
+      <Item picker>
+        <Picker
+          mode="dropdown"
+          iosIcon={<Icon name="ios-arrow-down-outline" />}
+          style={{ width: "100%" }}
+          placeholder="Select place..."
+          placeholderStyle={{ color: "#bfc6ea" }}
+          placeholderIconColor="#007aff"
+          selectedValue={this.state.selectedAddressType}
+          onValueChange={value => this.setState({ selectedAddressType: value })}
+        >
+          <Picker.Item label="Home" value="HOME" />
+          <Picker.Item label="Office" value="OFFICE" />
+          <Picker.Item label="Other" value="Other" />
+        </Picker>
+      </Item>
+    );
+  }
+
   renderLocationTimeModal() {
     return (
       <Modal
@@ -110,8 +201,15 @@ class CakesView extends React.Component {
         }}
       >
         <View>{this.renderModalHeader()}</View>
+        <View>
+          <Form>{this.renderAddressTypePicker()}</Form>
+        </View>
       </Modal>
     );
+  }
+
+  renderSpinner() {
+    return <Spinner visible={this.state.spinner} />;
   }
 
   render() {
@@ -119,7 +217,9 @@ class CakesView extends React.Component {
       <Container>
         <StatusBar barStyle="dark-content" backgroundColor="black" />
         {this.renderHeader()}
-        <Content style={CommonStyles.statusBarMargin} />
+        <Content style={CommonStyles.statusBarMargin}>
+          {this.renderSpinner()}
+        </Content>
         {this.renderLocationTimeModal()}
         <FooterLab activeButton={STRINGS.cakes} {...this.props} />
       </Container>

@@ -8,7 +8,8 @@ import {
   URL_RESEND_VERIFICATION_CODE,
   URL_UPDATE_MOBILE_ON_SIGNUP,
   URL_DELETE_CUST_ADDR,
-  URL_CHANGE_PASSWORD
+  URL_CHANGE_PASSWORD,
+  URL_GET_LOCATIONS
 } from "../Config/Server";
 import { INCORRECT_OLD_PASSWORD, SUCCESS } from "../Config/Strings";
 
@@ -125,6 +126,21 @@ export default (ApiService = {
       })
       .catch(err => {
         console.log("change password failure:" + err.message);
+        callback(null);
+      });
+  },
+
+  getLocationList: (token, callback) => {
+    axios
+      .get(HOST + URL_GET_LOCATIONS, {
+        headers: ApiService.buildAuthHeader(token)
+      })
+      .then(res => {
+        console.log("Locations list received successfully.");
+        callback(res.data);
+      })
+      .catch(err => {
+        console.log("Error receiving locations list: " + err.message);
         callback(null);
       });
   }
