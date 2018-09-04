@@ -1,14 +1,14 @@
 import { createSwitchNavigator } from "react-navigation";
-import CakesView from "../Views/CakesView";
 import { ShopView } from "../Views/ShopView";
 import { CartView } from "../Views/CartView";
 import { OrdersView } from "../Views/OrdersView";
 import ProfileNavigator from "../Navigators/ProfileNavigator";
+import CakesNavigator from "../Navigators/CakesNavigator";
 
 export default createSwitchNavigator(
   {
     cakes: {
-      screen: CakesView
+      screen: CakesNavigator
     },
     shop: {
       screen: ShopView

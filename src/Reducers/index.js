@@ -5,6 +5,8 @@ import NetworkReducer from "./NetworkReducer";
 import UserRegistrationReducer from "./UserRegistrationReducer";
 import CustomerIdReducer from "./CustomerIdReducer";
 import CustomerDataReducer from "./CustomerDataReducer";
+import DeliveryDetailsReducer from "./DeliveryDetailsReducer";
+import LocationsListReducer from "./LocationsListReducer";
 
 export default combineReducers({
   isNetworkConnected: NetworkReducer,
@@ -12,5 +14,7 @@ export default combineReducers({
   profile: ProfileReducer,
   userRegistrationData: UserRegistrationReducer,
   customerId: CustomerIdReducer,
-  customerData: CustomerDataReducer
+  customerData: CustomerDataReducer,
+  deliveryDetails: DeliveryDetailsReducer,
+  locationsList: LocationsListReducer
 });

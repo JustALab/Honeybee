@@ -3,6 +3,8 @@ export const SET_NETWORK_CONN_STATUS = "SET_NETWORK_CONN_STATUS";
 export const SET_USER_REGISTRATION_DATA = "SET_USER_REGISTRATION_DATA";
 export const SET_CUSTOMER_ID = "SET_CUSTOMER_ID";
 export const SET_CUSTOMER_DATA = "SET_CUSTOMER_DATA";
+export const SET_DELIVERY_DETAILS = "SET_DELIVERY_DETAILS";
+export const SET_LOCATIONS_LIST = "SET_LOCATIONS_LIST";
 
 export const setAuthToken = token => {
   return {
@@ -31,4 +33,14 @@ export const setCustomerId = customerId => ({
 export const setCustomerData = customerData => ({
   type: SET_CUSTOMER_DATA,
   customerData
+});
+
+export const setLocationsList = locationsList => ({
+  type: SET_LOCATIONS_LIST,
+  locationsList
+});
+
+export const setDeliveryDetails = deliveryDetails => ({
+  type: SET_DELIVERY_DETAILS,
+  deliveryDetails
 });

@@ -12,16 +12,12 @@ import {
   Content,
   Body,
   Header,
-  Left,
-  Title,
-  Right,
-  Picker,
   Form,
   Item,
   Icon
 } from "native-base";
 import { FooterLab } from "../Components/FooterLab";
-import { STRINGS } from "../Config/Strings";
+import { STRINGS, VIEW_DELIVERY_DETAILS } from "../Config/Strings";
 import { primary, onPrimary, iconActive, secondary } from "../Config/Colors";
 import MaterialIcon from "react-native-vector-icons/MaterialIcons";
 import { ICONS } from "../Config/Icons";
@@ -36,16 +32,8 @@ class CakesView extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      locationTimeModalVisible: false,
       spinner: false,
-      selectedAddress: "Choose your location...",
-      selectedAddressType: "",
-      selectedDate: "",
-      selectedTime: "ASAP",
-      dataReady: false,
-      customerAddresses: [],
-      selectedAddressType: "",
-      locationsList: []
+      dataReady: false
     };
   }
 
@@ -83,6 +71,7 @@ class CakesView extends React.Component {
             values => {
               console.log(values);
               this.props.setCustomerData(values[0]);
+              this.props.setLocationsList(values[1]);
               this.setState({
                 spinner: false,
                 dataReady: true,
@@ -109,7 +98,7 @@ class CakesView extends React.Component {
   renderHeader() {
     return (
       <TouchableOpacity
-        onPress={() => this.setState({ locationTimeModalVisible: true })}
+        onPress={() => this.props.navigation.navigate(VIEW_DELIVERY_DETAILS)}
       >
         <Header>
           <Body style={styles.headerBody}>
@@ -122,7 +111,7 @@ class CakesView extends React.Component {
                     style={[styles.headerIcon, { marginTop: 6 }]}
                   />
                   <Text style={styles.headerLocationText}>
-                    {this.state.selectedAddress}
+                    {this.props.deliveryDetails.deliveryLocation}
                   </Text>
                 </View>
               </Col>
@@ -134,7 +123,7 @@ class CakesView extends React.Component {
                     style={styles.headerIcon}
                   />
                   <Text style={[styles.headerTimeText]}>
-                    {this.state.selectedTime}
+                    {this.props.deliveryDetails.deliveryTime}
                   </Text>
                 </View>
               </Col>
@@ -142,69 +131,6 @@ class CakesView extends React.Component {
           </Body>
         </Header>
       </TouchableOpacity>
-    );
-  }
-
-  renderModalHeader() {
-    return (
-      <Header>
-        <Left>
-          <TouchableOpacity
-            onPress={() => this.setState({ locationTimeModalVisible: false })}
-          >
-            <MaterialIcon
-              name={STRINGS.close}
-              size={25}
-              style={styles.modalCloseIcon}
-            />
-          </TouchableOpacity>
-        </Left>
-        <Body>
-          <Title style={CommonStyles.headerTitle}>Delivery</Title>>
-        </Body>
-        <Right />
-      </Header>
-    );
-  }
-
-  renderLocationPicker() {}
-
-  renderAddressTypePicker() {
-    return (
-      <Item picker>
-        <Picker
-          mode="dropdown"
-          iosIcon={<Icon name="ios-arrow-down-outline" />}
-          style={{ width: "100%" }}
-          placeholder="Select place..."
-          placeholderStyle={{ color: "#bfc6ea" }}
-          placeholderIconColor="#007aff"
-          selectedValue={this.state.selectedAddressType}
-          onValueChange={value => this.setState({ selectedAddressType: value })}
-        >
-          <Picker.Item label="Home" value="HOME" />
-          <Picker.Item label="Office" value="OFFICE" />
-          <Picker.Item label="Other" value="Other" />
-        </Picker>
-      </Item>
-    );
-  }
-
-  renderLocationTimeModal() {
-    return (
-      <Modal
-        animationType="slide"
-        transparent={false}
-        visible={this.state.locationTimeModalVisible}
-        onRequestClose={() => {
-          this.setState({ locationTimeModalVisible: false });
-        }}
-      >
-        <View>{this.renderModalHeader()}</View>
-        <View>
-          <Form>{this.renderAddressTypePicker()}</Form>
-        </View>
-      </Modal>
     );
   }
 
@@ -220,7 +146,6 @@ class CakesView extends React.Component {
         <Content style={CommonStyles.statusBarMargin}>
           {this.renderSpinner()}
         </Content>
-        {this.renderLocationTimeModal()}
         <FooterLab activeButton={STRINGS.cakes} {...this.props} />
       </Container>
     );
@@ -230,7 +155,8 @@ class CakesView extends React.Component {
 const mapStateToProps = state => ({
   authToken: state.authToken,
   isNetworkConnected: state.isNetworkConnected,
-  customerData: state.customerData
+  customerData: state.customerData,
+  deliveryDetails: state.deliveryDetails
 });
 
 export default connect(
@@ -278,8 +204,5 @@ const styles = StyleSheet.create({
   locationViewCol: {
     justifyContent: "flex-start",
     alignItems: "center"
-  },
-  modalCloseIcon: {
-    color: iconActive
   }
 });

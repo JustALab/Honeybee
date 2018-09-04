@@ -41,7 +41,8 @@ export const STRINGS = {
   areYouSure: "Are you sure?",
   confirm: "Confirm",
   changePasswordSuccess: "Password changed successfully.",
-  incorrectOldPassword: "Incorrect old password entered. Please try again."
+  incorrectOldPassword: "Incorrect old password entered. Please try again.",
+  deliveryDetails: "Delivery Details"
 };
 
 //status
@@ -69,3 +70,5 @@ export const VIEW_ORDERS = "orders";
 export const VIEW_PROFILE = "profile";
 export const VIEW_PROFILE_TERMS = "profileTerms";
 export const VIEW_PROFILE_PRIVACY = "profilePrivacyPolicy";
+export const VIEW_CAKES_MAIN = "cakesMain";
+export const VIEW_DELIVERY_DETAILS = "deliveryDetails";
