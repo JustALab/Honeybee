@@ -1,11 +1,12 @@
 import { SET_DELIVERY_DETAILS } from "../Actions";
+import { STRINGS } from "../Config/Strings";
 
 let deliveryDetails = {
   deliveryDate: "",
   deliveryTime: "ASAP",
   deliveryLocation: "",
   deliveryAddressType: "",
-  deliveryAddress: "Choose your location...",
+  deliveryAddress: STRINGS.chooseLocation,
   deliveryVendorId: 0
 };
 

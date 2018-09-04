@@ -42,7 +42,8 @@ export const STRINGS = {
   confirm: "Confirm",
   changePasswordSuccess: "Password changed successfully.",
   incorrectOldPassword: "Incorrect old password entered. Please try again.",
-  deliveryDetails: "Delivery Details"
+  deliveryDetails: "Delivery Details",
+  chooseLocation: "Choose your location..."
 };
 
 //status

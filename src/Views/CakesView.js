@@ -95,7 +95,29 @@ class CakesView extends React.Component {
     }
   }
 
+  /**
+   * renderHeaderLocationText method appends delivery location name if delivery address is given by the user.
+   */
+  renderHeaderLocationText() {
+    const { deliveryDetails } = this.props;
+    if (deliveryDetails.deliveryAddress === STRINGS.chooseLocation) {
+      return (
+        <Text style={styles.headerLocationText}>
+          {deliveryDetails.deliveryAddress}
+        </Text>
+      );
+    }
+    return (
+      <Text style={styles.headerLocationText}>
+        {deliveryDetails.deliveryAddress +
+          " " +
+          deliveryDetails.deliveryLocation}
+      </Text>
+    );
+  }
+
   renderHeader() {
+    const { deliveryDetails } = this.props;
     return (
       <TouchableOpacity
         onPress={() => this.props.navigation.navigate(VIEW_DELIVERY_DETAILS)}
@@ -110,9 +132,7 @@ class CakesView extends React.Component {
                     size={iconSize}
                     style={[styles.headerIcon, { marginTop: 6 }]}
                   />
-                  <Text style={styles.headerLocationText}>
-                    {this.props.deliveryDetails.deliveryLocation}
-                  </Text>
+                  {this.renderHeaderLocationText()}
                 </View>
               </Col>
               <Col size={25} style={styles.timeViewCol}>
@@ -123,7 +143,7 @@ class CakesView extends React.Component {
                     style={styles.headerIcon}
                   />
                   <Text style={[styles.headerTimeText]}>
-                    {this.props.deliveryDetails.deliveryTime}
+                    {deliveryDetails.deliveryTime}
                   </Text>
                 </View>
               </Col>
