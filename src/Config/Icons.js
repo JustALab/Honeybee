@@ -16,5 +16,6 @@ export const ICONS = {
     forgotPassword: 'question',
     mobile: "mobile",
     delete: "delete",
-    verticalDots: "dots-vertical"
+    verticalDots: "dots-vertical",
+    edit: "edit"
 };

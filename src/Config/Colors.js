@@ -17,3 +17,7 @@ export const iosBlue = "#007aff";
 
 export const logoTeal = "#007981";
 export const white = "#fff";
+
+export const placeholderColor = "#bfc6ea";
+
+export const defaultBorderColor = "#f4f5f7";

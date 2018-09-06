@@ -4,8 +4,7 @@ import {
   View,
   StatusBar,
   Text,
-  TouchableOpacity,
-  Modal
+  TouchableOpacity
 } from "react-native";
 import {
   Container,
@@ -35,6 +34,10 @@ class CakesView extends React.Component {
       spinner: false,
       dataReady: false
     };
+  }
+
+  componentWillMount() {
+    console.disableYellowBox = true;
   }
 
   componentDidMount() {
@@ -74,9 +77,7 @@ class CakesView extends React.Component {
               this.props.setLocationsList(values[1]);
               this.setState({
                 spinner: false,
-                dataReady: true,
-                customerAddressList: values[0].customerAddressList,
-                locationsList: values[1]
+                dataReady: true
               });
             }
           );

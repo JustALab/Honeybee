@@ -1,7 +1,27 @@
 import React from "react";
 import { connect } from "react-redux";
 import * as Actions from "../Actions";
-import { View, Picker, Item, Form, Icon, Label } from "native-base";
+import {
+  View,
+  Picker,
+  Item,
+  Form,
+  Icon,
+  Label,
+  Container,
+  Content,
+  Header,
+  Right,
+  Left,
+  Body,
+  Title,
+  Input
+} from "native-base";
+import { Dimensions, StyleSheet, Platform } from "react-native";
+import CommonStyles from "../Commons/Styles";
+import { Card, List, ListItem } from "react-native-elements";
+import { ICONS } from "../Config/Icons";
+import { onPrimary, placeholderColor, defaultBorderColor } from "../Config/Colors";
 
 class DeliveryDetailsView extends React.Component {
   constructor(props) {
@@ -62,11 +82,11 @@ class DeliveryDetailsView extends React.Component {
         <Picker
           mode="dialog"
           iosIcon={<Icon name="ios-arrow-down-outline" />}
-          style={{ width: "100%" }}
+          style={styles.picker}
           placeholder="Select place..."
-          placeholderStyle={{ color: "#bfc6ea" }}
+          placeholderStyle={{ color: placeholderColor }}
           placeholderIconColor="#007aff"
-          selectedValue={this.props.deliveryDetails.deliveryAddressType}
+          selectedValue={this.state.deliveryAddressType}
           onValueChange={value => this.setState({ deliveryAddressType: value })}
         >
           <Picker.Item label="Home" value="HOME" />
@@ -80,39 +100,93 @@ class DeliveryDetailsView extends React.Component {
   renderLocationPortion() {
     const { locationsList } = this.props;
     return (
-      <View>
-        <Item picker>
-          <Label>Delivery Area</Label>
-          <Picker
-            mode="dropdown"
-            iosIcon={<Icon name="ios-arrow-down-outline" />}
-            style={{ width: "100%" }}
-            placeholder="Select location..."
-            placeholderStyle={{ color: "#bfc6ea" }}
-            placeholderIconColor="#007aff"
-            selectedValue={this.state.deliveryLocation}
-            onValueChange={value =>
-              this.setState(
-                { deliveryLocation: value },
-                this.setDeliveryDetailsToReduxState
-              )
-            }
-          >
-            {locationsList.map(locationData => (
-              <Picker.Item
-                label={locationData.locationName}
-                value={locationData.locationName}
-                key={locationData.deliveryVendorId}
-              />
-            ))}
-          </Picker>
+      <View style={styles.locationView}>
+        <View style={styles.itemView}>
+          <Item picker>
+            <Label>Location</Label>
+            <Picker
+              mode="dropdown"
+              iosIcon={<Icon name="ios-arrow-down-outline" />}
+              style={styles.picker}
+              placeholder="Select location..."
+              placeholderStyle={{ color: placeholderColor }}
+              placeholderIconColor="#007aff"
+              selectedValue={this.state.deliveryLocation}
+              onValueChange={value =>
+                this.setState(
+                  { deliveryLocation: value },
+                  this.setDeliveryDetailsToReduxState
+                )
+              }
+              headerTitleStyle={CommonStyles.headerTitle}
+              iosHeader="Location"
+            >
+              {locationsList.map(locationData => (
+                <Picker.Item
+                  label={locationData.locationName}
+                  value={locationData.locationName}
+                  key={locationData.locationId}
+                />
+              ))}
+            </Picker>
+          </Item>
+        </View>
+      </View>
+    );
+  }
+
+  renderAddressList() {
+    const addressList = this.props.customerData.customerAddressList;
+    return (
+      <List>
+        {addressList.map(address => (
+          <ListItem
+            key={address.addressId}
+            title={address.deliveryAddressType}
+            subtitle={address.address}
+            subtitleNumberOfLines={4}
+            rightIcon={{ name: ICONS.edit }}
+            onPressRightIcon={() => this.deleteAddress(address.addressId)}
+          />
+        ))}
+      </List>
+    );
+  }
+
+  renderAddressTextField() {
+    return (
+      <View style={styles.addressTextFieldView}>
+        <Item>
+          <Input
+            placeholder="Address"
+            placeholderTextColor={placeholderColor}
+            autoCapitalize="sentences"
+            style={styles.addressTextField}
+            multiline
+          />
         </Item>
       </View>
     );
   }
 
+  renderAddressPortion() {
+    return (
+      <Card title="Delivery Address">
+        {this.renderAddressTypePicker()}
+        {this.renderAddressTextField()}
+      </Card>
+    );
+  }
+
   render() {
-    return <View>{this.renderLocationPortion()}</View>;
+    return (
+      <Container style={CommonStyles.containerBg}>
+        <Content padder>
+          <View style={styles.mainView}>{this.renderLocationPortion()}</View>
+          <View>{this.renderAddressPortion()}</View>
+        </Content>
+      </Container>
+    );
   }
 }
 
@@ -128,3 +202,32 @@ export default connect(
   mapStateToProps,
   Actions
 )(DeliveryDetailsView);
+
+const screenHeight = Dimensions.get("window").height;
+const screenWidth = Dimensions.get("window").width;
+
+const styles = StyleSheet.create({
+  mainView: {
+    flexDirection: "column"
+  },
+  locationView: {
+    height: screenHeight * 0.1
+  },
+  itemView: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center"
+  },
+  picker: {
+    width: undefined
+  },
+  addressTextField: {
+    height: 100
+  },
+  addressTextFieldView: {
+    borderColor: defaultBorderColor,
+    borderStyle: "solid",
+    borderBottomWidth: 1,
+    marginTop: 10
+  }
+});
