@@ -12,16 +12,16 @@ import {
   VIEW_PROFILE
 } from "../Config/Strings";
 import {
-  iosBlue,
-  onPrimary,
-  primary,
-  secondaryDark,
-  onSecondary,
-  primaryDark,
-  primaryLight,
-  secondary,
-  iconActive,
-  iconInactive
+  ICON_BLUE,
+  ON_PRIMARY,
+  PRIMARY,
+  SECONDARYDark,
+  ON_SECONDARY,
+  PRIMARY_DARK,
+  PRIMARY_LIGHT,
+  SECONDARY,
+  ICON_ACTIVE,
+  ICON_INACTIVE
 } from "../Config/Colors";
 
 export class FooterLab extends React.Component {
@@ -46,7 +46,7 @@ export class FooterLab extends React.Component {
               size={iconSize}
               style={
                 this.props.activeButton === STRINGS.cakes
-                  ? styles.icon_active
+                  ? styles.ICON_INACTIVE
                   : styles.icon
               }
             />
@@ -63,7 +63,7 @@ export class FooterLab extends React.Component {
               size={iconSize}
               style={
                 this.props.activeButton === STRINGS.shop
-                  ? styles.icon_active
+                  ? styles.ICON_INACTIVE
                   : styles.icon
               }
             />
@@ -87,7 +87,7 @@ export class FooterLab extends React.Component {
               size={iconSize}
               style={
                 this.props.activeButton === STRINGS.cart
-                  ? styles.icon_active
+                  ? styles.ICON_INACTIVE
                   : styles.icon
               }
             />
@@ -104,7 +104,7 @@ export class FooterLab extends React.Component {
               size={iconSize}
               style={
                 this.props.activeButton === STRINGS.orders
-                  ? styles.icon_active
+                  ? styles.ICON_INACTIVE
                   : styles.icon
               }
             />
@@ -121,7 +121,7 @@ export class FooterLab extends React.Component {
               size={iconSize}
               style={
                 this.props.activeButton === STRINGS.profile
-                  ? styles.icon_active
+                  ? styles.ICON_INACTIVE
                   : styles.icon
               }
             />
@@ -136,18 +136,18 @@ export class FooterLab extends React.Component {
 const iconSize = 25;
 const styles = StyleSheet.create({
   icon: {
-    color: iconInactive
+    color: ICON_INACTIVE
   },
-  icon_active: {
-    color: iconActive
+  ICON_INACTIVE: {
+    color: ICON_ACTIVE
   },
   footer: {
-    backgroundColor: primaryLight,
+    backgroundColor: PRIMARY_LIGHT,
     shadowOffset: {
       width: 0,
       height: 2
     },
-    shadowColor: onPrimary,
+    shadowColor: ON_PRIMARY,
     shadowOpacity: 0.8,
     elevation: 1
   }

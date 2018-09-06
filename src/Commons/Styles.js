@@ -1,19 +1,19 @@
 import { StyleSheet } from "react-native";
-import { onPrimary, primary } from "../Config/Colors";
+import { ON_PRIMARY, PRIMARY } from "../Config/Colors";
 import { Dimensions } from "react-native";
 
 export default (commonStyles = StyleSheet.create({
   headerTitle: {
-    color: onPrimary
+    color: ON_PRIMARY
   },
   headerBody: {
     flex: 3
   },
   headerNavigatorTitle: {
     width: Dimensions.get("window").width,
-    color: onPrimary
+    color: ON_PRIMARY
   },
   containerBg: {
-    backgroundColor: primary
+    backgroundColor: PRIMARY
   }
 }));

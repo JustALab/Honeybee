@@ -21,7 +21,7 @@ import { Dimensions, StyleSheet, Platform } from "react-native";
 import CommonStyles from "../Commons/Styles";
 import { Card, List, ListItem } from "react-native-elements";
 import { ICONS } from "../Config/Icons";
-import { onPrimary, placeholderColor, defaultBorderColor } from "../Config/Colors";
+import { ON_PRIMARY, PLACEHOLDER_COLOR, DEFAULT_BORDER_COLOR } from "../Config/Colors";
 
 class DeliveryDetailsView extends React.Component {
   constructor(props) {
@@ -84,7 +84,7 @@ class DeliveryDetailsView extends React.Component {
           iosIcon={<Icon name="ios-arrow-down-outline" />}
           style={styles.picker}
           placeholder="Select place..."
-          placeholderStyle={{ color: placeholderColor }}
+          placeholderStyle={{ color: PLACEHOLDER_COLOR }}
           placeholderIconColor="#007aff"
           selectedValue={this.state.deliveryAddressType}
           onValueChange={value => this.setState({ deliveryAddressType: value })}
@@ -109,7 +109,7 @@ class DeliveryDetailsView extends React.Component {
               iosIcon={<Icon name="ios-arrow-down-outline" />}
               style={styles.picker}
               placeholder="Select location..."
-              placeholderStyle={{ color: placeholderColor }}
+              placeholderStyle={{ color: PLACEHOLDER_COLOR }}
               placeholderIconColor="#007aff"
               selectedValue={this.state.deliveryLocation}
               onValueChange={value =>
@@ -159,7 +159,7 @@ class DeliveryDetailsView extends React.Component {
         <Item>
           <Input
             placeholder="Address"
-            placeholderTextColor={placeholderColor}
+            placeholderTextColor={PLACEHOLDER_COLOR}
             autoCapitalize="sentences"
             style={styles.addressTextField}
             multiline
@@ -225,7 +225,7 @@ const styles = StyleSheet.create({
     height: 100
   },
   addressTextFieldView: {
-    borderColor: defaultBorderColor,
+    borderColor: DEFAULT_BORDER_COLOR,
     borderStyle: "solid",
     borderBottomWidth: 1,
     marginTop: 10

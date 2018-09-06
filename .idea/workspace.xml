@@ -394,8 +394,8 @@
       <change beforePath="$PROJECT_DIR$/android/app/build/intermediates/res/merged/debug/color_abc_primary_text_material_dark.xml.flat" afterPath="" />
       <change beforePath="$PROJECT_DIR$/android/app/build/intermediates/res/merged/debug/color_abc_primary_text_material_light.xml.flat" afterPath="" />
       <change beforePath="$PROJECT_DIR$/android/app/build/intermediates/res/merged/debug/color_abc_search_url_text.xml.flat" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/android/app/build/intermediates/res/merged/debug/color_abc_secondary_text_material_dark.xml.flat" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/android/app/build/intermediates/res/merged/debug/color_abc_secondary_text_material_light.xml.flat" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/android/app/build/intermediates/res/merged/debug/color_abc_SECONDARY_text_material_dark.xml.flat" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/android/app/build/intermediates/res/merged/debug/color_abc_SECONDARY_text_material_light.xml.flat" afterPath="" />
       <change beforePath="$PROJECT_DIR$/android/app/build/intermediates/res/merged/debug/color_switch_thumb_material_dark.xml.flat" afterPath="" />
       <change beforePath="$PROJECT_DIR$/android/app/build/intermediates/res/merged/debug/color_switch_thumb_material_light.xml.flat" afterPath="" />
       <change beforePath="$PROJECT_DIR$/android/app/build/intermediates/res/merged/debug/drawable-hdpi_abc_ab_share_pack_mtrl_alpha.9.png.flat" afterPath="" />

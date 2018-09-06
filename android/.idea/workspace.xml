@@ -313,7 +313,7 @@
                 <option name="name" value="writeDebugApplicationId" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
-                <option name="description" value="Assembles all variants of all applications and secondary packages." />
+                <option name="description" value="Assembles all variants of all applications and SECONDARY packages." />
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
                 <option name="name" value="assemble" />
               </ExternalTaskPojo>
@@ -1301,7 +1301,7 @@
                 <option name="name" value="writeDebugApplicationId" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
-                <option name="description" value="Assembles all variants of all applications and secondary packages." />
+                <option name="description" value="Assembles all variants of all applications and SECONDARY packages." />
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/app" />
                 <option name="name" value="assemble" />
               </ExternalTaskPojo>
@@ -2045,7 +2045,7 @@
                 <option name="name" value=":react-native-sqlite-storage:preReleaseBuild" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
-                <option name="description" value="Assembles all variants of all applications and secondary packages." />
+                <option name="description" value="Assembles all variants of all applications and SECONDARY packages." />
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
                 <option name="name" value=":react-native-sqlite-storage:assemble" />
               </ExternalTaskPojo>
@@ -2749,7 +2749,7 @@
                 <option name="name" value=":react-native-vector-icons:preReleaseBuild" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
-                <option name="description" value="Assembles all variants of all applications and secondary packages." />
+                <option name="description" value="Assembles all variants of all applications and SECONDARY packages." />
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
                 <option name="name" value=":react-native-vector-icons:assemble" />
               </ExternalTaskPojo>

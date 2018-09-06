@@ -11,11 +11,11 @@ import {
   Label
 } from "native-base";
 import {
-  primary,
-  secondary,
-  onPrimary,
-  secondaryDark,
-  white
+  PRIMARY,
+  SECONDARY,
+  ON_PRIMARY,
+  SECONDARYDark,
+  WHITE
 } from "../Config/Colors";
 import { DatePicker } from "../Components/Datepicker/Datepicker";
 import { connect } from "react-redux";
@@ -282,7 +282,7 @@ class RegisterView extends React.Component {
             
             <Spinner
               visible={this.state.spinner}
-              textStyle={{ color: white }}
+              textStyle={{ color: WHITE }}
             />
           </View>
         </Content>
@@ -318,12 +318,12 @@ const styles = StyleSheet.create({
     alignItems: "center"
   },
   registerBtn: {
-    backgroundColor: secondary,
+    backgroundColor: SECONDARY,
     borderRadius: 25,
     backgroundColor: "#007981"
   },
   btnText: {
-    color: primary
+    color: PRIMARY
   },
   btnView: {
     flexDirection: "row",
@@ -337,7 +337,7 @@ const styles = StyleSheet.create({
     justifyContent: "center"
   },
   text: {
-    color: onPrimary
+    color: ON_PRIMARY
   },
   widthStyle: {
     width: "100%"
@@ -346,7 +346,7 @@ const styles = StyleSheet.create({
     marginLeft: 4
   },
   linkText: {
-    color: secondaryDark
+    color: SECONDARYDark
   },
   textSize: {
     fontSize: 12

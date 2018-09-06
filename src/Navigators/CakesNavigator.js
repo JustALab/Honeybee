@@ -2,7 +2,7 @@ import { createStackNavigator } from "react-navigation";
 import CakesView from "../Views/CakesView";
 import DeliveryDetailsView from "../Views/DeliveryDetailsView";
 import { STRINGS } from "../Config/Strings";
-import { secondaryDark, onPrimary } from "../Config/Colors";
+import { SECONDARYDark, ON_PRIMARY } from "../Config/Colors";
 
 export default createStackNavigator(
   {
@@ -22,10 +22,10 @@ export default createStackNavigator(
   {
     initialRouteName: "cakesMain",
     navigationOptions: {
-      headerTintColor: secondaryDark,
+      headerTintColor: SECONDARYDark,
       headerTitleStyle: {
         alignItems: "center",
-        color: onPrimary
+        color: ON_PRIMARY
       },
       headerBackTitle: null
     }

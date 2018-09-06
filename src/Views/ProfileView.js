@@ -30,12 +30,12 @@ import ApiService from "../Services/ApiService";
 import * as Actions from "../Actions";
 import Spinner from "react-native-loading-spinner-overlay";
 import {
-  white,
-  onPrimary,
-  background1,
-  secondaryDark,
-  onSecondary,
-  secondary
+  WHITE,
+  ON_PRIMARY,
+  BACKGROUND_1,
+  SECONDARYDark,
+  ON_SECONDARY,
+  SECONDARY
 } from "../Config/Colors";
 import { Avatar, List, ListItem } from "react-native-elements";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
@@ -123,7 +123,7 @@ class ProfileView extends React.Component {
             <Text style={styles.avatarContactText}>
               {this.props.customerData.mobile}
             </Text>
-            <Text style={{ color: onPrimary }}> | </Text>
+            <Text style={{ color: ON_PRIMARY }}> | </Text>
             <Text style={styles.avatarContactText}>
               {this.props.customerData.email}
             </Text>
@@ -254,7 +254,7 @@ class ProfileView extends React.Component {
         closeOnTouchOutside
         onClose={() => this.setState({ changePasswordModalVisible: false })}
         animationType="zoomIn"
-        containerStyle={{ backgroundColor: onPrimary }}
+        containerStyle={{ backgroundColor: ON_PRIMARY }}
         childrenWrapperStyle={{ backgroundColor: "#eee" }}
         animationDuration={500}
       >
@@ -397,23 +397,23 @@ export default connect(
 
 const styles = StyleSheet.create({
   content: {
-    backgroundColor: background1
+    backgroundColor: BACKGROUND_1
   },
   avatarView: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
     padding: 15,
-    backgroundColor: background1
+    backgroundColor: BACKGROUND_1
   },
   avatarNameText: {
-    color: onPrimary,
+    color: ON_PRIMARY,
     marginTop: 10,
     fontWeight: "bold",
     fontSize: 18
   },
   avatarContactText: {
-    color: onPrimary,
+    color: ON_PRIMARY,
     marginTop: 5,
     fontSize: 13
   },
@@ -428,13 +428,13 @@ const styles = StyleSheet.create({
     marginTop: -15
   },
   modalSaveButton: {
-    color: secondaryDark
+    color: SECONDARYDark
   },
   modalCloseIcon: {
-    color: secondaryDark
+    color: SECONDARYDark
   },
   changePasswordButton: {
-    backgroundColor: secondary
+    backgroundColor: SECONDARY
   },
   changePasswordModalView: {
     width: "100%"

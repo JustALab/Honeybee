@@ -21,13 +21,13 @@ import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import FaIcon from "react-native-vector-icons/FontAwesome";
 import { ICONS } from "../Config/Icons";
 import {
-  primary,
-  secondary,
-  onPrimary,
-  secondaryDark,
-  iconInactive,
-  logoTeal,
-  white
+  PRIMARY,
+  SECONDARY,
+  ON_PRIMARY,
+  SECONDARYDark,
+  ICON_INACTIVE,
+  LOGO_TEAL,
+  WHITE
 } from "../Config/Colors";
 import { STRINGS, VIEW_REGISTER, VIEW_MAIN } from "../Config/Strings";
 import { DBService } from "../Services/DBService";
@@ -192,7 +192,7 @@ class LoginView extends React.Component {
               </View>
               <View style={styles.linksView}>
                 <Text
-                  style={[styles.text, { color: secondaryDark }]}
+                  style={[styles.text, { color: SECONDARYDark }]}
                   onPress={() => this.props.navigation.navigate(VIEW_REGISTER)}
                 >
                   Register
@@ -202,7 +202,7 @@ class LoginView extends React.Component {
               </View>
             </Animatable.View>
           </KeyboardAvoidingView>
-          <Spinner visible={this.state.spinner} textStyle={{ color: white }} />
+          <Spinner visible={this.state.spinner} textStyle={{ color: WHITE }} />
         </Content>
       </Container>
     );
@@ -224,12 +224,12 @@ const styles = StyleSheet.create({
     alignItems: "center"
   },
   signInBtn: {
-    backgroundColor: secondary,
+    backgroundColor: SECONDARY,
     borderRadius: 25,
-    backgroundColor: logoTeal
+    backgroundColor: LOGO_TEAL
   },
   btnText: {
-    color: primary,
+    color: PRIMARY,
     textAlign: "center"
   },
   btnView: {
@@ -250,11 +250,11 @@ const styles = StyleSheet.create({
     paddingTop: 10
   },
   text: {
-    color: onPrimary,
+    color: ON_PRIMARY,
     fontSize: 14
   },
   registerBtnText: {
-    color: secondaryDark
+    color: SECONDARYDark
   },
   widthStyle: {
     width: "100%"
@@ -263,7 +263,7 @@ const styles = StyleSheet.create({
     marginLeft: 0
   },
   iconColor: {
-    color: iconInactive
+    color: ICON_INACTIVE
   }
 });
 

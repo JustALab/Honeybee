@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import {Modal, TouchableWithoutFeedback, View} from 'react-native';
 import * as Animatable from 'react-native-animatable';
 
+
 const AnimatableTouchableWithoutFeedback = Animatable.createAnimatableComponent(TouchableWithoutFeedback);
 const styles = {
   container: {
@@ -13,7 +14,7 @@ const styles = {
   },
   innerContainer: {
     alignItems: 'center',
-    backgroundColor: 'white',
+    backgroundColor: "#fff",
     padding: 20,
     marginTop: "20%"
   }

@@ -17,7 +17,7 @@ import {
 } from "native-base";
 import { FooterLab } from "../Components/FooterLab";
 import { STRINGS, VIEW_DELIVERY_DETAILS } from "../Config/Strings";
-import { primary, onPrimary, iconActive, secondary } from "../Config/Colors";
+import { PRIMARY, ON_PRIMARY, ICON_ACTIVE, SECONDARY } from "../Config/Colors";
 import MaterialIcon from "react-native-vector-icons/MaterialIcons";
 import { ICONS } from "../Config/Icons";
 import CommonStyles from "../Commons/Styles";
@@ -191,10 +191,10 @@ const styles = StyleSheet.create({
     flex: 3
   },
   headerIcon: {
-    color: iconActive
+    color: ICON_ACTIVE
   },
   headerLocationText: {
-    color: onPrimary,
+    color: ON_PRIMARY,
     marginTop: 3,
     flex: 1,
     flexWrap: "wrap",
@@ -202,7 +202,7 @@ const styles = StyleSheet.create({
     fontSize: 13
   },
   headerTimeText: {
-    color: onPrimary,
+    color: ON_PRIMARY,
     marginTop: 0,
     flex: 1,
     flexWrap: "wrap",

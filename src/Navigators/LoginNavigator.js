@@ -4,7 +4,7 @@ import RegisterView from "../Views/RegisterView";
 import { PrivacyPolicyView } from "../Views/PrivacyPolicyView";
 import { TermsConditions } from "../Views/TermsConditions";
 import { STRINGS } from "../Config/Strings";
-import { secondaryDark } from "../Config/Colors";
+import { SECONDARYDark } from "../Config/Colors";
 import MainNavigator from "./MainNavigator";
 import MobileVerificationView from "../Views/MobileVerificationView";
 import commonStyles from "../Commons/Styles";
@@ -55,7 +55,7 @@ export default createStackNavigator(
   {
     initialRouteName: "login",
     navigationOptions: {
-      headerTintColor: secondaryDark,
+      headerTintColor: SECONDARYDark,
       headerTitleStyle: {
         alignItems: "center"
       },

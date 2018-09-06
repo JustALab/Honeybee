@@ -587,7 +587,7 @@ public final class R {
      * "<code>#<i>argb</i></code>", "<code>#<i>rrggbb</i></code>", or
      * "<code>#<i>aarrggbb</i></code>".
      */
-    public static final int colorPrimaryDark=0x7f02004b;
+    public static final int colorPRIMARY_DARK=0x7f02004b;
     /**
      * <p>May be a color value, in the form of "<code>#<i>rgb</i></code>",
      * "<code>#<i>argb</i></code>", "<code>#<i>rrggbb</i></code>", or
@@ -1777,8 +1777,8 @@ public final class R {
     public static final int abc_search_url_text_normal=0x7f040009;
     public static final int abc_search_url_text_pressed=0x7f04000a;
     public static final int abc_search_url_text_selected=0x7f04000b;
-    public static final int abc_secondary_text_material_dark=0x7f04000c;
-    public static final int abc_secondary_text_material_light=0x7f04000d;
+    public static final int abc_SECONDARY_text_material_dark=0x7f04000c;
+    public static final int abc_SECONDARY_text_material_light=0x7f04000d;
     public static final int accent_material_dark=0x7f04000e;
     public static final int accent_material_light=0x7f04000f;
     public static final int background_floating_material_dark=0x7f040010;
@@ -1826,10 +1826,10 @@ public final class R {
     public static final int primary_text_disabled_material_light=0x7f04003a;
     public static final int ripple_material_dark=0x7f04003b;
     public static final int ripple_material_light=0x7f04003c;
-    public static final int secondary_text_default_material_dark=0x7f04003d;
-    public static final int secondary_text_default_material_light=0x7f04003e;
-    public static final int secondary_text_disabled_material_dark=0x7f04003f;
-    public static final int secondary_text_disabled_material_light=0x7f040040;
+    public static final int SECONDARY_text_default_material_dark=0x7f04003d;
+    public static final int SECONDARY_text_default_material_light=0x7f04003e;
+    public static final int SECONDARY_text_disabled_material_dark=0x7f04003f;
+    public static final int SECONDARY_text_disabled_material_light=0x7f040040;
     public static final int switch_thumb_disabled_material_dark=0x7f040041;
     public static final int switch_thumb_disabled_material_light=0x7f040042;
     public static final int switch_thumb_material_dark=0x7f040043;
@@ -4258,7 +4258,7 @@ public final class R {
      * <tr><th>Constant</th><th>Value</th><th>Description</th></tr>
      * <tr><td>alternative</td><td>40000</td><td></td></tr>
      * <tr><td>container</td><td>10000</td><td></td></tr>
-     * <tr><td>secondary</td><td>30000</td><td></td></tr>
+     * <tr><td>SECONDARY</td><td>30000</td><td></td></tr>
      * <tr><td>system</td><td>20000</td><td></td></tr>
      * </table>
      *
@@ -4408,7 +4408,7 @@ public final class R {
      * <tr><th>Constant</th><th>Value</th><th>Description</th></tr>
      * <tr><td>alternative</td><td>40000</td><td></td></tr>
      * <tr><td>container</td><td>10000</td><td></td></tr>
-     * <tr><td>secondary</td><td>30000</td><td></td></tr>
+     * <tr><td>SECONDARY</td><td>30000</td><td></td></tr>
      * <tr><td>system</td><td>20000</td><td></td></tr>
      * </table>
      *
@@ -5678,7 +5678,7 @@ public final class R {
      * <tr><td><code>{@link #Theme_colorControlHighlight com.justalabhoneybee:colorControlHighlight}</code></td><td></td></tr>
      * <tr><td><code>{@link #Theme_colorControlNormal com.justalabhoneybee:colorControlNormal}</code></td><td></td></tr>
      * <tr><td><code>{@link #Theme_colorPrimary com.justalabhoneybee:colorPrimary}</code></td><td></td></tr>
-     * <tr><td><code>{@link #Theme_colorPrimaryDark com.justalabhoneybee:colorPrimaryDark}</code></td><td></td></tr>
+     * <tr><td><code>{@link #Theme_colorPRIMARY_DARK com.justalabhoneybee:colorPRIMARY_DARK}</code></td><td></td></tr>
      * <tr><td><code>{@link #Theme_colorSwitchThumbNormal com.justalabhoneybee:colorSwitchThumbNormal}</code></td><td></td></tr>
      * <tr><td><code>{@link #Theme_controlBackground com.justalabhoneybee:controlBackground}</code></td><td></td></tr>
      * <tr><td><code>{@link #Theme_dialogPreferredPadding com.justalabhoneybee:dialogPreferredPadding}</code></td><td></td></tr>
@@ -5787,7 +5787,7 @@ public final class R {
      * @see #Theme_colorControlHighlight
      * @see #Theme_colorControlNormal
      * @see #Theme_colorPrimary
-     * @see #Theme_colorPrimaryDark
+     * @see #Theme_colorPRIMARY_DARK
      * @see #Theme_colorSwitchThumbNormal
      * @see #Theme_controlBackground
      * @see #Theme_dialogPreferredPadding
@@ -6522,16 +6522,16 @@ public final class R {
      */
     public static final int Theme_colorPrimary=53;
     /**
-     * <p>This symbol is the offset where the {@link com.justalabhoneybee.R.attr#colorPrimaryDark}
+     * <p>This symbol is the offset where the {@link com.justalabhoneybee.R.attr#colorPRIMARY_DARK}
      * attribute's value can be found in the {@link #Theme} array.
      *
      * <p>May be a color value, in the form of "<code>#<i>rgb</i></code>",
      * "<code>#<i>argb</i></code>", "<code>#<i>rrggbb</i></code>", or
      * "<code>#<i>aarrggbb</i></code>".
      *
-     * @attr name com.justalabhoneybee:colorPrimaryDark
+     * @attr name com.justalabhoneybee:colorPRIMARY_DARK
      */
-    public static final int Theme_colorPrimaryDark=54;
+    public static final int Theme_colorPRIMARY_DARK=54;
     /**
      * <p>This symbol is the offset where the {@link com.justalabhoneybee.R.attr#colorSwitchThumbNormal}
      * attribute's value can be found in the {@link #Theme} array.

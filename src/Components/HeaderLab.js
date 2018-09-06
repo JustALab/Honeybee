@@ -3,7 +3,7 @@ import { StyleSheet } from "react-native";
 import { Header, Left, Right, Body, Icon, Title } from "native-base";
 import { ICONS } from "../Config/Icons";
 import { STRINGS } from "../Config/Strings";
-import { primary, secondary, onPrimary } from "../Config/Colors";
+import { PRIMARY, SECONDARY, ON_PRIMARY } from "../Config/Colors";
 import CommonStyles from "../Commons/Styles";
 
 export class HeaderLab extends React.Component {
@@ -34,9 +34,9 @@ export class HeaderLab extends React.Component {
 const styles = StyleSheet.create({
   headerIconLeft: {
     paddingLeft: 2,
-    color: secondary
+    color: SECONDARY
   },
   header: {
-    backgroundColor: primary
+    backgroundColor: PRIMARY
   }
 });

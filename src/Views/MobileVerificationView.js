@@ -12,10 +12,10 @@ import {
 import { connect } from "react-redux";
 import Spinner from "react-native-loading-spinner-overlay";
 import {
-  secondary,
-  secondaryDark,
-  secondaryLight,
-  white
+  SECONDARY,
+  SECONDARYDark,
+  SECONDARY_LIGHT,
+  WHITE
 } from "../Config/Colors";
 import {
   STRINGS,
@@ -253,8 +253,8 @@ class MobileVerificationView extends React.Component {
               style={[styles.textInput, textStyle]}
               returnKeyType="go"
               autoFocus
-              placeholderTextColor={secondary}
-              selectionColor={secondary}
+              placeholderTextColor={SECONDARY}
+              selectionColor={SECONDARY}
               maxLength={
                 this.state.enterCode ? MAX_LENGTH_CODE : MAX_LENGTH_MOBILE
               }
@@ -272,7 +272,7 @@ class MobileVerificationView extends React.Component {
           {this.renderFooter()}
         </View>
 
-        <Spinner visible={this.state.spinner} textStyle={{ color: white }} />
+        <Spinner visible={this.state.spinner} textStyle={{ color: WHITE }} />
       </KeyboardAvoidingView>
     );
   }
@@ -310,12 +310,12 @@ const styles = StyleSheet.create({
     margin: 0,
     flex: 1,
     fontSize: 20,
-    color: secondaryDark
+    color: SECONDARYDark
   },
   button: {
     marginTop: 20,
     height: 50,
-    backgroundColor: secondary,
+    backgroundColor: SECONDARY,
     alignItems: "center",
     justifyContent: "center",
     borderRadius: 5
