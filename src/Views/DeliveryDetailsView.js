@@ -27,6 +27,8 @@ import {
   DEFAULT_BORDER_COLOR,
   ICON_ACTIVE
 } from "../Config/Colors";
+import { DBService } from "../Services/DBService";
+import { INI_DELIVERY_LOCATION } from "../Config/Strings";
 
 class DeliveryDetailsView extends React.Component {
   constructor(props) {
@@ -77,8 +79,13 @@ class DeliveryDetailsView extends React.Component {
           deliveryTime,
           deliveryVendorId
         });
+        this.saveDeliveryDetailsIniData();
       }
     );
+  }
+
+  saveDeliveryDetailsIniData() {
+    DBService.updateIni(INI_DELIVERY_LOCATION, this.deliveryLocation);
   }
 
   renderAddressTypePicker() {
@@ -108,7 +115,11 @@ class DeliveryDetailsView extends React.Component {
       <View style={styles.locationView}>
         <View style={styles.itemView}>
           <Item picker>
-            <Icon name={ICONS.location} style={styles.locationIcon} type="MaterialIcons" />
+            <Icon
+              name={ICONS.location}
+              style={styles.locationIcon}
+              type="MaterialIcons"
+            />
             <Picker
               mode="dialog"
               iosIcon={<Icon name="ios-arrow-down-outline" />}

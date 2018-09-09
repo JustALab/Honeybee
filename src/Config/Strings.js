@@ -73,3 +73,6 @@ export const VIEW_PROFILE_TERMS = "profileTerms";
 export const VIEW_PROFILE_PRIVACY = "profilePrivacyPolicy";
 export const VIEW_CAKES_MAIN = "cakesMain";
 export const VIEW_DELIVERY_DETAILS = "deliveryDetails";
+
+//ini keys
+export const INI_DELIVERY_LOCATION = "ini_delivery_location";
