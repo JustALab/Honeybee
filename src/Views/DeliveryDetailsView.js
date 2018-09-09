@@ -21,7 +21,12 @@ import { Dimensions, StyleSheet, Platform } from "react-native";
 import CommonStyles from "../Commons/Styles";
 import { Card, List, ListItem } from "react-native-elements";
 import { ICONS } from "../Config/Icons";
-import { ON_PRIMARY, PLACEHOLDER_COLOR, DEFAULT_BORDER_COLOR } from "../Config/Colors";
+import {
+  ON_PRIMARY,
+  PLACEHOLDER_COLOR,
+  DEFAULT_BORDER_COLOR,
+  ICON_ACTIVE
+} from "../Config/Colors";
 
 class DeliveryDetailsView extends React.Component {
   constructor(props) {
@@ -103,9 +108,9 @@ class DeliveryDetailsView extends React.Component {
       <View style={styles.locationView}>
         <View style={styles.itemView}>
           <Item picker>
-            <Label>Location</Label>
+            <Icon name={ICONS.location} style={styles.locationIcon} type="MaterialIcons" />
             <Picker
-              mode="dropdown"
+              mode="dialog"
               iosIcon={<Icon name="ios-arrow-down-outline" />}
               style={styles.picker}
               placeholder="Select location..."
@@ -146,7 +151,7 @@ class DeliveryDetailsView extends React.Component {
             subtitle={address.address}
             subtitleNumberOfLines={4}
             rightIcon={{ name: ICONS.edit }}
-            onPressRightIcon={() => this.deleteAddress(address.addressId)}
+            onPressRightIcon={() => {}}
           />
         ))}
       </List>
@@ -229,5 +234,8 @@ const styles = StyleSheet.create({
     borderStyle: "solid",
     borderBottomWidth: 1,
     marginTop: 10
+  },
+  locationIcon: {
+    color: ICON_ACTIVE
   }
 });

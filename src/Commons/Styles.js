@@ -3,6 +3,9 @@ import { ON_PRIMARY, PRIMARY } from "../Config/Colors";
 import { Dimensions } from "react-native";
 
 export default (commonStyles = StyleSheet.create({
+  headerBg: {
+    backgroundColor: PRIMARY
+  },
   headerTitle: {
     color: ON_PRIMARY
   },

@@ -656,8 +656,8 @@
         "source": "/Users/ram/.gradle/caches/transforms-1/files-1.1/appcompat-v7-23.0.1.aar/b222b2d62e3a9466b4f4f3c606f7ae16/res/layout/abc_list_menu_item_radio.xml"
     },
     {
-        "merged": "/Users/ram/JAL-WS/honeybee/Honeybee/android/app/build/intermediates/res/merged/debug/color_abc_SECONDARY_text_material_light.xml.flat",
-        "source": "/Users/ram/.gradle/caches/transforms-1/files-1.1/appcompat-v7-23.0.1.aar/b222b2d62e3a9466b4f4f3c606f7ae16/res/color/abc_SECONDARY_text_material_light.xml"
+        "merged": "/Users/ram/JAL-WS/honeybee/Honeybee/android/app/build/intermediates/res/merged/debug/color_abc_secondary_text_material_light.xml.flat",
+        "source": "/Users/ram/.gradle/caches/transforms-1/files-1.1/appcompat-v7-23.0.1.aar/b222b2d62e3a9466b4f4f3c606f7ae16/res/color/abc_secondary_text_material_light.xml"
     },
     {
         "merged": "/Users/ram/JAL-WS/honeybee/Honeybee/android/app/build/intermediates/res/merged/debug/drawable-xxhdpi_abc_ic_clear_mtrl_alpha.png.flat",
@@ -1100,8 +1100,8 @@
         "source": "/Users/ram/.gradle/caches/transforms-1/files-1.1/appcompat-v7-23.0.1.aar/b222b2d62e3a9466b4f4f3c606f7ae16/res/drawable-mdpi/abc_list_focused_holo.9.png"
     },
     {
-        "merged": "/Users/ram/JAL-WS/honeybee/Honeybee/android/app/build/intermediates/res/merged/debug/color_abc_SECONDARY_text_material_dark.xml.flat",
-        "source": "/Users/ram/.gradle/caches/transforms-1/files-1.1/appcompat-v7-23.0.1.aar/b222b2d62e3a9466b4f4f3c606f7ae16/res/color/abc_SECONDARY_text_material_dark.xml"
+        "merged": "/Users/ram/JAL-WS/honeybee/Honeybee/android/app/build/intermediates/res/merged/debug/color_abc_secondary_text_material_dark.xml.flat",
+        "source": "/Users/ram/.gradle/caches/transforms-1/files-1.1/appcompat-v7-23.0.1.aar/b222b2d62e3a9466b4f4f3c606f7ae16/res/color/abc_secondary_text_material_dark.xml"
     },
     {
         "merged": "/Users/ram/JAL-WS/honeybee/Honeybee/android/app/build/intermediates/res/merged/debug/drawable-mdpi_abc_btn_rating_star_off_mtrl_alpha.png.flat",

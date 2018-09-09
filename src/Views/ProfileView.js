@@ -319,7 +319,7 @@ class ProfileView extends React.Component {
     const DESTRUCTIVE_INDEX = 3;
 
     return (
-      <Header>
+      <Header style={commonStyles.headerBg}>
         <Left />
         <Body>
           <Title style={commonStyles.headerTitle}>Profile</Title>

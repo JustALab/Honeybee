@@ -123,7 +123,7 @@ class CakesView extends React.Component {
       <TouchableOpacity
         onPress={() => this.props.navigation.navigate(VIEW_DELIVERY_DETAILS)}
       >
-        <Header>
+        <Header style={CommonStyles.headerBg}>
           <Body style={styles.headerBody}>
             <Grid>
               <Col size={75} style={styles.locationViewCol}>
@@ -207,7 +207,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexWrap: "wrap",
     marginLeft: 3,
-    fontSize: 18,
+    fontSize: 14,
     fontWeight: "bold"
   },
   locationView: {
@@ -223,7 +223,7 @@ const styles = StyleSheet.create({
     alignItems: "flex-end"
   },
   locationViewCol: {
-    justifyContent: "flex-start",
-    alignItems: "center"
+    justifyContent: "center",
+    alignItems: "flex-start"
   }
 });
