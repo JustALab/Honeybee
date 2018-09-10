@@ -76,3 +76,10 @@ export const VIEW_DELIVERY_DETAILS = "deliveryDetails";
 
 //ini keys
 export const INI_DELIVERY_LOCATION = "ini_delivery_location";
+export const INI_DELIVERY_ADDRESS = "ini_delivery_address";
+export const INI_DELIVERY_ADDRESS_TYPE = "ini_delivery_address_type";
+
+//delivery address types
+export const STR_HOME = "HOME";
+export const STR_OFFICE = "OFFICE";
+export const STR_OTHER = "OTHER";

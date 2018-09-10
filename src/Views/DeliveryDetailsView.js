@@ -5,16 +5,9 @@ import {
   View,
   Picker,
   Item,
-  Form,
   Icon,
-  Label,
   Container,
   Content,
-  Header,
-  Right,
-  Left,
-  Body,
-  Title,
   Input
 } from "native-base";
 import { Dimensions, StyleSheet, Platform } from "react-native";
@@ -22,13 +15,16 @@ import CommonStyles from "../Commons/Styles";
 import { Card, List, ListItem } from "react-native-elements";
 import { ICONS } from "../Config/Icons";
 import {
-  ON_PRIMARY,
   PLACEHOLDER_COLOR,
   DEFAULT_BORDER_COLOR,
   ICON_ACTIVE
 } from "../Config/Colors";
 import { DBService } from "../Services/DBService";
-import { INI_DELIVERY_LOCATION } from "../Config/Strings";
+import {
+  INI_DELIVERY_LOCATION,
+  INI_DELIVERY_ADDRESS,
+  INI_DELIVERY_ADDRESS_TYPE
+} from "../Config/Strings";
 
 class DeliveryDetailsView extends React.Component {
   constructor(props) {
@@ -85,7 +81,12 @@ class DeliveryDetailsView extends React.Component {
   }
 
   saveDeliveryDetailsIniData() {
-    DBService.updateIni(INI_DELIVERY_LOCATION, this.deliveryLocation);
+    DBService.updateIni(INI_DELIVERY_LOCATION, this.state.deliveryLocation);
+    DBService.updateIni(INI_DELIVERY_ADDRESS, this.state.deliveryAddress);
+    DBService.updateIni(
+      INI_DELIVERY_ADDRESS_TYPE,
+      this.state.deliveryAddressType
+    );
   }
 
   renderAddressTypePicker() {

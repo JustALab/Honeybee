@@ -45,6 +45,9 @@ const QUERY_INSERT_INTO_USER_DATA =
   TABLE_USER_DATA +
   " (first_name, last_name, email, mobile, email_verification_status, mobile_verification_status) VALUES (:firstName, :lastName, :email, :mobile, :emailVerificationStatus, :mobileVerificationStatus)";
 
+const QUERY_UPSERT_INTO_INI_DATA =
+  "INSERT OR REPLACE INTO " + TABLE_INI + " (key, value) VALUES (:key, :value)";
+
 //update queries *****************************************************************************
 const QUERY_UPDATE_ALL_LOGIN_DATA =
   "UPDATE " +
@@ -66,9 +69,6 @@ const QUERY_UPDATE_MOBILE_VERIFICATION_STATUS =
   "UPDATE " +
   TABLE_USER_DATA +
   " SET mobile_verification_status=(:status) WHERE id=(:id)";
-
-const QUERY_UPDATE_INI =
-  "UPDATE " + TABLE_INI + " SET value=(:value) WHERE key=(:key)";
 
 export const DBService = {
   initDB: () => {
@@ -120,21 +120,6 @@ export const DBService = {
         [],
         (tx, res) => {
           console.log("**** " + TABLE_INI + " table creation successful.");
-
-          // insert location ini data start
-          let locationKey = INI_DELIVERY_LOCATION;
-          let locationValue = STR_EMPTY;
-          tx.executeSql(
-            "INSERT INTO " +
-              TABLE_INI +
-              " (key, value) VALUES (:locationKey, :locationValue)",
-            [locationKey, locationValue],
-            (tx, res) => {
-              console.log("Inserting location ini data successfull.");
-            },
-            err => console.log("Error inserting ini data: " + err.message)
-          );
-          //insert location ini data end
         },
         err => {
           console.log("**** " + TABLE_INI + " table creation error.");
@@ -349,15 +334,15 @@ export const DBService = {
   updateIni(key, value) {
     db.transaction(tx => {
       tx.executeSql(
-        QUERY_UPDATE_INI,
-        [value, key],
+        QUERY_UPSERT_INTO_INI_DATA,
+        [key, value],
         (tx, res) =>
           console.log(
-            "INI " + INI_DELIVERY_LOCATION + " value updated successfully."
+            "INI " + key + " value updated successfully."
           ),
         err =>
           console.log(
-            "Error updating INI " + INI_DELIVERY_LOCATION + ": " + err.message
+            "Error updating INI " + key + ": " + err.message
           )
       );
     });
