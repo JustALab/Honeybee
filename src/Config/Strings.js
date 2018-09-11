@@ -78,6 +78,7 @@ export const VIEW_DELIVERY_DETAILS = "deliveryDetails";
 export const INI_DELIVERY_LOCATION = "ini_delivery_location";
 export const INI_DELIVERY_ADDRESS = "ini_delivery_address";
 export const INI_DELIVERY_ADDRESS_TYPE = "ini_delivery_address_type";
+export const INI_DELIVERY_VENDOR_ID = "ini_delivery_vendor_id";
 
 //delivery address types
 export const STR_HOME = "HOME";

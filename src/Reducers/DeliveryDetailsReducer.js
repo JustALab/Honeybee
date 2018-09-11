@@ -4,10 +4,10 @@ import { STRINGS } from "../Config/Strings";
 let deliveryDetails = {
   deliveryDate: "",
   deliveryTime: "ASAP",
-  deliveryLocation: "",
+  deliveryLocation: -1,
   deliveryAddressType: "",
   deliveryAddress: STRINGS.chooseLocation,
-  deliveryVendorId: 0
+  deliveryVendorId: -1
 };
 
 export default (state = deliveryDetails, action) => {

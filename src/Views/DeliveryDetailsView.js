@@ -23,7 +23,8 @@ import { DBService } from "../Services/DBService";
 import {
   INI_DELIVERY_LOCATION,
   INI_DELIVERY_ADDRESS,
-  INI_DELIVERY_ADDRESS_TYPE
+  INI_DELIVERY_ADDRESS_TYPE,
+  INI_DELIVERY_VENDOR_ID
 } from "../Config/Strings";
 
 class DeliveryDetailsView extends React.Component {
@@ -87,6 +88,7 @@ class DeliveryDetailsView extends React.Component {
       INI_DELIVERY_ADDRESS_TYPE,
       this.state.deliveryAddressType
     );
+    DBService.updateIni(INI_DELIVERY_VENDOR_ID, this.state.deliveryVendorId);
   }
 
   renderAddressTypePicker() {

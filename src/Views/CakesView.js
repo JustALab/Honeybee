@@ -6,17 +6,16 @@ import {
   Text,
   TouchableOpacity
 } from "react-native";
-import {
-  Container,
-  Content,
-  Body,
-  Header,
-  Form,
-  Item,
-  Icon
-} from "native-base";
+import { Container, Content, Body, Header } from "native-base";
 import { FooterLab } from "../Components/FooterLab";
-import { STRINGS, VIEW_DELIVERY_DETAILS } from "../Config/Strings";
+import {
+  STRINGS,
+  VIEW_DELIVERY_DETAILS,
+  INI_DELIVERY_LOCATION,
+  INI_DELIVERY_ADDRESS,
+  INI_DELIVERY_ADDRESS_TYPE,
+  INI_DELIVERY_VENDOR_ID
+} from "../Config/Strings";
 import { PRIMARY, ON_PRIMARY, ICON_ACTIVE, SECONDARY } from "../Config/Colors";
 import MaterialIcon from "react-native-vector-icons/MaterialIcons";
 import { ICONS } from "../Config/Icons";
@@ -26,6 +25,7 @@ import { connect } from "react-redux";
 import * as Actions from "../Actions";
 import Spinner from "react-native-loading-spinner-overlay";
 import ApiService from "../Services/ApiService";
+import { DBService } from "../Services/DBService";
 
 class CakesView extends React.Component {
   constructor(props) {
@@ -46,41 +46,9 @@ class CakesView extends React.Component {
     }
     if (this.props.customerData == null) {
       if (this.props.isNetworkConnected) {
-        //set spinner true and get all data from Honeycomb and then set spinner false
+        //set spinner true and get all data from Honeycomb and also from local db and then set spinner false
         this.setState({ spinner: true }, () => {
-          //get customer data
-          let promiseCustomerData = new Promise((resolve, reject) => {
-            ApiService.getCustomerData(this.props.authToken, data => {
-              if (data !== null) {
-                resolve(data);
-              } else {
-                reject(null);
-              }
-            });
-          });
-
-          //get locations list
-          let promiseLocationsList = new Promise((resolve, reject) => {
-            ApiService.getLocationList(this.props.authToken, data => {
-              if (data !== null) {
-                resolve(data);
-              } else {
-                reject(null);
-              }
-            });
-          });
-
-          Promise.all([promiseCustomerData, promiseLocationsList]).then(
-            values => {
-              console.log(values);
-              this.props.setCustomerData(values[0]);
-              this.props.setLocationsList(values[1]);
-              this.setState({
-                spinner: false,
-                dataReady: true
-              });
-            }
-          );
+          this.getData();
         });
       } else {
         console.log("No internet connectivity.");
@@ -94,6 +62,89 @@ class CakesView extends React.Component {
         customerAddresses: this.props.customerData.customerAddressList
       });
     }
+  }
+
+  getData() {
+    //get customer data
+    let promiseCustomerData = new Promise((resolve, reject) => {
+      ApiService.getCustomerData(this.props.authToken, data => {
+        if (data !== null) {
+          resolve(data);
+        } else {
+          reject(null);
+        }
+      });
+    });
+
+    //get locations list
+    let promiseLocationsList = new Promise((resolve, reject) => {
+      ApiService.getLocationList(this.props.authToken, data => {
+        if (data !== null) {
+          resolve(data);
+        } else {
+          reject(null);
+        }
+      });
+    });
+
+    //get delivery address
+    let deliveryAddressIniPromise = new Promise((resolve, reject) => {
+      const deliveryAddress = DBService.getIniData(INI_DELIVERY_ADDRESS);
+      if (deliveryAddress !== null) {
+        resolve(deliveryAddress);
+      } else {
+        reject(deliveryAddress);
+      }
+    });
+
+    //get delivery address type
+    let deliveryAddressTypeIniPromise = new Promise((resolve, reject) => {
+      const deliveryAddressTypeIniData = DBService.getIniData(
+        INI_DELIVERY_ADDRESS_TYPE
+      );
+      if (deliveryAddressTypeIniData !== null) {
+        resolve(deliveryAddressTypeIniData);
+      } else {
+        reject(deliveryAddressTypeIniData);
+      }
+    });
+
+    //get location ini data
+    let locationIniPromise = new Promise((resolve, reject) => {
+      DBService.getIniData(INI_DELIVERY_LOCATION, locationName => {
+        resolve(locationName);
+      });
+    });
+
+    //get delivery vendor ID
+    let deliveryVendorIdIniPromise = new Promise((resolve, reject) => {
+      DBService.getIniData(INI_DELIVERY_VENDOR_ID, vendorId => {
+        resolve(vendorId);
+      });
+    });
+
+    Promise.all([
+      promiseCustomerData,
+      promiseLocationsList,
+      locationIniPromise,
+      // deliveryAddressIniPromise,
+      // deliveryAddressTypeIniPromise,
+      deliveryVendorIdIniPromise
+    ])
+      .then(values => {
+        this.props.setCustomerData(values[0]);
+        this.props.setLocationsList(values[1]);
+        this.props.setDeliveryDetails({
+          ...this.props.deliveryDetails,
+          deliveryLocation: values[2],
+          deliveryVendorId: values[3]
+        });
+        this.setState({
+          spinner: false,
+          dataReady: true
+        });
+      })
+      .catch(err => console.log(err.message));
   }
 
   /**

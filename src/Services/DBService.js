@@ -1,4 +1,7 @@
-import { INI_DELIVERY_LOCATION } from "../Config/Strings";
+import {
+  INI_DELIVERY_LOCATION,
+  INI_DELIVERY_VENDOR_ID
+} from "../Config/Strings";
 
 var SQLite = require("react-native-sqlite-storage");
 
@@ -120,6 +123,20 @@ export const DBService = {
         [],
         (tx, res) => {
           console.log("**** " + TABLE_INI + " table creation successful.");
+          tx.executeSql(
+            "INSERT OR IGNORE INTO " +
+              TABLE_INI +
+              " (key, value) VALUES ('" +
+              INI_DELIVERY_VENDOR_ID +
+              "', '2')"
+          );
+          tx.executeSql(
+            "INSERT OR IGNORE INTO " +
+              TABLE_INI +
+              " (key, value) VALUES ('" +
+              INI_DELIVERY_LOCATION +
+              "', 'Karapakkam')"
+          );
         },
         err => {
           console.log("**** " + TABLE_INI + " table creation error.");
@@ -336,13 +353,26 @@ export const DBService = {
       tx.executeSql(
         QUERY_UPSERT_INTO_INI_DATA,
         [key, value],
-        (tx, res) =>
-          console.log(
-            "INI " + key + " value updated successfully."
-          ),
+        (tx, res) => console.log("INI " + key + " value updated successfully."),
+        err => console.log("Error updating INI " + key + ": " + err.message)
+      );
+    });
+  },
+
+  getIniData(key, callback) {
+    let value = null;
+    db.transaction(tx => {
+      tx.executeSql(
+        "SELECT value FROM " + TABLE_INI + " WHERE key=(:key)",
+        [key],
+        (tx, res) => {
+          // console.log(res.rows.item(0));
+          value = res.rows.item(0).value;
+          callback(value);
+        },
         err =>
           console.log(
-            "Error updating INI " + key + ": " + err.message
+            "Error fetching ini data for key - " + key + ": " + err.message
           )
       );
     });
