@@ -16,7 +16,7 @@ class ItemCard extends React.Component {
   render() {
     return (
       <TouchableOpacity
-        onPress={() => this.props.touchHandler(this.props.itemName)}
+        onPress={() => this.props.touchHandler(this.props.itemId)}
       >
         <Card style={styles.card}>
           <CardItem>
@@ -75,6 +75,7 @@ const styles = StyleSheet.create({
 });
 
 ItemCard.propTypes = {
+  itemId: PropTypes.any.isRequiredÍ,
   itemName: PropTypes.string.isRequired,
   itemPrice: PropTypes.string.isRequired,
   imageUrl: PropTypes.string.isRequired,
