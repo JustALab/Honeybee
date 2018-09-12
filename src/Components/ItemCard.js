@@ -1,22 +1,24 @@
 import React from "react";
 import { Card, CardItem, Text } from "native-base";
-import { StyleSheet, View, Image, TouchableOpacity, Dimensions } from "react-native";
+import {
+  StyleSheet,
+  View,
+  Image,
+  TouchableOpacity,
+  Dimensions
+} from "react-native";
 import PropTypes from "prop-types";
 
 const CURRENCY_SYMBOL = "₹";
 const SCREEN_W = Dimensions.get("window").height;
 
 class ItemCard extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     return (
       <TouchableOpacity
         onPress={() => this.props.touchHandler(this.props.itemName)}
       >
-        <Card style={{ height: 142, width: SCREEN_W * 0.25 }}>
+        <Card style={styles.card}>
           <CardItem>
             <Image
               source={{ uri: this.props.imageUrl }}
@@ -65,6 +67,10 @@ const styles = StyleSheet.create({
     width: SCREEN_W * 0.25,
     marginLeft: -15,
     marginTop: -10
+  },
+  card: {
+    height: 142,
+    width: SCREEN_W * 0.25
   }
 });
 
