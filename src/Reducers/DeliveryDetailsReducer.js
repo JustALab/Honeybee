@@ -4,7 +4,7 @@ import { STRINGS } from "../Config/Strings";
 let deliveryDetails = {
   deliveryDate: "",
   deliveryTime: "ASAP",
-  deliveryLocation: -1,
+  deliveryLocation: "",
   deliveryAddressType: "",
   deliveryAddress: STRINGS.chooseLocation,
   deliveryVendorId: -1

@@ -6,7 +6,7 @@ import {
   Text,
   TouchableOpacity
 } from "react-native";
-import { Container, Content, Body, Header } from "native-base";
+import { Container, Content, Body, Header, Icon } from "native-base";
 import { FooterLab } from "../Components/FooterLab";
 import {
   STRINGS,
@@ -17,10 +17,9 @@ import {
   INI_DELIVERY_VENDOR_ID
 } from "../Config/Strings";
 import { PRIMARY, ON_PRIMARY, ICON_ACTIVE, SECONDARY } from "../Config/Colors";
-import MaterialIcon from "react-native-vector-icons/MaterialIcons";
 import { ICONS } from "../Config/Icons";
 import CommonStyles from "../Commons/Styles";
-import { Col, Grid } from "react-native-easy-grid";
+import { Col, Grid, Row } from "react-native-easy-grid";
 import { connect } from "react-redux";
 import * as Actions from "../Actions";
 import Spinner from "react-native-loading-spinner-overlay";
@@ -152,19 +151,18 @@ class CakesView extends React.Component {
    */
   renderHeaderLocationText() {
     const { deliveryDetails } = this.props;
-    if (deliveryDetails.deliveryAddress === STRINGS.chooseLocation) {
-      return (
-        <Text style={styles.headerLocationText}>
-          {deliveryDetails.deliveryAddress}
-        </Text>
-      );
-    }
+
     return (
-      <Text style={styles.headerLocationText}>
-        {deliveryDetails.deliveryAddress +
-          " " +
-          deliveryDetails.deliveryLocation}
-      </Text>
+      <Grid>
+        <Row>
+          <Text>{deliveryDetails.deliveryLocation}</Text>
+        </Row>
+        <Row>
+          <Text style={styles.headerLocationText}>
+            {deliveryDetails.deliveryAddress}
+          </Text>
+        </Row>
+      </Grid>
     );
   }
 
@@ -179,20 +177,20 @@ class CakesView extends React.Component {
             <Grid>
               <Col size={75} style={styles.locationViewCol}>
                 <View style={styles.locationView}>
-                  <MaterialIcon
+                  <Icon
                     name={ICONS.location}
-                    size={iconSize}
-                    style={[styles.headerIcon, { marginTop: 6 }]}
+                    style={[styles.headerIcon]}
+                    type="MaterialIcons"
                   />
                   {this.renderHeaderLocationText()}
                 </View>
               </Col>
               <Col size={25} style={styles.timeViewCol}>
                 <View style={styles.timeView}>
-                  <MaterialIcon
+                  <Icon
                     name={ICONS.time}
-                    size={iconSize}
                     style={styles.headerIcon}
+                    type="MaterialIcons"
                   />
                   <Text style={[styles.headerTimeText]}>
                     {deliveryDetails.deliveryTime}
@@ -236,7 +234,6 @@ export default connect(
   Actions
 )(CakesView);
 
-const iconSize = 25;
 const styles = StyleSheet.create({
   headerBody: {
     flex: 3
@@ -249,7 +246,6 @@ const styles = StyleSheet.create({
     marginTop: 3,
     flex: 1,
     flexWrap: "wrap",
-    marginLeft: 3,
     fontSize: 13
   },
   headerTimeText: {
