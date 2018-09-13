@@ -20,7 +20,7 @@ import {
   ITEM_CATEGORY_PARTY_PACK,
   AVAILABLE
 } from "../Config/Strings";
-import { PRIMARY, ON_PRIMARY, ICON_ACTIVE, SECONDARY } from "../Config/Colors";
+import { ON_PRIMARY, ICON_ACTIVE } from "../Config/Colors";
 import { ICONS } from "../Config/Icons";
 import CommonStyles from "../Commons/Styles";
 import { Col, Grid, Row } from "react-native-easy-grid";
@@ -31,6 +31,7 @@ import ApiService from "../Services/ApiService";
 import { DBService } from "../Services/DBService";
 import ItemCard from "../Components/ItemCard";
 import { filterItems } from "../Commons/Utils";
+import * as Animatable from "react-native-animatable";
 
 class CakesView extends React.Component {
   constructor(props) {
@@ -176,7 +177,9 @@ class CakesView extends React.Component {
     return (
       <Grid>
         <Row>
-          <Text>{deliveryDetails.deliveryLocation}</Text>
+          <Text style={styles.locationNameText}>
+            {deliveryDetails.deliveryLocation}
+          </Text>
         </Row>
         <Row>
           <Text style={styles.headerLocationText}>
@@ -235,15 +238,17 @@ class CakesView extends React.Component {
 
   _renderItemCard(item) {
     return (
-      <ItemCard
-        itemId={item.itemId}
-        itemName={item.itemName}
-        itemPrice={item.itemPrice}
-        imageUrl={item.imageUrl}
-        itemSlab={item.quantitySlab}
-        itemUnit="kg"
-        touchHandler={this._onClickItem}
-      />
+      <Animatable.View animation="fadeIn">
+        <ItemCard
+          itemId={item.itemId}
+          itemName={item.itemName}
+          itemPrice={item.itemPrice}
+          imageUrl={item.imageUrl}
+          itemSlab={item.quantitySlab}
+          itemUnit="kg"
+          touchHandler={this._onClickItem}
+        />
+      </Animatable.View>
     );
   }
 
@@ -299,6 +304,10 @@ const styles = StyleSheet.create({
     flexWrap: "wrap",
     fontSize: 13
   },
+  locationNameText: {
+    fontWeight: "bold",
+    color: ON_PRIMARY
+  },
   headerTimeText: {
     color: ON_PRIMARY,
     marginTop: 0,
@@ -313,8 +322,10 @@ const styles = StyleSheet.create({
     alignItems: "center"
   },
   timeView: {
+    flex: 1,
     flexDirection: "row",
-    alignItems: "center"
+    alignItems: "center",
+    justifyContent: "flex-end"
   },
   timeViewCol: {
     justifyContent: "center",

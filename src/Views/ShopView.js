@@ -7,12 +7,13 @@ import { STRINGS } from "../Config/Strings";
 import { ICONS } from "../Config/Icons";
 import { connect } from "react-redux";
 import ItemCard from "../Components/ItemCard";
+import * as Animatable from "react-native-animatable";
 
 class ShopView extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isReady: false,
+      isReady: false
     };
   }
 
@@ -28,15 +29,17 @@ class ShopView extends React.Component {
 
   _renderItemCard(item) {
     return (
-      <ItemCard
-        itemId={item.itemId}
-        itemName={item.itemName}
-        itemPrice={item.itemPrice}
-        imageUrl={item.imageUrl}
-        itemSlab={item.quantitySlab}
-        itemUnit="unit"
-        touchHandler={this._onClickItem}
-      />
+      <Animatable.View animation="fadeIn">
+        <ItemCard
+          itemId={item.itemId}
+          itemName={item.itemName}
+          itemPrice={item.itemPrice}
+          imageUrl={item.imageUrl}
+          itemSlab={item.quantitySlab}
+          itemUnit="unit"
+          touchHandler={this._onClickItem}
+        />
+      </Animatable.View>
     );
   }
 
@@ -54,9 +57,7 @@ class ShopView extends React.Component {
     return (
       <Container>
         <HeaderLab title={STRINGS.partyPacks} leftButton={ICONS.menu} />
-        <Content padder>
-          {this._renderItemsList()}
-        </Content>
+        <Content padder>{this._renderItemsList()}</Content>
         <FooterLab activeButton={STRINGS.shop} {...this.props} />
       </Container>
     );

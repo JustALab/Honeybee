@@ -48,7 +48,7 @@ class LoginView extends React.Component {
     };
   }
 
-  validateFields() {
+  _validateFields() {
     console.log(this.state.mobile);
     console.log(this.state.password);
     //this == & != operator will check for both null and undefined
@@ -61,14 +61,14 @@ class LoginView extends React.Component {
       console.log("All fields are OK.");
       isFieldsOk = true;
     } else {
-      console.log("All fields are NOT OK. handleLogin() not executed.");
+      console.log("All fields are NOT OK. _handleLogin() not executed.");
       isFieldsOk = false;
     }
     return isFieldsOk;
   }
 
-  handleLogin = () => {
-    if (this.validateFields()) {
+  _handleLogin = () => {
+    if (this._validateFields()) {
       //diable login button
       this.setState({ loginButtonDisable: true, spinner: true }, () => {
         if (this.props.isNetworkConnected) {
@@ -183,7 +183,7 @@ class LoginView extends React.Component {
               <View style={styles.btnView}>
                 <Button
                   style={[styles.signInBtn, { width: "35%" }]}
-                  onPress={this.handleLogin}
+                  onPress={this._handleLogin}
                   disabled={this.state.loginButtonDisable}
                   full
                 >
