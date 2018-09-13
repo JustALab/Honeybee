@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
   },
   cardImage: {
     height: 90,
-    width: SCREEN_W * 0.252,
+    width: SCREEN_W * 0.26,
     marginLeft: -15,
     marginTop: -10
   },
