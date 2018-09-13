@@ -10,9 +10,29 @@ import {
 import PropTypes from "prop-types";
 
 const CURRENCY_SYMBOL = "₹";
+const STR_SPACE = " ";
+const SYMBOL_SLASH = "/";
 const SCREEN_W = Dimensions.get("window").height;
 
 class ItemCard extends React.Component {
+  _renderPriceText() {
+    const priceTextNoSlab =
+      CURRENCY_SYMBOL +
+      this.props.itemPrice +
+      SYMBOL_SLASH +
+      this.props.itemUnit;
+    const priceTextWithSlab =
+      CURRENCY_SYMBOL +
+      this.props.itemPrice +
+      SYMBOL_SLASH +
+      this.props.itemSlab +
+      STR_SPACE +
+      this.props.itemUnit;
+    let priceText =
+      this.props.itemSlab === 1 ? priceTextNoSlab : priceTextWithSlab;
+    return <Text style={styles.itemPriceText}>{priceText}</Text>;
+  }
+
   render() {
     return (
       <TouchableOpacity
@@ -32,11 +52,7 @@ class ItemCard extends React.Component {
             </View>
           </CardItem>
           <CardItem>
-            <View style={styles.itemPriceView}>
-              <Text style={styles.itemPriceText}>
-                {CURRENCY_SYMBOL + this.props.itemPrice}
-              </Text>
-            </View>
+            <View style={styles.itemPriceView}>{this._renderPriceText()}</View>
           </CardItem>
         </Card>
       </TouchableOpacity>
@@ -77,7 +93,9 @@ const styles = StyleSheet.create({
 ItemCard.propTypes = {
   itemId: PropTypes.any.isRequired,
   itemName: PropTypes.string.isRequired,
-  itemPrice: PropTypes.string.isRequired,
+  itemPrice: PropTypes.number.isRequired,
+  itemSlab: PropTypes.number.isRequired,
+  itemUnit: PropTypes.string.isRequired,
   imageUrl: PropTypes.string.isRequired,
   touchHandler: PropTypes.func.isRequired
 };
