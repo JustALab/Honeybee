@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
 });
 
 ItemCard.propTypes = {
-  itemId: PropTypes.any.isRequiredÍ,
+  itemId: PropTypes.any.isRequired,
   itemName: PropTypes.string.isRequired,
   itemPrice: PropTypes.string.isRequired,
   imageUrl: PropTypes.string.isRequired,
