@@ -5,6 +5,8 @@ export const SET_CUSTOMER_ID = "SET_CUSTOMER_ID";
 export const SET_CUSTOMER_DATA = "SET_CUSTOMER_DATA";
 export const SET_DELIVERY_DETAILS = "SET_DELIVERY_DETAILS";
 export const SET_LOCATIONS_LIST = "SET_LOCATIONS_LIST";
+export const SET_CAKES_LIST = "SET_CAKES_LIST";
+export const SET_PARTY_PACKS_LIST = "SET_PARTY_PACKS_LIST";
 
 export const setAuthToken = token => {
   return {
@@ -43,4 +45,14 @@ export const setLocationsList = locationsList => ({
 export const setDeliveryDetails = deliveryDetails => ({
   type: SET_DELIVERY_DETAILS,
   deliveryDetails
+});
+
+export const setCakesList = cakesList => ({
+  type: SET_CAKES_LIST,
+  cakesList
+});
+
+export const setPartyPacksList = fancyItemsList => ({
+  type: SET_PARTY_PACKS_LIST,
+  fancyItemsList
 });

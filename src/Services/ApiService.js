@@ -9,9 +9,14 @@ import {
   URL_UPDATE_MOBILE_ON_SIGNUP,
   URL_DELETE_CUST_ADDR,
   URL_CHANGE_PASSWORD,
-  URL_GET_LOCATIONS
+  URL_GET_LOCATIONS,
+  URL_GET_VENDOR_ITEMS
 } from "../Config/Server";
-import { INCORRECT_OLD_PASSWORD, SUCCESS } from "../Config/Strings";
+import {
+  INCORRECT_OLD_PASSWORD,
+  SUCCESS,
+  SPL_CHAR_SLASH
+} from "../Config/Strings";
 
 export default (ApiService = {
   login: (loginCredentials, callback) => {
@@ -143,5 +148,19 @@ export default (ApiService = {
         console.log("Error receiving locations list: " + err.message);
         callback(null);
       });
+  },
+
+  getVendorItems: (token, vendorId, callback) => {
+    axios
+      .get(HOST + URL_GET_VENDOR_ITEMS + SPL_CHAR_SLASH + vendorId, {
+        headers: ApiService.buildAuthHeader(token)
+      })
+      .then(res => {
+        console.log("Vendor items list fetched successfully.");
+        callback(res.data);
+      })
+      .catch(err =>
+        console.log("Error fetching vendor items list: " + err.message)
+      );
   }
 });

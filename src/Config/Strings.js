@@ -4,6 +4,7 @@ export const STRINGS = {
   back: "back",
   cakes: "Cakes",
   shop: "Shop",
+  partyPacks: "Party Packs",
   cart: "Cart",
   orders: "Orders",
   profile: "Profile",
@@ -56,6 +57,7 @@ export const VERIFIED = "VERIFIED";
 export const EMAIL_LINKED_WITH_OTHER_MOBILE = "EMAIL_LINKED_WITH_OTHER_MOBILE";
 export const MOBILE_LINKED_WITH_OTHER_EMAIL = "MOBILE_LINKED_WITH_OTHER_EMAIL";
 export const INCORRECT_OLD_PASSWORD = "INCORRECT_OLD_PASSWORD";
+export const AVAILABLE = "AVAILABLE";
 
 //views
 export const VIEW_LOGIN = "login";
@@ -84,3 +86,10 @@ export const INI_DELIVERY_VENDOR_ID = "ini_delivery_vendor_id";
 export const STR_HOME = "HOME";
 export const STR_OFFICE = "OFFICE";
 export const STR_OTHER = "OTHER";
+
+//item categories
+export const ITEM_CATEGORY_CAKE = "CAKE";
+export const ITEM_CATEGORY_PARTY_PACK = "PARTY_PACK";
+
+//special char
+export const SPL_CHAR_SLASH = "/";

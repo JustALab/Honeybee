@@ -4,7 +4,8 @@ import {
   View,
   StatusBar,
   Text,
-  TouchableOpacity
+  TouchableOpacity,
+  FlatList
 } from "react-native";
 import { Container, Content, Body, Header, Icon } from "native-base";
 import { FooterLab } from "../Components/FooterLab";
@@ -14,7 +15,10 @@ import {
   INI_DELIVERY_LOCATION,
   INI_DELIVERY_ADDRESS,
   INI_DELIVERY_ADDRESS_TYPE,
-  INI_DELIVERY_VENDOR_ID
+  INI_DELIVERY_VENDOR_ID,
+  ITEM_CATEGORY_CAKE,
+  ITEM_CATEGORY_PARTY_PACK,
+  AVAILABLE
 } from "../Config/Strings";
 import { PRIMARY, ON_PRIMARY, ICON_ACTIVE, SECONDARY } from "../Config/Colors";
 import { ICONS } from "../Config/Icons";
@@ -25,6 +29,8 @@ import * as Actions from "../Actions";
 import Spinner from "react-native-loading-spinner-overlay";
 import ApiService from "../Services/ApiService";
 import { DBService } from "../Services/DBService";
+import ItemCard from "../Components/ItemCard";
+import { filterItems } from "../Commons/Utils";
 
 class CakesView extends React.Component {
   constructor(props) {
@@ -47,7 +53,7 @@ class CakesView extends React.Component {
       if (this.props.isNetworkConnected) {
         //set spinner true and get all data from Honeycomb and also from local db and then set spinner false
         this.setState({ spinner: true }, () => {
-          this.getData();
+          this._getData();
         });
       } else {
         console.log("No internet connectivity.");
@@ -63,7 +69,7 @@ class CakesView extends React.Component {
     }
   }
 
-  getData() {
+  _getData() {
     //get customer data
     let promiseCustomerData = new Promise((resolve, reject) => {
       ApiService.getCustomerData(this.props.authToken, data => {
@@ -74,7 +80,6 @@ class CakesView extends React.Component {
         }
       });
     });
-
     //get locations list
     let promiseLocationsList = new Promise((resolve, reject) => {
       ApiService.getLocationList(this.props.authToken, data => {
@@ -85,7 +90,6 @@ class CakesView extends React.Component {
         }
       });
     });
-
     //get delivery address
     let deliveryAddressIniPromise = new Promise((resolve, reject) => {
       const deliveryAddress = DBService.getIniData(INI_DELIVERY_ADDRESS);
@@ -95,7 +99,6 @@ class CakesView extends React.Component {
         reject(deliveryAddress);
       }
     });
-
     //get delivery address type
     let deliveryAddressTypeIniPromise = new Promise((resolve, reject) => {
       const deliveryAddressTypeIniData = DBService.getIniData(
@@ -138,20 +141,38 @@ class CakesView extends React.Component {
           deliveryLocation: values[2],
           deliveryVendorId: values[3]
         });
-        this.setState({
-          spinner: false,
-          dataReady: true
-        });
+        this._getVendorItemsList();
       })
       .catch(err => console.log(err.message));
   }
 
-  /**
-   * renderHeaderLocationText method appends delivery location name if delivery address is given by the user.
-   */
-  renderHeaderLocationText() {
-    const { deliveryDetails } = this.props;
+  //this method is also available in DeliveryDetailsView
+  _segregateItems(data, callback) {
+    let cakesList = filterItems(data, ITEM_CATEGORY_CAKE);
+    let partyPacksList = filterItems(data, ITEM_CATEGORY_PARTY_PACK);
+    this.props.setCakesList(cakesList);
+    this.props.setPartyPacksList(partyPacksList);
+    callback();
+  }
 
+  _getVendorItemsList() {
+    ApiService.getVendorItems(
+      this.props.authToken,
+      this.props.deliveryDetails.deliveryVendorId,
+      data => {
+        console.log(data);
+        this._segregateItems(data, () =>
+          this.setState({
+            spinner: false,
+            dataReady: true
+          })
+        );
+      }
+    );
+  }
+
+  _renderHeaderLocationText() {
+    const { deliveryDetails } = this.props;
     return (
       <Grid>
         <Row>
@@ -166,7 +187,7 @@ class CakesView extends React.Component {
     );
   }
 
-  renderHeader() {
+  _renderHeader() {
     const { deliveryDetails } = this.props;
     return (
       <TouchableOpacity
@@ -182,7 +203,7 @@ class CakesView extends React.Component {
                     style={[styles.headerIcon]}
                     type="MaterialIcons"
                   />
-                  {this.renderHeaderLocationText()}
+                  {this._renderHeaderLocationText()}
                 </View>
               </Col>
               <Col size={25} style={styles.timeViewCol}>
@@ -204,17 +225,46 @@ class CakesView extends React.Component {
     );
   }
 
-  renderSpinner() {
+  _renderSpinner() {
     return <Spinner visible={this.state.spinner} />;
+  }
+
+  _onClickItem(itemId) {
+    alert(itemId);
+  }
+
+  _renderItemCard(item) {
+    return (
+      <ItemCard
+        itemId={item.itemId}
+        itemName={item.itemName}
+        itemPrice={item.itemPrice}
+        imageUrl={item.imageUrl}
+        itemSlab={item.quantitySlab}
+        itemUnit="kg"
+        touchHandler={this._onClickItem}
+      />
+    );
+  }
+
+  _renderItemsList() {
+    return (
+      <FlatList
+        data={this.props.cakesList}
+        renderItem={({ item }) => this._renderItemCard(item)}
+        numColumns={2}
+      />
+    );
   }
 
   render() {
     return (
       <Container>
         <StatusBar barStyle="dark-content" backgroundColor="black" />
-        {this.renderHeader()}
-        <Content style={CommonStyles.statusBarMargin}>
-          {this.renderSpinner()}
+        {this._renderHeader()}
+        <Content style={CommonStyles.statusBarMargin} padder>
+          {this._renderSpinner()}
+          {this._renderItemsList()}
         </Content>
         <FooterLab activeButton={STRINGS.cakes} {...this.props} />
       </Container>
@@ -226,7 +276,8 @@ const mapStateToProps = state => ({
   authToken: state.authToken,
   isNetworkConnected: state.isNetworkConnected,
   customerData: state.customerData,
-  deliveryDetails: state.deliveryDetails
+  deliveryDetails: state.deliveryDetails,
+  cakesList: state.cakesList
 });
 
 export default connect(
@@ -272,5 +323,9 @@ const styles = StyleSheet.create({
   locationViewCol: {
     justifyContent: "center",
     alignItems: "flex-start"
+  },
+  listRowView: {
+    flexDirection: "row",
+    justifyContent: "space-between"
   }
 });

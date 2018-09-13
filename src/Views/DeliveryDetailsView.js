@@ -24,8 +24,12 @@ import {
   INI_DELIVERY_LOCATION,
   INI_DELIVERY_ADDRESS,
   INI_DELIVERY_ADDRESS_TYPE,
-  INI_DELIVERY_VENDOR_ID
+  INI_DELIVERY_VENDOR_ID,
+  ITEM_CATEGORY_CAKE,
+  ITEM_CATEGORY_PARTY_PACK
 } from "../Config/Strings";
+import ApiService from "../Services/ApiService";
+import { filterItems } from "../Commons/Utils";
 
 class DeliveryDetailsView extends React.Component {
   constructor(props) {
@@ -38,12 +42,12 @@ class DeliveryDetailsView extends React.Component {
       deliveryLocation: this.props.deliveryDetails.deliveryLocation,
       deliveryVendorId: this.props.deliveryDetails.deliveryVendorId
     };
-    this.setDeliveryDetailsToReduxState = this.setDeliveryDetailsToReduxState.bind(
+    this._setDeliveryDetailsToReduxState = this._setDeliveryDetailsToReduxState.bind(
       this
     );
   }
 
-  setDeliveryDetailsToReduxState() {
+  _setDeliveryDetailsToReduxState() {
     const {
       deliveryAddressType,
       deliveryAddress,
@@ -76,12 +80,29 @@ class DeliveryDetailsView extends React.Component {
           deliveryTime,
           deliveryVendorId
         });
-        this.saveDeliveryDetailsIniData();
+        this._saveDeliveryDetailsIniData();
+        this._getVendorItemsList();
       }
     );
   }
 
-  saveDeliveryDetailsIniData() {
+  _getVendorItemsList() {
+    ApiService.getVendorItems(
+      this.props.authToken,
+      this.state.deliveryVendorId,
+      data => this._segregateItems(data)
+    );
+  }
+
+  _segregateItems(data) {
+    let cakesList = filterItems(data, ITEM_CATEGORY_CAKE);
+    let partyPacksList = filterItems(data, ITEM_CATEGORY_PARTY_PACK);
+    console.log(cakesList);
+    this.props.setCakesList(cakesList);
+    this.props.setPartyPacksList(partyPacksList);
+  }
+
+  _saveDeliveryDetailsIniData() {
     DBService.updateIni(INI_DELIVERY_LOCATION, this.state.deliveryLocation);
     DBService.updateIni(INI_DELIVERY_ADDRESS, this.state.deliveryAddress);
     DBService.updateIni(
@@ -91,7 +112,7 @@ class DeliveryDetailsView extends React.Component {
     DBService.updateIni(INI_DELIVERY_VENDOR_ID, this.state.deliveryVendorId);
   }
 
-  renderAddressTypePicker() {
+  _renderAddressTypePicker() {
     return (
       <Item picker>
         <Picker
@@ -112,7 +133,7 @@ class DeliveryDetailsView extends React.Component {
     );
   }
 
-  renderLocationPortion() {
+  _renderLocationPortion() {
     const { locationsList } = this.props;
     return (
       <View style={styles.locationView}>
@@ -134,7 +155,7 @@ class DeliveryDetailsView extends React.Component {
               onValueChange={value =>
                 this.setState(
                   { deliveryLocation: value },
-                  this.setDeliveryDetailsToReduxState
+                  this._setDeliveryDetailsToReduxState
                 )
               }
               headerTitleStyle={CommonStyles.headerTitle}
@@ -154,7 +175,7 @@ class DeliveryDetailsView extends React.Component {
     );
   }
 
-  renderAddressList() {
+  _renderAddressList() {
     const addressList = this.props.customerData.customerAddressList;
     return (
       <List>
@@ -172,7 +193,7 @@ class DeliveryDetailsView extends React.Component {
     );
   }
 
-  renderAddressTextField() {
+  _renderAddressTextField() {
     return (
       <View style={styles.addressTextFieldView}>
         <Item>
@@ -188,11 +209,11 @@ class DeliveryDetailsView extends React.Component {
     );
   }
 
-  renderAddressPortion() {
+  _renderAddressPortion() {
     return (
       <Card title="Delivery Address">
-        {this.renderAddressTypePicker()}
-        {this.renderAddressTextField()}
+        {this._renderAddressTypePicker()}
+        {this._renderAddressTextField()}
       </Card>
     );
   }
@@ -201,8 +222,8 @@ class DeliveryDetailsView extends React.Component {
     return (
       <Container style={CommonStyles.containerBg}>
         <Content padder>
-          <View style={styles.mainView}>{this.renderLocationPortion()}</View>
-          <View>{this.renderAddressPortion()}</View>
+          <View style={styles.mainView}>{this._renderLocationPortion()}</View>
+          <View>{this._renderAddressPortion()}</View>
         </Content>
       </Container>
     );

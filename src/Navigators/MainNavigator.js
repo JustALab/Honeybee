@@ -1,5 +1,5 @@
 import { createSwitchNavigator } from "react-navigation";
-import { ShopView } from "../Views/ShopView";
+import ShopView from "../Views/ShopView";
 import { CartView } from "../Views/CartView";
 import { OrdersView } from "../Views/OrdersView";
 import ProfileNavigator from "../Navigators/ProfileNavigator";
