@@ -39,7 +39,7 @@ class ItemCard extends React.Component {
         onPress={() => this.props.touchHandler(this.props.itemId)}
       >
         <Card style={styles.card}>
-          <CardItem>
+          <CardItem style={styles.imageCardItem}>
             <Image
               source={{ uri: this.props.imageUrl }}
               style={styles.cardImage}
@@ -51,7 +51,7 @@ class ItemCard extends React.Component {
               <Text style={styles.itemNameText}>{this.props.itemName}</Text>
             </View>
           </CardItem>
-          <CardItem>
+          <CardItem style={styles.cardItemPriceCardItem}>
             <View style={styles.itemPriceView}>{this._renderPriceText()}</View>
           </CardItem>
         </Card>
@@ -60,6 +60,7 @@ class ItemCard extends React.Component {
   }
 }
 
+const RADIUS_WIDTH = 10;
 const styles = StyleSheet.create({
   itemNameText: {
     fontWeight: "bold",
@@ -82,11 +83,21 @@ const styles = StyleSheet.create({
     height: 90,
     width: SCREEN_W * 0.258,
     marginLeft: -15,
-    marginTop: -10
+    marginTop: -10,
+    borderRadius: RADIUS_WIDTH
+  },
+  imageCardItem: {
+    borderTopLeftRadius: RADIUS_WIDTH,
+    borderTopRightRadius: RADIUS_WIDTH
+  },
+  cardItemPriceCardItem: {
+    borderBottomLeftRadius: RADIUS_WIDTH,
+    borderBottomRightRadius: RADIUS_WIDTH
   },
   card: {
     height: 142,
-    width: SCREEN_W * 0.26
+    width: SCREEN_W * 0.26,
+    borderRadius: RADIUS_WIDTH
   }
 });
 
