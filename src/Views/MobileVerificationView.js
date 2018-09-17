@@ -13,7 +13,7 @@ import { connect } from "react-redux";
 import Spinner from "react-native-loading-spinner-overlay";
 import {
   SECONDARY,
-  SECONDARYDark,
+  SECONDARY_DARK,
   SECONDARY_LIGHT,
   WHITE
 } from "../Config/Colors";
@@ -310,7 +310,7 @@ const styles = StyleSheet.create({
     margin: 0,
     flex: 1,
     fontSize: 20,
-    color: SECONDARYDark
+    color: SECONDARY_DARK
   },
   button: {
     marginTop: 20,

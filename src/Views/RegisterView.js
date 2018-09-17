@@ -14,7 +14,7 @@ import {
   PRIMARY,
   SECONDARY,
   ON_PRIMARY,
-  SECONDARYDark,
+  SECONDARY_DARK,
   WHITE
 } from "../Config/Colors";
 import { DatePicker } from "../Components/Datepicker/Datepicker";
@@ -346,7 +346,7 @@ const styles = StyleSheet.create({
     marginLeft: 4
   },
   linkText: {
-    color: SECONDARYDark
+    color: SECONDARY_DARK
   },
   textSize: {
     fontSize: 12

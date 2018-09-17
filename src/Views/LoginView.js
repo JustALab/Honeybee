@@ -24,7 +24,7 @@ import {
   PRIMARY,
   SECONDARY,
   ON_PRIMARY,
-  SECONDARYDark,
+  SECONDARY_DARK,
   ICON_INACTIVE,
   LOGO_TEAL,
   WHITE
@@ -192,7 +192,7 @@ class LoginView extends React.Component {
               </View>
               <View style={styles.linksView}>
                 <Text
-                  style={[styles.text, { color: SECONDARYDark }]}
+                  style={[styles.text, { color: SECONDARY_DARK }]}
                   onPress={() => this.props.navigation.navigate(VIEW_REGISTER)}
                 >
                   Register
@@ -254,7 +254,7 @@ const styles = StyleSheet.create({
     fontSize: 14
   },
   registerBtnText: {
-    color: SECONDARYDark
+    color: SECONDARY_DARK
   },
   widthStyle: {
     width: "100%"

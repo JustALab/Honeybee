@@ -5,7 +5,7 @@ export const ON_PRIMARY = "#424242";
 
 export const SECONDARY = "#00acc1";
 export const SECONDARY_LIGHT = "#5ddef4";
-export const SECONDARYDark = "#007c91";
+export const SECONDARY_DARK = "#007c91";
 export const ON_SECONDARY = "#000000";
 
 export const BACKGROUND_1 = "#f4f6f7";

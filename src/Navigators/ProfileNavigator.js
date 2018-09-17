@@ -4,7 +4,7 @@ import { PrivacyPolicyView } from "../Views/PrivacyPolicyView";
 import { TermsConditions } from "../Views/TermsConditions";
 import { STRINGS } from "../Config/Strings";
 import commonStyles from "../Commons/Styles";
-import { SECONDARYDark } from "../Config/Colors";
+import { SECONDARY_DARK } from "../Config/Colors";
 
 export default createStackNavigator(
   {
@@ -32,7 +32,7 @@ export default createStackNavigator(
   {
     initialRouteName: "profileView",
     navigationOptions: {
-      headerTintColor: SECONDARYDark,
+      headerTintColor: SECONDARY_DARK,
       headerTitleStyle: {
         alignItems: "center"
       }
