@@ -1,5 +1,5 @@
 import React from "react";
-import { Alert, StyleSheet, View, TouchableOpacity, Modal } from "react-native";
+import { Alert, StyleSheet, View, TouchableOpacity } from "react-native";
 import {
   Container,
   Content,
@@ -33,14 +33,14 @@ import {
   WHITE,
   ON_PRIMARY,
   BACKGROUND_1,
-  SECONDARYDark,
+  SECONDARY_DARK,
   ON_SECONDARY,
   SECONDARY
 } from "../Config/Colors";
 import { Avatar, List, ListItem } from "react-native-elements";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import commonStyles from "../Commons/Styles";
-import Overlay from "../Components/OverlayModal";
+import Modal from "react-native-modalbox";
 
 class ProfileView extends React.Component {
   constructor(props) {
@@ -50,7 +50,7 @@ class ProfileView extends React.Component {
       changePasswordSpinner: false,
       dataReady: false,
       customerAddresses: [],
-      changePasswordModalVisible: false,
+      isChangePasswordModalVisible: false,
       oldPassword: "",
       newPassword: "",
       confirmNewPassword: "",
@@ -226,12 +226,8 @@ class ProfileView extends React.Component {
                   this.setState(
                     {
                       showPasswordErrorMsg: false,
-                      changePasswordModalVisible: false
-                    },
-                    () =>
-                      setTimeout(() => {
-                        Alert.alert(SUCCESS, STRINGS.changePasswordSuccess);
-                      }, 10)
+                      isChangePasswordModalVisible: false
+                    }
                   );
                 }
               });
@@ -249,14 +245,14 @@ class ProfileView extends React.Component {
 
   _renderChangePasswordModal() {
     return (
-      <Overlay
-        visible={this.state.changePasswordModalVisible}
-        closeOnTouchOutside
-        onClose={() => this.setState({ changePasswordModalVisible: false })}
-        animationType="zoomIn"
-        containerStyle={{ backgroundColor: ON_PRIMARY }}
-        childrenWrapperStyle={{ backgroundColor: "#eee" }}
-        animationDuration={500}
+      <Modal
+        style={[styles.modal, styles.changePasswordModal]}
+        position={"center"}
+        isDisabled={this.state.isModalDisabled}
+        isOpen={this.state.isChangePasswordModalVisible}
+        onClosed={() => this.setState({ isChangePasswordModalVisible: false })}
+        backButtonClose={true}
+        coverScreen={true}
       >
         <View style={styles.changePasswordModalView}>
           <Item>
@@ -295,15 +291,15 @@ class ProfileView extends React.Component {
           )}
           <Button
             full
-            style={styles.changePasswordButton}
+            transparent
             disabled={this._enableDdisableChangePasswordButton()}
             onPress={this._handleChangePassword}
           >
-            <Text>Change Password</Text>
+            <Text style={styles.changePasswordButtonText}>Change Password</Text>
           </Button>
           <Spinner visible={this.state.changePasswordSpinner} />
         </View>
-      </Overlay>
+      </Modal>
     );
   }
 
@@ -337,7 +333,7 @@ class ProfileView extends React.Component {
                   switch (buttonIndex) {
                     case 0:
                       console.log("Change password clicked.");
-                      this.setState({ changePasswordModalVisible: true });
+                      this.setState({ isChangePasswordModalVisible: true });
                       break;
                     case 1:
                       console.log("Moving to privacy policy.");
@@ -427,22 +423,25 @@ const styles = StyleSheet.create({
   addressList: {
     marginTop: -15
   },
-  modalSaveButton: {
-    color: SECONDARYDark
-  },
-  modalCloseIcon: {
-    color: SECONDARYDark
-  },
-  changePasswordButton: {
-    backgroundColor: SECONDARY
+  changePasswordButtonText: {
+    color: SECONDARY,
+    fontWeight: "bold"
   },
   changePasswordModalView: {
-    width: "100%"
+    width: "90%"
   },
   passwordErrorMsg: {
     color: "red",
     fontSize: 15,
     paddingTop: 8,
     paddingBottom: 8
+  },
+  changePasswordModal: {
+    height: 210,
+    width: 300
+  },
+  modal: {
+    justifyContent: "center",
+    alignItems: "center"
   }
 });
