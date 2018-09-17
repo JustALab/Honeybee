@@ -5,7 +5,8 @@ import {
   StatusBar,
   Text,
   TouchableOpacity,
-  FlatList, TextInput
+  FlatList,
+  TextInput
 } from "react-native";
 import {
   Container,
@@ -14,7 +15,7 @@ import {
   Header,
   Icon,
   Button,
-  Item,
+  Item
 } from "native-base";
 import { FooterLab } from "../Components/FooterLab";
 import {
@@ -256,7 +257,10 @@ class CakesView extends React.Component {
         coverScreen={true}
       >
         <Item>
-          <TextInput style={{height: 40, width: "80%"}} placeholder="Message to write over cake!" />
+          <TextInput
+            style={{ height: 40, width: "80%" }}
+            placeholder="Message to write over cake!"
+          />
         </Item>
       </Modal>
     );

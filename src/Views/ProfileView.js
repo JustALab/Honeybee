@@ -223,12 +223,10 @@ class ProfileView extends React.Component {
                     showPasswordErrorMsg: true
                   });
                 } else {
-                  this.setState(
-                    {
-                      showPasswordErrorMsg: false,
-                      isChangePasswordModalVisible: false
-                    }
-                  );
+                  this.setState({
+                    showPasswordErrorMsg: false,
+                    isChangePasswordModalVisible: false
+                  });
                 }
               });
             }
