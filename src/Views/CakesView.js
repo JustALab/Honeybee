@@ -252,7 +252,7 @@ class CakesView extends React.Component {
         isDisabled={this.state.isModalDisabled}
         isOpen={this.state.isModalOpen}
         onClosed={() => this.setState({ isModalOpen: false })}
-        backButtonClose={false}
+        backButtonClose={true}
         coverScreen={true}
       >
         <Item>
