@@ -5,9 +5,17 @@ import {
   StatusBar,
   Text,
   TouchableOpacity,
-  FlatList
+  FlatList, TextInput
 } from "react-native";
-import { Container, Content, Body, Header, Icon } from "native-base";
+import {
+  Container,
+  Content,
+  Body,
+  Header,
+  Icon,
+  Button,
+  Item,
+} from "native-base";
 import { FooterLab } from "../Components/FooterLab";
 import {
   STRINGS,
@@ -32,14 +40,18 @@ import { DBService } from "../Services/DBService";
 import ItemCard from "../Components/ItemCard";
 import { filterItems } from "../Commons/Utils";
 import * as Animatable from "react-native-animatable";
+import Modal from "react-native-modalbox";
 
 class CakesView extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       spinner: false,
-      dataReady: false
+      dataReady: false,
+      isModalOpen: false,
+      isModalDisabled: false
     };
+    this._onClickItem = this._onClickItem.bind(this);
   }
 
   componentWillMount() {
@@ -232,8 +244,26 @@ class CakesView extends React.Component {
     return <Spinner visible={this.state.spinner} />;
   }
 
+  _renderModal() {
+    return (
+      <Modal
+        style={[styles.modal, styles.cakeConfigModal]}
+        position={"center"}
+        isDisabled={this.state.isModalDisabled}
+        isOpen={this.state.isModalOpen}
+        onClosed={() => this.setState({ isModalOpen: false })}
+        backButtonClose={false}
+        coverScreen={true}
+      >
+        <Item>
+          <TextInput style={{height: 40, width: "80%"}} placeholder="Message to write over cake!" />
+        </Item>
+      </Modal>
+    );
+  }
+
   _onClickItem(itemId) {
-    alert(itemId);
+    this.setState({ isModalOpen: true });
   }
 
   _renderItemCard(item) {
@@ -270,6 +300,7 @@ class CakesView extends React.Component {
         <Content style={CommonStyles.statusBarMargin} padder>
           {this._renderSpinner()}
           {this._renderItemsList()}
+          {this._renderModal()}
         </Content>
         <FooterLab activeButton={STRINGS.cakes} {...this.props} />
       </Container>
@@ -338,5 +369,13 @@ const styles = StyleSheet.create({
   listRowView: {
     flexDirection: "row",
     justifyContent: "space-between"
+  },
+  cakeConfigModal: {
+    height: 200,
+    width: 300
+  },
+  modal: {
+    justifyContent: "center",
+    alignItems: "center"
   }
 });
