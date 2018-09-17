@@ -58,9 +58,9 @@ class ProfileView extends React.Component {
       isChangePasswordFailure: false,
       showPasswordErrorMsg: false
     };
-    this.handleLogOut = this.handleLogOut.bind(this);
-    this.deleteAddress = this.deleteAddress.bind(this);
-    this.handleChangePassword = this.handleChangePassword.bind(this);
+    this._handleLogOut = this._handleLogOut.bind(this);
+    this._deleteAddress = this._deleteAddress.bind(this);
+    this._handleChangePassword = this._handleChangePassword.bind(this);
   }
 
   componentDidMount() {
@@ -94,7 +94,7 @@ class ProfileView extends React.Component {
     }
   }
 
-  handleLogOut() {
+  _handleLogOut() {
     console.log("Log out called.");
     Alert.alert(STRINGS.confirm, STRINGS.areYouSure, [
       {
@@ -110,7 +110,7 @@ class ProfileView extends React.Component {
     ]);
   }
 
-  renderAvatarTexts() {
+  _renderAvatarTexts() {
     if (this.props.customerData != null) {
       return (
         <View>
@@ -135,7 +135,7 @@ class ProfileView extends React.Component {
     return <View />;
   }
 
-  renderAddressList() {
+  _renderAddressList() {
     const addressList = this.state.customerAddresses;
     return (
       <View style={styles.addressList}>
@@ -147,7 +147,7 @@ class ProfileView extends React.Component {
               subtitle={address.address}
               subtitleNumberOfLines={4}
               rightIcon={{ name: ICONS.delete }}
-              onPressRightIcon={() => this.deleteAddress(address.addressId)}
+              onPressRightIcon={() => this._deleteAddress(address.addressId)}
             />
           ))}
         </List>
@@ -155,7 +155,7 @@ class ProfileView extends React.Component {
     );
   }
 
-  deleteAddress(addressId) {
+  _deleteAddress(addressId) {
     Alert.alert(STRINGS.confirm, STRINGS.areYouSure, [
       {
         text: "Yes",
@@ -179,7 +179,7 @@ class ProfileView extends React.Component {
     ]);
   }
 
-  renderAvatar() {
+  _renderAvatar() {
     return (
       <Avatar
         large
@@ -191,7 +191,7 @@ class ProfileView extends React.Component {
     );
   }
 
-  enableDdisableChangePasswordButton() {
+  _enableDdisableChangePasswordButton() {
     const { oldPassword, newPassword, confirmNewPassword } = this.state;
     if (
       oldPassword.length > 0 &&
@@ -203,7 +203,7 @@ class ProfileView extends React.Component {
     return true;
   }
 
-  handleChangePassword() {
+  _handleChangePassword() {
     const { oldPassword, newPassword, confirmNewPassword } = this.state;
     if (newPassword === confirmNewPassword) {
       this.setState({ showPasswordErrorMsg: false }, () => {
@@ -247,7 +247,7 @@ class ProfileView extends React.Component {
     }
   }
 
-  renderChangePasswordModal() {
+  _renderChangePasswordModal() {
     return (
       <Overlay
         visible={this.state.changePasswordModalVisible}
@@ -296,8 +296,8 @@ class ProfileView extends React.Component {
           <Button
             full
             style={styles.changePasswordButton}
-            disabled={this.enableDdisableChangePasswordButton()}
-            onPress={this.handleChangePassword}
+            disabled={this._enableDdisableChangePasswordButton()}
+            onPress={this._handleChangePassword}
           >
             <Text>Change Password</Text>
           </Button>
@@ -307,7 +307,7 @@ class ProfileView extends React.Component {
     );
   }
 
-  renderHeader() {
+  _renderHeader() {
     const ACTION_SHEET_BUTTONS = [
       "Change Password",
       STRINGS.privacyPolicy,
@@ -349,7 +349,7 @@ class ProfileView extends React.Component {
                       break;
                     case 3:
                       console.log("Logging Out");
-                      this.handleLogOut();
+                      this._handleLogOut();
                       break;
                   }
                 }
@@ -366,15 +366,15 @@ class ProfileView extends React.Component {
   render() {
     return (
       <Container>
-        {this.renderHeader()}
+        {this._renderHeader()}
         <Content style={styles.content} scrollEnabled={false}>
           <View style={styles.avatarView}>
-            {this.renderAvatar()}
-            {this.state.dataReady && this.renderAvatarTexts()}
+            {this._renderAvatar()}
+            {this.state.dataReady && this._renderAvatarTexts()}
           </View>
-          {this.state.dataReady && this.renderAddressList()}
+          {this.state.dataReady && this._renderAddressList()}
           <Spinner visible={this.state.spinner} />
-          {this.renderChangePasswordModal()}
+          {this._renderChangePasswordModal()}
         </Content>
         <FooterLab activeButton={STRINGS.profile} {...this.props} />
       </Container>
