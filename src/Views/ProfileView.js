@@ -248,7 +248,13 @@ class ProfileView extends React.Component {
         position={"center"}
         isDisabled={this.state.isModalDisabled}
         isOpen={this.state.isChangePasswordModalVisible}
-        onClosed={() => this.setState({ isChangePasswordModalVisible: false })}
+        onClosed={() =>
+          this.setState({
+            isChangePasswordModalVisible: false,
+            reponseText: "",
+            isChangePasswordFailure: false
+          })
+        }
         backButtonClose={true}
         coverScreen={true}
       >
@@ -431,11 +437,10 @@ const styles = StyleSheet.create({
   passwordErrorMsg: {
     color: "red",
     fontSize: 15,
-    paddingTop: 8,
-    paddingBottom: 8
+    paddingTop: 8
   },
   changePasswordModal: {
-    height: 210,
+    height: 230,
     width: 300
   },
   modal: {

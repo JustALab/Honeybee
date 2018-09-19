@@ -1,5 +1,5 @@
 //export const HOST = "http://198.38.88.137:8085/hc";
-export const HOST = "http://192.168.0.105:8085/hc";
+export const HOST = "http://192.168.0.103:8085/hc";
 
 export const URL_AUTH = "/auth";
 export const URL_CUSTOMER = "/customer/customer";
