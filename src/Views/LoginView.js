@@ -15,10 +15,9 @@ import {
   Input,
   Item,
   Text,
-  Button
+  Button,
+  Icon
 } from "native-base";
-import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-import FaIcon from "react-native-vector-icons/FontAwesome";
 import { ICONS } from "../Config/Icons";
 import {
   PRIMARY,
@@ -44,7 +43,8 @@ class LoginView extends React.Component {
       mobile: "",
       password: "",
       loginButtonDisable: false,
-      spinner: false
+      spinner: false,
+      showPassword: false
     };
   }
 
@@ -144,6 +144,11 @@ class LoginView extends React.Component {
               <View>
                 <Form>
                   <Item style={[styles.widthStyle, styles.inputMargin]}>
+                    <Icon
+                      name={ICONS.mobile}
+                      style={styles.iconColor}
+                      type="Entypo"
+                    />
                     <Input
                       placeholder="Mobile number"
                       keyboardType={
@@ -156,16 +161,16 @@ class LoginView extends React.Component {
                       maxLength={10}
                       value={this.state.mobile}
                     />
-                    <FaIcon
-                      size={iconsSize + 8}
-                      name={ICONS.mobile}
-                      style={[{ marginRight: 5 }, styles.iconColor]}
-                    />
                   </Item>
                   <Item style={[styles.inputMargin, styles.widthStyle]}>
+                    <Icon
+                      name={ICONS.lock}
+                      style={styles.iconColor}
+                      type="MaterialCommunityIcons"
+                    />
                     <Input
                       placeholder="Password"
-                      secureTextEntry={true}
+                      secureTextEntry={!this.state.showPassword}
                       onChangeText={value =>
                         this.setState({ password: value.trim() })
                       }
@@ -173,9 +178,14 @@ class LoginView extends React.Component {
                       value={this.state.password}
                     />
                     <Icon
-                      size={iconsSize}
-                      name={ICONS.lock}
+                      name={this.state.showPassword ? ICONS.eyeLine : ICONS.eye}
+                      type="Ionicons"
                       style={styles.iconColor}
+                      onPress={() =>
+                        this.setState({
+                          showPassword: !this.state.showPassword
+                        })
+                      }
                     />
                   </Item>
                 </Form>

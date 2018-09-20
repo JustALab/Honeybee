@@ -17,5 +17,7 @@ export const ICONS = {
     mobile: "mobile",
     delete: "delete",
     verticalDots: "dots-vertical",
-    edit: "edit"
+    edit: "edit",
+    eye: "ios-eye",
+    eyeLine: "ios-eye-off"
 };
