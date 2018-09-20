@@ -12,7 +12,8 @@ import {
   Left,
   ActionSheet,
   Input,
-  Item
+  Item,
+  Icon
 } from "native-base";
 import { FooterLab } from "../Components/FooterLab";
 import {
@@ -38,7 +39,6 @@ import {
   SECONDARY
 } from "../Config/Colors";
 import { Avatar, List, ListItem } from "react-native-elements";
-import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import commonStyles from "../Commons/Styles";
 import Modal from "react-native-modalbox";
 
@@ -356,7 +356,7 @@ class ProfileView extends React.Component {
               );
             }}
           >
-            <Icon name={ICONS.verticalDots} size={ICON_SIZE} />
+            <Icon name={ICONS.verticalDots} type="MaterialCommunityIcons" />
           </TouchableOpacity>
         </Right>
       </Header>
@@ -381,8 +381,6 @@ class ProfileView extends React.Component {
     );
   }
 }
-
-const ICON_SIZE = 25;
 
 const mapStateToProps = state => ({
   authToken: state.authToken,
